@@ -40,8 +40,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\IRepo1Client.cs" />
+    <Compile Include="Clients\IRestClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
+    <Compile Include="Clients\RestClientBase.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\ExecutablesByUserDTO.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
+    <Compile Include="HashLib\Crypto\SHA0.cs" />
+    <Compile Include="HashLib\Crypto\SHA1.cs" />
+    <Compile Include="HashLib\Extensions\ArrayExtensions.cs" />
+    <Compile Include="HashLib\Extensions\Converters.cs" />
+    <Compile Include="HashLib\Hash.cs" />
+    <Compile Include="HashLib\HashBuffer.cs" />
+    <Compile Include="HashLib\HashCryptoNotBuildIn.cs" />
+    <Compile Include="HashLib\HashResult.cs" />
+    <Compile Include="HashLib\IHash.cs" />
+    <Compile Include="HashLib\IHashInfo.cs" />
     <Compile Include="Helpers\EArg.cs" />
+    <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
+    <Compile Include="Helpers\InputCommands\CommandR1Base.cs" />
+    <Compile Include="Helpers\InputCommands\ICommandR1.cs" />
+    <Compile Include="Helpers\StringExtensions\BasicStringExtensions.cs" />
+    <Compile Include="Models\R1Executable.cs" />
+    <Compile Include="Models\RestServerCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

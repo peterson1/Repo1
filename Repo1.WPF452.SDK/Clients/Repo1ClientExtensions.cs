@@ -7,7 +7,7 @@ namespace Repo1.WPF452.SDK.Clients
     {
         public static void CatchErrors(this IRepo1Client repo1Client, Application app)
         {
-
+            //todo: handle global errors
         }
     }
 }
