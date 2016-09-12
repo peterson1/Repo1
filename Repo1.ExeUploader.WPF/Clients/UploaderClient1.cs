@@ -1,15 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Repo1.Core.ns12.Clients;
+using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Configuration;
+using Repo1.WPF452.SDK.Clients;
 
 namespace Repo1.ExeUploader.WPF.Clients
 {
-    class UploaderClient1 : RestClientBase
+    class UploaderClient1 : SvcStackRestClient
     {
-        const string VIEWS_EXE_BY_USER = "sadfa sdf asfasdfasdfasdf sdf";
-
         private UploaderCfg _upCfg;
 
         public UploaderClient1(UploaderCfg uploaderCfg) : base(uploaderCfg)
@@ -20,21 +20,16 @@ namespace Repo1.ExeUploader.WPF.Clients
 
         internal async Task<R1Executable> GetExecutable()
         {
-            var list = await ViewsList<R1Executable>(VIEWS_EXE_BY_USER);
+            var list = await ViewsList<UploadablesForUserDTO>(_upCfg.ExecutableNid);
+            if (list == null) return null;
             return list.Single(x => x.nid == _upCfg.ExecutableNid);
         }
 
 
-        public override Task<T> Get<T>(string resourceUrl) 
-            => CreateClient().GetAsync<T>(resourceUrl);
-
-
-        private ServiceStack.JsonServiceClient CreateClient()
-            => new ServiceStack.JsonServiceClient(_upCfg.ApiBaseURL)
-            {
-                UserName = _upCfg.Username,
-                Password = _upCfg.Password,
-                AlwaysSendBasicAuthHeader = true,
-            };
+        internal async Task UploadNew(R1Executable localExe)
+        {
+            await Task.Delay(1);
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,8 +1,12 @@
 ﻿<Application x:Class="Repo1.ExeUploader.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Repo1.ExeUploader.WPF">
+             xmlns:local="clr-namespace:Repo1.ExeUploader.WPF"
+             xmlns:cnv="clr-namespace:Repo1.WPF452.SDK.Converters;assembly=Repo1.WPF452.SDK"
+             >
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <cnv:ToShortBytesConverter x:Key="shortBytes" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

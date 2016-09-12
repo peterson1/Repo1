@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HashLib
 {
-	internal abstract class Hash : IHash
+	public abstract class Hash : IHash
 	{
 		private readonly int m_block_size;
 		private readonly int m_hash_size;

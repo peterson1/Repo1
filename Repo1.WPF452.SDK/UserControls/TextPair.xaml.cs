@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using AutoDependencyPropertyMarker;
 
@@ -22,6 +23,9 @@ namespace Repo1.WPF452.SDK.UserControls
             Text1Weight = FontWeights.Medium;
             Text2Weight = FontWeights.Medium;
 
+            txt1.HandleClick();
+            txt2.HandleClick();
+
             txt1.Bind(nameof(Text1), TextBlock.TextProperty);
             txt2.Bind(nameof(Text2), TextBlock.TextProperty);
 
@@ -42,9 +46,10 @@ namespace Repo1.WPF452.SDK.UserControls
 
             Loaded += (s, e) =>
             {
-                if (GapWidth.GridUnitType == GridUnitType.Auto)
-                    GapWidth = new GridLength(7);
+                if (Text1Width.IsAuto && Text1Width.Value == 1)
+                    Text1Width = new GridLength(70);
 
+                if (GapWidth.IsAuto)    GapWidth = new GridLength(8);
                 if (Text1Brush == null) Text1Brush = Brushes.Gray;
                 if (Text2Brush == null) Text2Brush = Brushes.Black;
             };
@@ -76,11 +81,20 @@ namespace Repo1.WPF452.SDK.UserControls
 
     internal static class TextBlockExtensions
     {
-        public static void Bind(this FrameworkElement elm, string path, DependencyProperty dependencyProp)
+        internal static void Bind(this FrameworkElement elm, string path, DependencyProperty dependencyProp)
         {
             var binding = new Binding(path);
             binding.RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(TextPair), 1);
             elm.SetBinding(dependencyProp, binding);
+        }
+
+        internal static void HandleClick(this TextBlock txt)
+        {
+            txt.MouseRightButtonDown += (s, e) =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftShift))
+                    Clipboard.SetText(txt.Text);
+            };
         }
     }
 }

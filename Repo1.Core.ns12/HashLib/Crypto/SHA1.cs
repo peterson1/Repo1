@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace HashLib.Crypto
+﻿namespace HashLib.Crypto
 {
-    internal class SHA1 : SHA0
+    public class SHA1 : SHA0
     {
         public SHA1() 
         {

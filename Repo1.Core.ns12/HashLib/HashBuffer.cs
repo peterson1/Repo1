@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace HashLib
 {
-    internal class HashBuffer 
+    public class HashBuffer 
     {
         private byte[] m_data;
         private int m_pos;

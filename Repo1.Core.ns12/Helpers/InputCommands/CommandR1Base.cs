@@ -38,10 +38,7 @@ namespace Repo1.Core.ns12.Helpers.InputCommands
             }
             catch (Exception ex)
             {
-                LastExecutedOK = false;
-
                 //todo: report error to server
-
                 OnError(ex);
             }
             finally

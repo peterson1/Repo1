@@ -15,7 +15,7 @@ namespace Repo1.ExeUploader.WPF.ComponentRegistry
 
             b.RegisterInstance(cfg).As<UploaderCfg, RestServerCredentials>();
             b.Solo<MainWindowVM>();
-            b.Multi<IRestClient, UploaderClient1>();
+            b.Solo<UploaderClient1>();
 
             return b.Build();
         }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Repo1.Core.ns12.Models;
+using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -40,9 +38,11 @@ namespace Repo1.ExeUploader.WPF
             var r1e = new R1Executable();
             var inf = new FileInfo(exePath);
 
-            r1e.FileName = inf.Name;
-            r1e.FileSize = inf.Length;
-            //r1e.FileHash = inf.r
+            r1e.FileName      = inf.Name;
+            r1e.FileSize      = inf.Length;
+            r1e.FileHash      = inf.SHA1ForBytes();
+            r1e.FileVersion   = inf.FileVersion();
+            r1e.FullPathOrURL = exePath;
 
             return r1e;
         }

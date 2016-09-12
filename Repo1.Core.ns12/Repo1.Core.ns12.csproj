@@ -43,7 +43,7 @@
     <Compile Include="Clients\IRestClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
     <Compile Include="Clients\RestClientBase.cs" />
-    <Compile Include="DTOs\ViewsListDTOs\ExecutablesByUserDTO.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\UploadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
     <Compile Include="HashLib\Crypto\SHA0.cs" />
     <Compile Include="HashLib\Crypto\SHA1.cs" />
@@ -59,7 +59,9 @@
     <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
     <Compile Include="Helpers\InputCommands\CommandR1Base.cs" />
     <Compile Include="Helpers\InputCommands\ICommandR1.cs" />
+    <Compile Include="Helpers\PropertyChangedExtensions\BasicPropertyChangedExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\BasicStringExtensions.cs" />
+    <Compile Include="Helpers\StringExtensions\HashExtensions.cs" />
     <Compile Include="Models\R1Executable.cs" />
     <Compile Include="Models\RestServerCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

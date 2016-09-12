@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace HashLib
 {
-    internal abstract class BlockHash : Hash, IBlockHash
+    public abstract class BlockHash : Hash, IBlockHash
     {
         protected readonly HashBuffer m_buffer;
         protected ulong m_processed_bytes;

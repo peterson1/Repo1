@@ -2,7 +2,7 @@ using System;
 
 namespace HashLib.Crypto
 {
-    internal class SHA0 : BlockHash, ICryptoNotBuildIn
+    public class SHA0 : BlockHash, ICryptoNotBuildIn
     {
         #region Consts
         protected const uint C1 = 0x5A827999;

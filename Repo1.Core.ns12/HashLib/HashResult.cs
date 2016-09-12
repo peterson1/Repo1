@@ -5,35 +5,35 @@ using System.Linq;
 namespace HashLib
 {
     [DebuggerDisplay("HashResult, Size: {m_hash.Length}, Hash: {ToString()}")]
-    internal class HashResult
+    public class HashResult
     {
         private byte[] m_hash;
 
-        internal HashResult(uint a_hash)
+        public HashResult(uint a_hash)
         {
             m_hash = BitConverter.GetBytes(a_hash);
         }
 
-        internal HashResult(int a_hash)
+        public HashResult(int a_hash)
         {
             m_hash = BitConverter.GetBytes(a_hash);
         }
 
-        internal HashResult(ulong a_hash)
+        public HashResult(ulong a_hash)
         {
             m_hash = BitConverter.GetBytes(a_hash);
         }
-        internal HashResult(byte[] a_hash)
+        public HashResult(byte[] a_hash)
         {
             m_hash = a_hash;
         }
 
-        internal byte[] GetBytes()
+        public byte[] GetBytes()
         {
             return m_hash.ToArray();
         }
 
-        internal uint GetUInt()
+        public uint GetUInt()
         {
             if (m_hash.Length != 4)
                 throw new InvalidOperationException();
@@ -41,7 +41,7 @@ namespace HashLib
             return BitConverter.ToUInt32(m_hash, 0);
         }
 
-        internal int GetInt()
+        public int GetInt()
         {
             if (m_hash.Length != 4)
                 throw new InvalidOperationException();
@@ -49,7 +49,7 @@ namespace HashLib
             return BitConverter.ToInt32(m_hash, 0);
         }
 
-        internal ulong GetULong()
+        public ulong GetULong()
         {
             if (m_hash.Length != 8)
                 throw new InvalidOperationException();
@@ -71,7 +71,7 @@ namespace HashLib
             return Equals(hash_result);
         }
 
-        internal bool Equals(HashResult a_hashResult)
+        public bool Equals(HashResult a_hashResult)
         {
             return HashResult.SameArrays(a_hashResult.GetBytes(), m_hash);
         }

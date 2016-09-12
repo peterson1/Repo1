@@ -9,5 +9,6 @@
         public string  FileHash        { get; set; }
         public string  FileVersion     { get; set; }
         public string  VersionChanges  { get; set; }
+        public string  FullPathOrURL   { get; set; }
     }
 }

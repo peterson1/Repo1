@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Net;
+using System.Windows;
 using Autofac;
 using Repo1.ExeUploader.WPF.ComponentRegistry;
 using Repo1.ExeUploader.WPF.Configuration;
+using Repo1.WPF452.SDK.Helpers.ErrorHandlers;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -10,6 +12,8 @@ namespace Repo1.ExeUploader.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            ThreadedAlerter.CatchErrors(this);
 
             var cfg = CfgReader.ReadAndParseFromLocal();
             if (cfg == null)
