@@ -40,7 +40,7 @@ namespace Repo1.ExeUploader.WPF
 
             r1e.FileName      = inf.Name;
             r1e.FileSize      = inf.Length;
-            r1e.FileHash      = inf.SHA1ForBytes();
+            r1e.FileHash      = inf.SHA1ForFile();
             r1e.FileVersion   = inf.FileVersion();
             r1e.FullPathOrURL = exePath;
 

@@ -5,11 +5,15 @@ namespace Repo1.WPF452.SDK.Helpers.FileInfoExtensions
 {
     public static class CommonFileInfoExtensions
     {
-        public static string SHA1ForBytes(this FileInfo fileInfo)
+        public static string SHA1ForFile(this FileInfo fileInfo)
+            => SHA1ForFile(fileInfo.FullName);
+
+
+        public static string SHA1ForFile(this string filePath)
         {
-            if (!fileInfo.Exists) return null;
+            if (!File.Exists(filePath)) return null;
             var algo = new HashLib.Crypto.SHA1();
-            var byts = File.ReadAllBytes(fileInfo.FullName);
+            var byts = File.ReadAllBytes(filePath);
             var hash = algo.ComputeBytes(byts);
             return hash.ToString().ToLower();
         }

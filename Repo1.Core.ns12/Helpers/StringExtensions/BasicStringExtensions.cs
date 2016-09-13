@@ -15,6 +15,35 @@ namespace Repo1.Core.ns12.Helpers.StringExtensions
     public static class BasicStringExtensions
     {
 
+
+        public static string TextUpTo(this string text, string findThis)
+        {
+            var pos = text.IndexOf(findThis);
+            if (pos == -1) return text;
+
+            return text.Substring(0, pos + findThis.Length);
+        }
+
+        public static string TextBefore(this string text, string findThis)
+        {
+            var pos = text.IndexOf(findThis);
+            if (pos == -1) return text;
+
+            return text.Substring(0, pos);
+        }
+
+        public static string TextAfter(this string text, string findThis, bool seekFromEnd = false)
+        {
+            if (text == null || findThis == null) return null;
+            var pos = seekFromEnd ? text.LastIndexOf(findThis)
+                                  : text.IndexOf(findThis);
+            if (pos == -1) return text;
+
+            return text.Substring(pos + findThis.Length);
+        }
+
+
+
         //public static string StripLineBreaks(this string text, string replacementText = " ")
         //    => text.IsBlank() ? text 
         //    : text.Replace("\r", replacementText)

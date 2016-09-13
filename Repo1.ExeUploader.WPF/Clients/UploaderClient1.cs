@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Configuration;
+using Repo1.WPF452.SDK.Archivers;
 using Repo1.WPF452.SDK.Clients;
 
 namespace Repo1.ExeUploader.WPF.Clients
@@ -28,8 +29,12 @@ namespace Repo1.ExeUploader.WPF.Clients
 
         internal async Task UploadNew(R1Executable localExe)
         {
-            await Task.Delay(1);
-            throw new NotImplementedException();
+            var archive = await SevenZipper1.Compress(localExe.FullPathOrURL);
+
+            //  split
+
+            //  upload
+
         }
     }
 }
