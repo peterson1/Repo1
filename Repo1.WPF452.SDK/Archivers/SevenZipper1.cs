@@ -11,8 +11,7 @@ namespace Repo1.WPF452.SDK.Archivers
     public class SevenZipper1
     {
         const string COMPRESSOR_LIB = "7za.dll";
-        const string EXTRACTOR_LIB = "7zxa.dll";
-        const string SUFFIX_7Z  = ".7z";
+        const string EXTRACTOR_LIB  = "7zxa.dll";
 
 
         public static Task<List<string>> Decompress(string archivePath, string targetDir)
@@ -37,21 +36,24 @@ namespace Repo1.WPF452.SDK.Archivers
         }
 
 
-        public static Task<List<string>> Compress(string filePath, string targetFDir = null, double? maxVolumeSizeMB = null)
+        public static Task<List<string>> Compress(string  filePath, 
+                                                  string  targetFDir = null, 
+                                                  double? maxVolumeSizeMB = null, 
+                                                  string  extension = ".7z")
         {
-            var outF = "";
             var tcs  = new TaskCompletionSource<List<string>>();
             var zpr  = GetUltra7z2Compressor();
+            var outF = "";
 
             if (targetFDir.IsBlank())
             {
                 targetFDir = Path.GetDirectoryName(filePath);
-                outF = filePath + SUFFIX_7Z;
+                outF = filePath + extension;
             }
             else
             {
                 Directory.CreateDirectory(targetFDir);
-                outF = Path.Combine(targetFDir, Path.GetFileName(filePath) + SUFFIX_7Z);
+                outF = Path.Combine(targetFDir, Path.GetFileName(filePath) + extension);
             }
 
             zpr.CompressionFinished += (s, e) =>

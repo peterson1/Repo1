@@ -4,7 +4,7 @@ using System.IO;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 
-namespace Repo1.ExeUploader.WPF
+namespace Repo1.ExeUploader.WPF.DiskAccess
 {
     class ValidExeFile
     {

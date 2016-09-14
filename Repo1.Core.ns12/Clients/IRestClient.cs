@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Repo1.Core.ns12.Clients
 {
-    public interface IRestClient
+    public interface IRestClient : INotifyPropertyChanged
     {
-        bool IsBusy { get; }
-
-        Task<T> Get<T>(string resourceUrl);
+        bool    IsBusy  { get; }
+        string  Status  { get; }
+        //Task<T> Get  <T>(string resourceUrl);
+        //Task<T> Add  <T>(T newObject);
     }
 }

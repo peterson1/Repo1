@@ -55,15 +55,21 @@
     <Compile Include="HashLib\HashResult.cs" />
     <Compile Include="HashLib\IHash.cs" />
     <Compile Include="HashLib\IHashInfo.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\D7Mapper.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\D7TypeAttribute.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\NodeTitleAttribute.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\ValueAttribute.cs" />
+    <Compile Include="Helpers\D7ValueFields\ScalarValueField.cs" />
+    <Compile Include="Helpers\D7ValueFields\ValueField.cs" />
     <Compile Include="Helpers\EArg.cs" />
     <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
-    <Compile Include="Helpers\InputCommands\CommandR1Base.cs" />
     <Compile Include="Helpers\InputCommands\ICommandR1.cs" />
     <Compile Include="Helpers\PropertyChangedExtensions\BasicPropertyChangedExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\BasicStringExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\HashExtensions.cs" />
     <Compile Include="Models\R1Executable.cs" />
     <Compile Include="Models\RestServerCredentials.cs" />
+    <Compile Include="Models\R1SplitPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

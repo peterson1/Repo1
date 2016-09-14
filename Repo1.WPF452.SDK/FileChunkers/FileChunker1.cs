@@ -6,6 +6,8 @@ using Repo1.Core.ns12.Helpers.StringExtensions;
 
 namespace Repo1.WPF452.SDK.FileChunkers
 {
+    // adapted from http://www.codeproject.com/Articles/1034347/Upload-large-files-to-MVC-WebAPI-using-partitionin
+    //
     public class FileChunker1
     {
         const string PART_TOKEN = ".part_";

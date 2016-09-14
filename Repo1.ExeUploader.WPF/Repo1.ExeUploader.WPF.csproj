@@ -107,7 +107,8 @@
     </ApplicationDefinition>
     <Compile Include="Clients\UploaderClient1.cs" />
     <Compile Include="ComponentRegistry\IoC.cs" />
-    <Compile Include="ValidExeFile.cs" />
+    <Compile Include="DiskAccess\FilePart.cs" />
+    <Compile Include="DiskAccess\ValidExeFile.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -150,7 +151,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="FodyWeavers.xml" />
+    <Resource Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Repo1.Core.ns12\Repo1.Core.ns12.csproj">
@@ -162,7 +165,11 @@
       <Name>Repo1.WPF452.SDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="7za.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask TaskName="CosturaCleanup" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
     <ParameterGroup>

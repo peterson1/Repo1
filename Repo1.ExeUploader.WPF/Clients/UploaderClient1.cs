@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Configuration;
+using Repo1.ExeUploader.WPF.DiskAccess;
 using Repo1.WPF452.SDK.Archivers;
 using Repo1.WPF452.SDK.Clients;
 
@@ -23,18 +25,47 @@ namespace Repo1.ExeUploader.WPF.Clients
         {
             var list = await ViewsList<UploadablesForUserDTO>(_upCfg.ExecutableNid);
             if (list == null) return null;
-            return list.Single(x => x.nid == _upCfg.ExecutableNid);
+            var exe = list.Single(x => x.nid == _upCfg.ExecutableNid);
+            _uid = exe.uid;
+            return exe;
         }
 
 
-        internal async Task UploadNew(R1Executable localExe)
+        internal async Task<bool> UploadNew(
+            R1Executable localExe, double? maxVolumeSizeMB = 0.5)
         {
-            var archive = await SevenZipper1.Compress(localExe.FullPathOrURL);
+            IsBusy = true;
+            Status = "Compressing ...";
+            var tmpCopy   = CopyToTemp(localExe.FullPathOrURL);
+            var partsList = await SevenZipper1.Compress(tmpCopy, null, maxVolumeSizeMB, ".data");
 
-            //  split
+            for (int i = 0; i < partsList.Count; i++)
+            {
+                Status = $"Uploading part {i + 1} of {partsList.Count} ...";
 
-            //  upload
+                var partPath = partsList[i];
+                var r1Part = FilePart.ToR1Part(partPath, localExe);
+                var node = await Add(r1Part);
+                if (node == null) return false;
+            }
 
+            //  update exe node -- dito palang
+
+            IsBusy = false;
+            return true;
+        }
+
+
+        private string CopyToTemp(string filePath, string newExtension = ".bin")
+        {
+            var uniq = "Uploading_" + DateTime.Now.Ticks;
+            var tmpD = Path.Combine(Path.GetTempPath(), uniq);
+            Directory.CreateDirectory(tmpD);
+
+            var fNme = Path.GetFileNameWithoutExtension(filePath) + newExtension;
+            var path = Path.Combine(tmpD, fNme);
+            File.Copy(filePath, path, true);
+            return path;
         }
     }
 }

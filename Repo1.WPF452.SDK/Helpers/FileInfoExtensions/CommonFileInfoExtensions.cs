@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Repo1.WPF452.SDK.Helpers.FileInfoExtensions
@@ -24,6 +25,14 @@ namespace Repo1.WPF452.SDK.Helpers.FileInfoExtensions
             if (!fileInfo.Exists) return null;
             var ver = FileVersionInfo.GetVersionInfo(fileInfo.FullName);
             return ver.FileVersion;
+        }
+
+
+        public static string Base64Content(this FileInfo fileInfo)
+        {
+            if (!fileInfo.Exists) return null;
+            var byts = File.ReadAllBytes(fileInfo.FullName);
+            return Convert.ToBase64String(byts);
         }
     }
 }

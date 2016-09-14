@@ -2,27 +2,68 @@
 using System.Windows;
 using System.Windows.Input;
 using PropertyChanged;
-using Repo1.Core.ns12.Helpers.InputCommands;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
+using Repo1.Core.ns12.Helpers.InputCommands;
 
 namespace Repo1.WPF452.SDK.Helpers.InputCommands
 {
     [ImplementPropertyChanged]
-    public class CommandR1WPF : CommandR1Base
+    public class CommandR1WPF : ICommandR1
     {
-        public CommandR1WPF(Action<object> action, Predicate<object> canExecute = null) : base(action, canExecute)
+        protected Action<object>    _action;
+        protected Predicate<object> _canExecute;
+
+
+        public CommandR1WPF(Action<object> action, Predicate<object> canExecute = null, string buttonLabel = null)
         {
+            _action      = action;
+            _canExecute  = canExecute;
+            CurrentLabel = buttonLabel;
         }
 
 
-        public override event EventHandler CanExecuteChanged
+        public bool      OverrideEnabled   { get; set; } = true;
+        public string    CurrentLabel      { get; set; }
+        public bool      IsCheckable       { get; set; }
+        public bool      IsChecked         { get; set; }
+        public bool      IsBusy            { get; private set; }
+        public bool      LastExecutedOK    { get; private set; }
+        public DateTime  LastExecuteStart  { get; private set; }
+        public DateTime  LastExecuteEnd    { get; private set; }
+
+
+
+        public void Execute(object parameter)
         {
-            add    { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            if (IsBusy) return;
+            if (!OverrideEnabled) return;
+
+            IsBusy = true;
+            //var origOverride = OverrideEnabled;
+            OverrideEnabled = false;
+            LastExecutedOK = false;
+            LastExecuteStart = DateTime.Now;
+
+            try
+            {
+                _action?.Invoke(parameter);
+                LastExecutedOK = true;
+            }
+            catch (Exception ex)
+            {
+                //todo: report error to server
+                OnError(ex);
+            }
+            finally
+            {
+                LastExecuteEnd = DateTime.Now;
+                IsBusy = false;
+                //OverrideEnabled = origOverride;
+            }
         }
 
 
-        protected override void OnError(Exception error)
+        private void OnError(Exception error)
         {
             var targ  = _action.Target.GetType().Name;
             var methd = _action.Method.Name;
@@ -31,6 +72,27 @@ namespace Repo1.WPF452.SDK.Helpers.InputCommands
 
             MessageBox.Show(msg, cap,
                 MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+
+        public event EventHandler CanExecuteChanged
+        {
+            add    { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+
+        public bool CanExecute(object parameter)
+        {
+            if (IsBusy) return false;
+            if (!OverrideEnabled) return false;
+            return _canExecute?.Invoke(parameter) ?? true;
+        }
+
+
+        public void ExecuteIfItCan(object param = null)
+        {
+            if (CanExecute(param)) Execute(param);
         }
     }
 }

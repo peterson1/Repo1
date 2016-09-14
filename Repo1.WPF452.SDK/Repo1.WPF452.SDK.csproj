@@ -77,10 +77,14 @@
     <Compile Include="Archivers\SevenZipper1.cs" />
     <Compile Include="Clients\SvcStackRestClient.cs" />
     <Compile Include="Converters\ToShortBytesConverter.cs" />
+    <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
+    <Compile Include="Converters\VisibleIfTrueConverter.cs" />
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="Helpers\ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Helpers\FileInfoExtensions\CommonFileInfoExtensions.cs" />
+    <Compile Include="Helpers\InputCommands\CommandR1WPF.cs" />
+    <Compile Include="Helpers\WindowExtensions\CommonWindowExtensions.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>
     </Compile>
@@ -90,7 +94,6 @@
     </Page>
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
-    <Compile Include="Helpers\InputCommands\CommandR1WPF.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>

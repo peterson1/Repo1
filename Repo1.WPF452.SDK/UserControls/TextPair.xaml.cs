@@ -21,7 +21,7 @@ namespace Repo1.WPF452.SDK.UserControls
             Text2Alignment = TextAlignment.Left;
 
             Text1Weight = FontWeights.Medium;
-            Text2Weight = FontWeights.Medium;
+            Text2Weight = FontWeights.Normal;
 
             txt1.HandleClick();
             txt2.HandleClick();

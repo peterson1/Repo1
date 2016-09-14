@@ -8,50 +8,82 @@
         xmlns:cnv="clr-namespace:Repo1.WPF452.SDK.Converters;assembly=Repo1.WPF452.SDK"
         xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="MainWindow"
-        SizeToContent="Width"
-        Height="500" MinWidth="500"
-        WindowStartupLocation="CenterScreen">
+        Title="{Binding Status}"
+        SizeToContent="WidthAndHeight"
+        MinHeight="300" MinWidth="500"
+        WindowStartupLocation="CenterScreen"
+        >
     <Window.Resources>
         <cnv:ToShortBytesConverter x:Key="shortB" />
         <cnv:VisibleIfNotNullConverter x:Key="visIfNotNull" />
+        <cnv:VisibleIfTrueConverter x:Key="visIfTrue" />
+        <cnv:VisibleIfFalseConverter x:Key="visIfFalse" />
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="0,20,0,0" />
+            <Setter Property="Foreground" Value="Blue" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontStyle" Value="Italic" />
+        </Style>
+
+        <!--<Style TargetType="ruc:TextPair">
+            <Setter Property="Text2Width" Value="300" />
+        </Style>-->
+        
     </Window.Resources>
-    <DockPanel>
-        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Status}" />
-
-        <StackPanel>
-            <StackPanel>
-                <ruc:TextPair Text1="API"      Text2="{Binding Config.ApiBaseURL}" />
-                <ruc:TextPair Text1="user"     Text2="{Binding Config.Username  }" />
-                <ruc:TextPair Text1="password" Text2="{Binding Config.Password  }" />
-            </StackPanel>
-            
-            <StackPanel Orientation="Horizontal">
-                <StackPanel>
-                    <Label Content="Local" />
-                    <ruc:TextPair Text1="file"    Text2="{Binding LocalExe.FileName}" />
-                    <ruc:TextPair Text1="size"    Text2="{Binding LocalExe.FileSize, Converter={StaticResource shortB}}" />
-                    <ruc:TextPair Text1="hash"    Text2="{Binding LocalExe.FileHash}" />
-                    <ruc:TextPair Text1="version" Text2="{Binding LocalExe.FileVersion}" />
-                </StackPanel>
-
-                <Grid>
-                    <StackPanel>
-                        <Label Content="Remote" />
-                        <ruc:TextPair Text1="file"    Text2="{Binding RemoteExe.FileName}" />
-                        <ruc:TextPair Text1="size"    Text2="{Binding RemoteExe.FileSize, Converter={StaticResource shortB}}" />
-                        <ruc:TextPair Text1="hash"    Text2="{Binding RemoteExe.FileHash}" />
-                        <ruc:TextPair Text1="version" Text2="{Binding RemoteExe.FileVersion}" />
-                    </StackPanel>
-                    <xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}" />
-                </Grid>
-            </StackPanel>
-
-            <Button Content="Upload"
-                    Command="{Binding UploadCmd}"
-                    Visibility="{Binding UploadCmd, Converter={StaticResource visIfNotNull}}"
-                    />
-
+    <StackPanel Margin="20">
+        <StackPanel HorizontalAlignment="Right">
+            <ruc:TextPair Text1="API"      Text2="{Binding Config.ApiBaseURL}" />
+            <ruc:TextPair Text1="user"     Text2="{Binding Config.Username  }" />
+            <ruc:TextPair Text1="password" Text2="{Binding Config.Password  }" />
         </StackPanel>
-    </DockPanel>
+            
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Local" />
+                <ruc:TextPair Text1="file"    Text2="{Binding LocalExe.FileName}" />
+                <ruc:TextPair Text1="size"    Text2="{Binding LocalExe.FileSize, Converter={StaticResource shortB}}" />
+                <ruc:TextPair Text1="hash"    Text2="{Binding LocalExe.FileHash}" />
+                <ruc:TextPair Text1="version" Text2="{Binding LocalExe.FileVersion}" />
+                <ruc:TextPair Text1="path"    Text2="{Binding LocalExe.FullPathOrURL}" Text2Width="300" />
+            </StackPanel>
+
+            <Grid>
+                <StackPanel>
+                    <Label Content="Remote" />
+                    <ruc:TextPair Text1="file"    Text2="{Binding RemoteExe.FileName}" />
+                    <ruc:TextPair Text1="size"    Text2="{Binding RemoteExe.FileSize, Converter={StaticResource shortB}}" />
+                    <ruc:TextPair Text1="hash"    Text2="{Binding RemoteExe.FileHash}" />
+                    <ruc:TextPair Text1="version" Text2="{Binding RemoteExe.FileVersion}" />
+                    <ruc:TextPair Text1="node ID" Text2="{Binding RemoteExe.nid}" />
+                </StackPanel>
+                <xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
+                                   Visibility="{Binding HasChanges, Converter={StaticResource visIfFalse}}"
+                                   FocusAfterBusy="{Binding ElementName=txtVerChanges}"
+                                   />
+            </Grid>
+        </StackPanel>
+
+        <Grid Visibility="{Binding HasChanges, Converter={StaticResource visIfTrue}}">
+            <StackPanel>
+                <Label Content="Version Changes" />
+                <TextBox x:Name="txtVerChanges"
+                         Text="{Binding VersionChanges, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True" MinHeight="150"
+                         />
+
+                <Button Content="{Binding UploadCmd.CurrentLabel}"
+                        Height="40" Width="150"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,0,0"
+                        Command="{Binding UploadCmd}"
+                        />
+            </StackPanel>
+            <xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
+                               BusyContent="{Binding Client.Status}"
+                               />
+        </Grid>
+
+    </StackPanel>
 </Window>
