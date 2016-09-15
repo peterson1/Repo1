@@ -58,7 +58,9 @@
     <Compile Include="HashLib\IHashInfo.cs" />
     <Compile Include="Helpers\D7MapperAttributes\D7Mapper.cs" />
     <Compile Include="Helpers\D7MapperAttributes\D7TypeAttribute.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\NodeAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\NodeTitleAttribute.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\UserAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\ValueAttribute.cs" />
     <Compile Include="Helpers\D7ValueFields\ScalarValueField.cs" />
     <Compile Include="Helpers\D7ValueFields\ValueField.cs" />
@@ -69,6 +71,8 @@
     <Compile Include="Helpers\StringExtensions\BasicStringExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\HashExtensions.cs" />
     <Compile Include="Models\R1Executable.cs" />
+    <Compile Include="Models\R1Ping.cs" />
+    <Compile Include="Models\R1UserLicense.cs" />
     <Compile Include="Models\RestServerCredentials.cs" />
     <Compile Include="Models\R1SplitPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

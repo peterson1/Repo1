@@ -172,5 +172,9 @@ namespace Repo1.Core.ns12.Clients
                     return false;
             }
         }
+
+
+        public virtual void RaisePropertyChanged(string propertyName)
+            => PropertyChanged.Raise(propertyName);
     }
 }

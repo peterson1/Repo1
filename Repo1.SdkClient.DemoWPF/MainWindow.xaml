@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Repo1.SdkClient.DemoWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel>
+    <StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                >
         <TextBlock Text="{Binding Status}" />
     </StackPanel>
 </Window>
