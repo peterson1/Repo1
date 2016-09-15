@@ -51,7 +51,7 @@ namespace Repo1.WPF452.SDK.Helpers.InputCommands
             }
             catch (Exception ex)
             {
-                //todo: report error to server
+                //later: report error to server
                 OnError(ex);
             }
             finally

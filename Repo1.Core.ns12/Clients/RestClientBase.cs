@@ -46,28 +46,46 @@ namespace Repo1.Core.ns12.Clients
         }
 
 
-        protected abstract Task<T>          Get<T>            (string resourceUrl);
-        protected abstract Task<T>          Post<T>           (T objToPost, string resourceUrl);
+        protected abstract Task<T>          Get  <T>          (string resourceUrl);
+        protected abstract Task<T>          Post <T>          (T objToPost, string resourceUrl);
+        protected abstract Task<bool>       Put  <T>          (T objToPost, string resourceUrl);
         protected abstract HttpStatusCode?  GetStatusCode<T>  (T exception);
         protected abstract void             OnError           (Exception ex);
 
 
-        protected async Task<T> Add <T>(T objectToPost, bool isPublished = true)
+        protected Task<Dictionary<string, object>> Add <T>(T objectToPost, bool isPublished = true)
         {
             var mappd = D7Mapper.ToObjectDictionary(objectToPost);
-            if (mappd == null) return default(T);
+            if (mappd == null) return null;
             mappd["uid"]    = _uid;
             mappd["status"] = isPublished ? 1 : 0;
 
-            //await Task.Delay(1000 * 10);
-
-            var saved = await Post(mappd, "entity_node");
-            if (saved == null) return default(T);
-
-            TrySetServerGeneratedValues(objectToPost, saved);
-
-            return objectToPost;
+            return KeepTrying(() => Post(mappd, "entity_node"));
         }
+
+
+
+        public async Task<bool> Edit<T>(T node, string revisionLog = null)
+        {
+            var mappd = D7Mapper.ToObjectDictionary(node);
+            if (mappd == null) return false;
+
+            if (!mappd.ContainsKey("nid")) return false;
+            int nid;
+            if (!int.TryParse(mappd["nid"].ToString(), out nid)) return false;
+            if (nid < 1) return false;
+
+            mappd["uid"] = _uid;
+            if (!revisionLog.IsBlank())
+            {
+                mappd.Add("revision", 1);
+                mappd.Add("log", revisionLog);
+            }
+
+            var ok = await KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
+            return ok;
+        }
+
 
 
         private void TrySetServerGeneratedValues<T>(T objectToPost, Dictionary<string, object> saved)
@@ -79,7 +97,7 @@ namespace Repo1.Core.ns12.Clients
         }
 
 
-        protected Task<List<T>> ViewsList<T>(params object[] args)
+        protected async Task<List<T>> ViewsList<T>(params object[] args)
             where T : IViewsListDTO, new()
         {
             var displayID = new T().ViewsDisplayURL;
@@ -88,11 +106,16 @@ namespace Repo1.Core.ns12.Clients
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";
 
-            return PersistentGet<List<T>>(url);
+            var list = await KeepTrying(() => Get<List<T>>(url));
+
+            if (list == null)
+                OnError(new ArgumentNullException("Wasn't expecting ViewsList to return NULL."));
+
+            return list;
         }
 
 
-        private async Task<T> PersistentGet<T>(string resourceURL)
+        private async Task<T>  KeepTrying  <T>(Func<Task<T>> action)
         {
             var policy = Policy.Handle<Exception>(x => IsRetryable(x))
                 .WaitAndRetryForeverAsync(attempts
@@ -102,7 +125,7 @@ namespace Repo1.Core.ns12.Clients
             T result = default(T);
             try
             {
-                result = await policy.ExecuteAsync(() => Get<T>(resourceURL));
+                result = await policy.ExecuteAsync(action);
             }
             catch (Exception ex)
             {
@@ -122,6 +145,8 @@ namespace Repo1.Core.ns12.Clients
 
         protected virtual void OnRetry(Exception exception, TimeSpan timespan)
         {
+            Status = exception.Message + L.F 
+                   + $"Retrying in {timespan.TotalSeconds} seconds ...";
         }
 
 
@@ -147,6 +172,5 @@ namespace Repo1.Core.ns12.Clients
                     return false;
             }
         }
-
     }
 }

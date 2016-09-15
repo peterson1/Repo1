@@ -71,16 +71,16 @@ namespace Repo1.WPF452.SDK.FileChunkers
 
         public static string Merge(string part1Path)
         {
-            var baseFName  = part1Path.Substring(0, part1Path.IndexOf(PART_TOKEN));
+            var baseFName = part1Path.Substring(0, part1Path.IndexOf(PART_TOKEN));
             var tailTokens = part1Path.Substring(part1Path.IndexOf(PART_TOKEN) + PART_TOKEN.Length);
-            var pattern    = Path.GetFileName(baseFName) + PART_TOKEN + "*";
-            var matches    = Directory.GetFiles(Path.GetDirectoryName(part1Path), pattern)
+            var pattern = Path.GetFileName(baseFName) + PART_TOKEN + "*";
+            var matches = Directory.GetFiles(Path.GetDirectoryName(part1Path), pattern)
                                       .OrderBy(x => x).ToList();
-            var mergeList  = new List<SortedFile>();
-            var fileIndex  = 0; var fileCount = 0;
+            var mergeList = new List<SortedFile>();
+            var fileIndex = 0; var fileCount = 0;
 
-            if (!int.TryParse(tailTokens.Substring(0, tailTokens.IndexOf(".")    ), out fileIndex)
-             || !int.TryParse(tailTokens.Substring(   tailTokens.IndexOf(".") + 1), out fileCount))
+            if (!int.TryParse(tailTokens.Substring(0, tailTokens.IndexOf(".")), out fileIndex)
+             || !int.TryParse(tailTokens.Substring(tailTokens.IndexOf(".") + 1), out fileCount))
                 throw new FileFormatException("Invalid file part name: " + part1Path);
 
             if (matches.Count() != fileCount)
@@ -90,8 +90,8 @@ namespace Repo1.WPF452.SDK.FileChunkers
 
             foreach (string filePart in matches)
             {
-                var sFile  = new SortedFile(filePart);
-                baseFName  = filePart.Substring(0, filePart.IndexOf(PART_TOKEN));
+                var sFile = new SortedFile(filePart);
+                baseFName = filePart.Substring(0, filePart.IndexOf(PART_TOKEN));
                 tailTokens = filePart.Substring(filePart.IndexOf(PART_TOKEN) + PART_TOKEN.Length);
 
                 if (!int.TryParse(tailTokens.Substring(0, tailTokens.IndexOf(".")), out fileIndex))
@@ -100,21 +100,28 @@ namespace Repo1.WPF452.SDK.FileChunkers
                 sFile.FileOrder = fileIndex;
                 mergeList.Add(sFile);
             }
-            
-            var orderedParts  = mergeList.OrderBy(s => s.FileOrder).ToList();
-            using (var stream = new FileStream(baseFName, FileMode.Create))
+
+            var orderedParts = mergeList.OrderBy(s => s.FileOrder)
+                                        .Select(x => x.FileName).ToList();
+
+            WriteOneBigFile(baseFName, orderedParts);
+            return baseFName;
+        }
+
+
+        public static void WriteOneBigFile(string outputFilePath, IEnumerable<string> orderedParts)
+        {
+            using (var stream = new FileStream(outputFilePath, FileMode.Create))
             {
-                foreach (var chunk in orderedParts)
+                foreach (var chunkPath in orderedParts)
                 {
-                    using (var fileChunk = new FileStream(chunk.FileName, FileMode.Open))
+                    using (var fileChunk = new FileStream(chunkPath, FileMode.Open))
                     {
                         fileChunk.CopyTo(stream);
                     }
                 }
             }
-            return baseFName;
         }
-
 
 
         private struct SortedFile

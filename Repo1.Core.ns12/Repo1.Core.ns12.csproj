@@ -43,6 +43,7 @@
     <Compile Include="Clients\IRestClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
     <Compile Include="Clients\RestClientBase.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\SplitPartContentByHashDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\UploadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
     <Compile Include="HashLib\Crypto\SHA0.cs" />

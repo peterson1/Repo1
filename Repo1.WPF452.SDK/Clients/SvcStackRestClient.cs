@@ -26,10 +26,18 @@ namespace Repo1.WPF452.SDK.Clients
 
 
         protected override Task<T> Post<T>(T objToPost, string resourceUrl)
-            //=> CreateClient().PostAsync<T>(resourceUrl, objToPost);
         {
             //var js = DynamicJson.Serialize(objToPost);
             return CreateClient().PostAsync<T>(resourceUrl, objToPost);
+        }
+
+
+        protected override async Task<bool> Put<T>(T objToPut, string resourceUrl)
+        {
+            var js = DynamicJson.Serialize(objToPut);
+            var client = CreateClient();
+            var resp = await client.PutAsync<T>(resourceUrl, objToPut);
+            return resp != null;
         }
 
 

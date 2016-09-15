@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers.SampleFiles;
@@ -19,8 +20,7 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             var outDir  = TempDir.New();
 
             var archives = await SevenZipper1.Compress(origF, outDir);
-            archives.Should().HaveCount(1, "expect 1 part");
-            File.Exists(archives[0]).Should().BeTrue();
+            archives.MustHaveFiles(1);
 
             var list = await SevenZipper1.Decompress(archives[0], outDir);
             list.Should().HaveCount(1);
@@ -41,11 +41,7 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             var outDir  = TempDir.New();
 
             var archives = await SevenZipper1.Compress(origF, outDir, 1);
-            archives.Should().HaveCount(4, "expect 4 parts");
-            File.Exists(archives[0]).Should().BeTrue();
-            File.Exists(archives[1]).Should().BeTrue();
-            File.Exists(archives[2]).Should().BeTrue();
-            File.Exists(archives[3]).Should().BeTrue();
+            archives.MustHaveFiles(4);
 
             var list    = await SevenZipper1.Decompress(archives[0], outDir);
             list.Should().HaveCount(1);
@@ -66,8 +62,7 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             var outDir = TempDir.New();
 
             var archives = await SevenZipper1.Compress(origF, outDir, 5);
-            archives.Should().HaveCount(1, "expect 1 part");
-            File.Exists(archives[0]).Should().BeTrue();
+            archives.MustHaveFiles(1);
 
             var list = await SevenZipper1.Decompress(archives[0], outDir);
             list.Should().HaveCount(1);
@@ -88,14 +83,7 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             var outDir = TempDir.New();
 
             var archives = await SevenZipper1.Compress(origF, outDir, 0.5);
-            archives.Should().HaveCount(7, "expect 7 parts");
-            File.Exists(archives[0]).Should().BeTrue();
-            File.Exists(archives[1]).Should().BeTrue();
-            File.Exists(archives[2]).Should().BeTrue();
-            File.Exists(archives[3]).Should().BeTrue();
-            File.Exists(archives[4]).Should().BeTrue();
-            File.Exists(archives[5]).Should().BeTrue();
-            File.Exists(archives[6]).Should().BeTrue();
+            archives.MustHaveFiles(7);
 
             var list = await SevenZipper1.Decompress(archives[0], outDir);
             list.Should().HaveCount(1);
@@ -107,5 +95,38 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             Directory.Delete(outDir, true);
         }
 
+
+        [Fact(DisplayName = "Multi-volume: Pre-ordered list")]
+        public async void Case5()
+        {
+            var origF = SampleFinder.Get("sample_4.6mb");
+            var oldHash = origF.SHA1ForFile();
+            var outDir = TempDir.New();
+
+            var archives = await SevenZipper1.Compress(origF, outDir, 0.5);
+            archives.MustHaveFiles(7);
+
+            var list = await SevenZipper1.DecompressMultiPart(archives, outDir);
+            list.Should().HaveCount(1);
+
+            var newF = Path.Combine(outDir, list[0]);
+            var newHash = newF.SHA1ForFile();
+            newHash.Should().Be(oldHash, "Hashes should match");
+
+            Directory.Delete(outDir, true);
+        }
+
+    }
+
+
+    internal static class SevenZipperFactsExtensions
+    {
+        internal static void MustHaveFiles(this List<string> list, int expctdCount)
+        {
+            list.Should().HaveCount(expctdCount, $"expect {expctdCount} parts");
+
+            foreach (var file in list)
+                File.Exists(file).Should().BeTrue();
+        }
     }
 }

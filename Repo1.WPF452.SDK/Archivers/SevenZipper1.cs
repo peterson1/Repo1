@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Repo1.Core.ns12.Helpers.StringExtensions;
 using Repo1.WPF452.SDK.FileChunkers;
+using Repo1.WPF452.SDK.Helpers;
 using SevenZip;
 
 namespace Repo1.WPF452.SDK.Archivers
@@ -14,11 +15,26 @@ namespace Repo1.WPF452.SDK.Archivers
         const string EXTRACTOR_LIB  = "7zxa.dll";
 
 
+
+        public static Task<List<string>> DecompressMultiPart(IEnumerable<string> orderedParts, string targetDir)
+        {
+            var oneBigF = Path.Combine(targetDir, $"OneBigFile_{DateTime.Now.Ticks}.merged");
+            FileChunker1.WriteOneBigFile(oneBigF, orderedParts);
+            return ExtractSoloArchive(oneBigF, targetDir);
+        }
+
+
         public static Task<List<string>> Decompress(string archivePath, string targetDir)
         {
             if (FileChunker1.IsPartOfMany(archivePath))
                 archivePath = FileChunker1.Merge(archivePath);
 
+            return ExtractSoloArchive(archivePath, targetDir);
+        }
+
+
+        private static async Task<List<string>> ExtractSoloArchive(string archivePath, string targetDir)
+        {
             if (!SetLibraryPath(EXTRACTOR_LIB)) return null;
 
             var tcs = new TaskCompletionSource<List<string>>();
@@ -32,7 +48,12 @@ namespace Repo1.WPF452.SDK.Archivers
 
             zpr.ExtractArchive(targetDir);
 
-            return tcs.Task;
+            var contents = await tcs.Task;
+
+            if (contents == null   ) return Alerter.Warn("Content list is NULL.");
+            if (contents.Count == 0) return Alerter.Warn("Archive did not contain any file.");
+
+            return contents;
         }
 
 
