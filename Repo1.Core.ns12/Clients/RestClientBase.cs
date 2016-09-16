@@ -48,12 +48,12 @@ namespace Repo1.Core.ns12.Clients
 
         protected abstract Task<T>          Get  <T>          (string resourceUrl);
         protected abstract Task<T>          Post <T>          (T objToPost, string resourceUrl);
-        protected abstract Task<bool>       Put  <T>          (T objToPost, string resourceUrl);
+        protected abstract Task<T>          Put  <T>          (T objToPost, string resourceUrl);
         protected abstract HttpStatusCode?  GetStatusCode<T>  (T exception);
         protected abstract void             OnError           (Exception ex);
 
 
-        protected Task<Dictionary<string, object>> Add <T>(T objectToPost, bool isPublished = true)
+        protected Task<Dictionary<string, object>> Create <T>(T objectToPost, bool isPublished = true)
         {
             var mappd = D7Mapper.ToObjectDictionary(objectToPost);
             if (mappd == null) return null;
@@ -65,15 +65,15 @@ namespace Repo1.Core.ns12.Clients
 
 
 
-        public async Task<bool> Edit<T>(T node, string revisionLog = null)
+        protected Task<Dictionary<string, object>> Update <T>(T node, string revisionLog = null)
         {
             var mappd = D7Mapper.ToObjectDictionary(node);
-            if (mappd == null) return false;
+            if (mappd == null) return null;
 
-            if (!mappd.ContainsKey("nid")) return false;
+            if (!mappd.ContainsKey("nid")) return null;
             int nid;
-            if (!int.TryParse(mappd["nid"].ToString(), out nid)) return false;
-            if (nid < 1) return false;
+            if (!int.TryParse(mappd["nid"].ToString(), out nid)) return null;
+            if (nid < 1) return null;
 
             mappd["uid"] = _uid;
             if (!revisionLog.IsBlank())
@@ -82,8 +82,7 @@ namespace Repo1.Core.ns12.Clients
                 mappd.Add("log", revisionLog);
             }
 
-            var ok = await KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
-            return ok;
+            return KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
         }
 
 

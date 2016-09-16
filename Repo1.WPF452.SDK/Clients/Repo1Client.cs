@@ -12,6 +12,11 @@ namespace Repo1.WPF452.SDK.Clients
         {
         }
 
+
+        protected override IPingClient GetPingClient()
+            => new PingClient1();
+
+
         protected override void RunOnNewThread(Task task)
             => new Thread(async () => await task).Start();
     }

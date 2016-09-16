@@ -56,7 +56,7 @@ namespace Repo1.ExeUploader.WPF.Clients
                 var r1Part = FilePart.ToR1Part(partPaths[i], 
                                 localExe, i + 1, partPaths.Count);
 
-                var node = await Add(r1Part);
+                var node = await Create(r1Part);
                 if (node == null) return false;
                 splitParts.Add(r1Part);
             }
@@ -67,6 +67,14 @@ namespace Repo1.ExeUploader.WPF.Clients
             IsBusy = false;
             return true;
         }
+
+
+        internal async Task<bool> Edit(R1Executable remoteExe, string versionChanges)
+        {
+            var dict = await Update(remoteExe, versionChanges);
+            return dict != null;
+        }
+
 
         private async Task<bool> ValidateDownload(List<R1SplitPart> splitParts, string expectedHash)
         {

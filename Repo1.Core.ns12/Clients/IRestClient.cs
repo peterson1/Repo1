@@ -10,6 +10,6 @@ namespace Repo1.Core.ns12.Clients
         //Task<T> Get  <T>(string resourceUrl);
         //Task<T> Add  <T>(T newObject);
         void RaisePropertyChanged(string propertyName);
-        Task<bool> Edit<T>(T node, string revisionLog = null);
+        //Task<bool> Edit<T>(T node, string revisionLog = null);
     }
 }

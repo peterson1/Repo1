@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Archivers\SevenZipper1.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
+    <Compile Include="Clients\PingClient1.cs" />
     <Compile Include="Clients\SvcStackRestClient.cs" />
     <Compile Include="Converters\ToShortBytesConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />

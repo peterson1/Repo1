@@ -24,11 +24,11 @@ namespace Repo1.ExeUploader.WPF
             LocalExe  = FindLocalExe();
             if (LocalExe == null) return;
 
-            RefreshCmd = new CommandR1WPF(async x => await GetExeNode());
+            RefreshCmd = new CommandR1WPF(async x => await GetRemoteExe());
             RefreshCmd.ExecuteIfItCan();
 
             UploadCmd = new CommandR1WPF(async x => await PublishLocalExe(),
-                                x => !VersionChanges.IsBlank(), "Upload");
+                    x => HasChanges && !VersionChanges.IsBlank(), "Upload");
         }
 
 
@@ -69,7 +69,7 @@ namespace Repo1.ExeUploader.WPF
         }
 
 
-        private async Task GetExeNode()
+        private async Task GetRemoteExe()
         {
             RemoteExe = await Client.GetExecutable();
             if (RemoteExe == null) return;

@@ -8,13 +8,17 @@ namespace Repo1.Core.ns12.Clients
 {
     public abstract class Repo1ClientBase1 : IRepo1Client
     {
+        const int INTERVAL_SEC = 2;
+
         public Repo1ClientBase1(string userName, string password, string apiBaseURL)
         {
 
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        private bool _keepChecking;
+        private bool        _keepChecking;
+        private bool        _isChecking;
+        private IPingClient _pingr;
 
 
         private string _status;
@@ -37,12 +41,14 @@ namespace Repo1.Core.ns12.Clients
             remove { _statusChanged -= value; }
         }
 
-
+        protected abstract IPingClient GetPingClient();
         protected abstract void RunOnNewThread(Task task);
 
 
         public void StartUpdateCheckLoop()
         {
+            if (_isChecking) return;
+            _isChecking   = true;
             _keepChecking = true;
             RunOnNewThread(ExecuteUpdateCheckLoop());
         }
@@ -58,16 +64,28 @@ namespace Repo1.Core.ns12.Clients
         {
             while (_keepChecking)
             {
-                await Task.Delay(1000 * 2);
+                await Task.Delay(1000 * INTERVAL_SEC);
                 Status = "1";
 
-                await Task.Delay(1000 * 2);
+                await Task.Delay(1000 * INTERVAL_SEC);
                 Status = "2";
 
-                await Task.Delay(1000 * 2);
+                await Task.Delay(1000 * INTERVAL_SEC);
                 Status = "3";
+
+                await Task.Delay(1000 * INTERVAL_SEC);
+
+                var ping = AssemblePingContent();
+                //await 
             }
         }
+
+
+        private object AssemblePingContent()
+        {
+            throw new NotImplementedException();
+        }
+
 
         public virtual void RaisePropertyChanged(string propertyName)
             => PropertyChanged.Raise(propertyName);

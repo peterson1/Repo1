@@ -12,6 +12,7 @@
         SizeToContent="WidthAndHeight"
         MinHeight="300" MinWidth="600"
         WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=txtVerChanges}"
         >
     <Window.Resources>
         <cnv:ToShortBytesConverter x:Key="shortB" />
@@ -40,18 +41,9 @@
         </StackPanel>-->
             
         <StackPanel Orientation="Horizontal">
-            <StackPanel>
-                <Label Content="Local" />
-                <ruc:TextPair Text1="file"    Text2="{Binding LocalExe.FileName}" Text2Weight="Bold" />
-                <ruc:TextPair Text1="size"    Text2="{Binding LocalExe.FileSize, Converter={StaticResource shortB}}" />
-                <ruc:TextPair Text1="hash"    Text2="{Binding LocalExe.FileHash}" />
-                <ruc:TextPair Text1="version" Text2="{Binding LocalExe.FileVersion}" />
-                <ruc:TextPair Text1="path"    Text2="{Binding LocalExe.FullPathOrURL}" Text2Width="300" />
-            </StackPanel>
-
-            <Grid>
+            <Grid MinWidth="350">
                 <StackPanel>
-                    <Label Content="Remote" />
+                    <Label Content="Currently Deployed" />
                     <ruc:TextPair Text1="file"    Text2="{Binding RemoteExe.FileName}" Text2Weight="Bold" />
                     <ruc:TextPair Text1="size"    Text2="{Binding RemoteExe.FileSize, Converter={StaticResource shortB}}" />
                     <ruc:TextPair Text1="hash"    Text2="{Binding RemoteExe.FileHash}" />
@@ -64,9 +56,18 @@
                                    FocusAfterBusy="{Binding ElementName=txtVerChanges}"
                                    />
             </Grid>
+            
+            <StackPanel>
+                <Label Content="Version to Upload" />
+                <ruc:TextPair Text1="file"    Text2="{Binding LocalExe.FileName}" Text2Weight="Bold" />
+                <ruc:TextPair Text1="size"    Text2="{Binding LocalExe.FileSize, Converter={StaticResource shortB}}" />
+                <ruc:TextPair Text1="hash"    Text2="{Binding LocalExe.FileHash}" />
+                <ruc:TextPair Text1="version" Text2="{Binding LocalExe.FileVersion}" />
+                <ruc:TextPair Text1="path"    Text2="{Binding LocalExe.FullPathOrURL}" Text2Width="300" />
+            </StackPanel>
         </StackPanel>
 
-        <Grid Visibility="{Binding HasChanges, Converter={StaticResource visIfTrue}}">
+        <Grid>
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Version Changes" />
@@ -107,9 +108,9 @@
                             />
                 </StackPanel>
             </StackPanel>
-            <xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
+            <!--<xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
                                BusyContent="{Binding Client.Status}"
-                               />
+                               />-->
         </Grid>
 
     </StackPanel>
