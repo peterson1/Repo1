@@ -12,13 +12,14 @@ namespace Repo1.Core.ns12.Clients
 
         public Repo1ClientBase1(string userName, string password, string apiBaseURL)
         {
-
+            _pingr = GetPingClient();
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        private bool        _keepChecking;
-        private bool        _isChecking;
-        private IPingClient _pingr;
+        private bool            _keepChecking;
+        private bool            _isChecking;
+        private IPingClient     _pingr;
+        private IDownloadClient _downloadr;
 
 
         private string _status;
@@ -62,29 +63,25 @@ namespace Repo1.Core.ns12.Clients
 
         private async Task ExecuteUpdateCheckLoop()
         {
+            var latestVer = "";
+
             while (_keepChecking)
             {
-                await Task.Delay(1000 * INTERVAL_SEC);
-                Status = "1";
+                Status    = "Checking for newer version ...";
+                var ping  = _pingr.GatherPingFields();
+                latestVer = await _pingr.SendAndGetLatestVersion(ping);
+
+                if (!_keepChecking) return;
+                if (ping.InstalledVersion != latestVer) break;
 
                 await Task.Delay(1000 * INTERVAL_SEC);
-                Status = "2";
-
-                await Task.Delay(1000 * INTERVAL_SEC);
-                Status = "3";
-
-                await Task.Delay(1000 * INTERVAL_SEC);
-
-                var ping = AssemblePingContent();
-                //await 
             }
+
+            Status        = "Newer version found. Downloading ...";
+            var partsList = await _downloadr.GetPartsList(latestVer);
+            var exePath   = await _downloadr.AssembleParts(partsList);
         }
 
-
-        private object AssemblePingContent()
-        {
-            throw new NotImplementedException();
-        }
 
 
         public virtual void RaisePropertyChanged(string propertyName)

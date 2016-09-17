@@ -14,6 +14,6 @@ namespace Repo1.Core.ns12.Models
         [Value(Key = "field_lastacttimestamp‎ " )]  public DateTime      LastActTimestamp   { get; set; }
 
         public int     nid               { get; set; }
-        public string  LatestExeVersion  { get; set; }
+        //public string  LatestExeVersion  { get; set; } do not place this here -- it'll confuse you
     }
 }

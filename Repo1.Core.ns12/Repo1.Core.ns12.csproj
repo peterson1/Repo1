@@ -39,6 +39,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\IDownloadClient.cs" />
     <Compile Include="Clients\IPingClient.cs" />
     <Compile Include="Clients\IRepo1Client.cs" />
     <Compile Include="Clients\IRestClient.cs" />

@@ -13,7 +13,7 @@ namespace Repo1.ExeUploader.WPF.DiskAccess
             var inf  = new FileInfo(partPath);
 
             part.FileName      = inf.Name;
-            part.ExeNid        = r1Exe.nid;
+            part.Executable    = r1Exe;
             part.ExeVersion    = r1Exe.FileVersion;
             part.PartHash      = inf.SHA1ForFile();
             part.FullPathOrURL = partPath;

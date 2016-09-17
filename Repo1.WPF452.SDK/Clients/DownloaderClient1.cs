@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using PropertyChanged;
+using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Archivers;
@@ -13,7 +14,7 @@ using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 namespace Repo1.WPF452.SDK.Clients
 {
     [ImplementPropertyChanged]
-    public class DownloaderClient1 : SvcStackRestClient
+    public class DownloaderClient1 : SvcStackRestClient, IDownloadClient
     {
         public DownloaderClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
@@ -66,6 +67,12 @@ namespace Repo1.WPF452.SDK.Clients
             var tmpD = Path.Combine(Path.GetTempPath(), uniq);
             Directory.CreateDirectory(tmpD);
             return tmpD;
+        }
+
+
+        public Task<List<R1SplitPart>> GetPartsList(string exeVersion)
+        {
+            throw new NotImplementedException();
         }
     }
 }

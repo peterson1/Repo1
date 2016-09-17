@@ -108,9 +108,10 @@
                             />
                 </StackPanel>
             </StackPanel>
-            <!--<xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
+            <xtk:BusyIndicator IsBusy="{Binding Client.IsBusy}"
                                BusyContent="{Binding Client.Status}"
-                               />-->
+                               Visibility="{Binding HasChanges, Converter={StaticResource visIfTrue}}"
+                               />
         </Grid>
 
     </StackPanel>
