@@ -14,9 +14,12 @@ namespace Repo1.Core.ns12.Clients
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public event EventHandler                UpdateInstalled = delegate { };
 
-        const int INTERVAL_SEC = 2;
 
-        public Repo1ClientBase1(string userName, string password, string activationKey, string apiBaseURL)
+        public Repo1ClientBase1(string userName, 
+                                string password, 
+                                string activationKey, 
+                                int checkIntervalMins, 
+                                string apiBaseURL)
         {
             _cfg = new DownloaderCfg
             {
@@ -26,11 +29,13 @@ namespace Repo1.Core.ns12.Clients
                 ActivationKey = activationKey
             };
 
-            _validr    = GetClientValidator();
-            _pingr     = GetPingClient();
-            _downloadr = GetDownloadClient();
+            _intervalMins = checkIntervalMins;
+            _validr       = GetClientValidator();
+            _pingr        = GetPingClient();
+            _downloadr    = GetDownloadClient();
         }
 
+        private int                _intervalMins;
         private bool               _keepChecking;
         private bool               _isChecking;
         private IPingClient        _pingr;
@@ -81,7 +86,13 @@ namespace Repo1.Core.ns12.Clients
         {
             if (_isChecking) return;
             Status = $"Validating application license for “{_cfg.Username}” ...";
-            if (!(await _validr.ValidateThisMachine())) return;
+            if (!(await _validr.ValidateThisMachine()))
+            {
+                Status = _cfg.WasRejected
+                    ? $"Server rejected the credentials for “{_cfg.Username}”."
+                    : $"{_cfg.Username} is not licensed to use this app on this machine.";
+                return;
+            }
 
             _isChecking   = true;
             _keepChecking = true;
@@ -110,8 +121,8 @@ namespace Repo1.Core.ns12.Clients
                 if (!_keepChecking) return;
                 if (current.FileHash == latest.FileHash)
                 {
-                    Status = $"Nothing new.  Will check again in {INTERVAL_SEC} seconds ...";
-                    await Task.Delay(1000 * INTERVAL_SEC);
+                    Status = $"Nothing new.  Will check again in {_intervalMins} minutes ...";
+                    await Task.Delay(1000 * _intervalMins * 60);
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -32,6 +33,7 @@ namespace Repo1.WPF452.SDK.Clients
             foreach (var macAdress in GetMacAddresses())
             {
                 var dto = await GetPingByMacAddress(macAdress);
+                if (_creds.WasRejected) return false;
                 if (dto == null) continue;
 
                 PingNode = await AssemblePingNode(dto, macAdress);
@@ -59,8 +61,12 @@ namespace Repo1.WPF452.SDK.Clients
         {
             var key  = _dCfg.GetLicenseKey(macAddress);
             var list = await ViewsList<GetPingByLicenseKeyDTO>(key);
-            return list.SingleOrDefault();
+            return list?.SingleOrDefault();
         }
+
+
+        // ignore errors
+        protected override void OnError(Exception ex) { }
 
 
         private string GetInstalledVersion() => new FileInfo(

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Repo1.Core.ns12.Helpers.D7MapperAttributes;
 using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
@@ -34,6 +35,49 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
         }
 
 
+        [Fact(DisplayName = "Maps boolean fields to Dict")]
+        public void Case2()
+        {
+            var obj = new SampleClass2();
+
+            obj.Bool     = true;
+            obj.NullBool = true;
+            var dict = D7Mapper.ToObjectDictionary(obj);
+            dict.ScalarField("field_bool"    , 1);
+            dict.ScalarField("field_nullbool", 1);
+
+            obj.Bool     = false;
+            obj.NullBool = false;
+            dict = D7Mapper.ToObjectDictionary(obj);
+            dict.ScalarField("field_bool"    , 0);
+            dict.ScalarField("field_nullbool", 0);
+
+            obj.NullBool = null;
+            dict = D7Mapper.ToObjectDictionary(obj);
+            dict.ScalarField("field_nullbool", null);
+        }
+
+
+        [Fact(DisplayName = "Maps Date fields to Dict")]
+        public void Case3()
+        {
+            var obj   = new SampleClass2();
+            var date1 = 27.May(1983);
+            var date2 = 7.February(2014);
+
+            obj.Date     = date1;
+            obj.NullDate = date2;
+            var dict     = D7Mapper.ToObjectDictionary(obj);
+            dict.ScalarField("field_date"    , Fmt(date1));
+            dict.ScalarField("field_nulldate", Fmt(date2));
+
+            obj.Date     = date2;
+            obj.NullDate = null;
+            dict         = D7Mapper.ToObjectDictionary(obj);
+            dict.ScalarField("field_date"    , Fmt(date2));
+            dict.ScalarField("field_nulldate", null);
+        }
+
 
 
         [D7Type(Key = "sample_class")]
@@ -51,11 +95,31 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
             [Value(Key = "field_filehash"   )]
             public string   PartHash    { get; set; }
 
-
             public int      nid            { get; set; }
             public int      uid            { get; set; }
             public string   FullPathOrURL  { get; set; }
         }
+
+
+        [D7Type(Key = "sample_class2")]
+        private class SampleClass2
+        {
+            [Value(Key = "field_bool")]
+            public bool  Bool  { get; set; }
+
+            [Value(Key = "field_nullbool")]
+            public bool? NullBool { get; set; }
+
+
+            [Value(Key = "field_date")]
+            public DateTime Date { get; set; }
+
+            [Value(Key = "field_nulldate")]
+            public DateTime? NullDate { get; set; }
+        }
+
+
+        private string Fmt(DateTime? date) => ValueField.Fmt(date);
     }
 
 

@@ -14,8 +14,7 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields
     {
         public static UndContainer<ValueField> Value(PropertyInfo propertyInf, object sourceObj)
         {
-            var objVal     = propertyInf.GetValue(sourceObj);
-            var valueField = new ValueField { value = objVal };
+            var valueField = ValueField.Wrap(propertyInf, sourceObj);
             var container  = new UndContainer<ValueField>();
             container.und.Add(valueField);
             return container;

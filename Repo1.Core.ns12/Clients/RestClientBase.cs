@@ -20,13 +20,13 @@ namespace Repo1.Core.ns12.Clients
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 
-        protected RestServerCredentials _cfg;
+        protected RestServerCredentials _creds;
 
 
 
         public RestClientBase(RestServerCredentials restServerCredentials)
         {
-            _cfg = restServerCredentials;
+            _creds = restServerCredentials;
         }
 
 
@@ -109,7 +109,7 @@ namespace Repo1.Core.ns12.Clients
             where T : IViewsListDTO, new()
         {
             var displayID = new T().ViewsDisplayURL;
-            var url = _cfg.ApiBaseURL.Slash("views").Slash(displayID);
+            var url = _creds.ApiBaseURL.Slash("views").Slash(displayID);
 
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";
@@ -142,6 +142,9 @@ namespace Repo1.Core.ns12.Clients
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("got string starting with: Invalid credentials"))
+                    _creds.WasRejected = true;
+
                 OnError(ex);
             }
             finally

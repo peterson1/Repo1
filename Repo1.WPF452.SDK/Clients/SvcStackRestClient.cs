@@ -78,10 +78,10 @@ namespace Repo1.WPF452.SDK.Clients
 
 
         private JsonServiceClient CreateClient()
-            => new JsonServiceClient(_cfg.ApiBaseURL)
+            => new JsonServiceClient(_creds.ApiBaseURL)
             {
-                UserName = _cfg.Username,
-                Password = _cfg.Password,
+                UserName = _creds.Username,
+                Password = _creds.Password,
                 AlwaysSendBasicAuthHeader = true,
             };
 

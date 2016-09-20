@@ -16,8 +16,9 @@ namespace Repo1.WPF452.SDK.Clients
     public class Repo1Client : Repo1ClientBase1
     {
         public Repo1Client(string userName, string password, string activationKey, 
+            int checkIntervalMins = 2,
             string apiBaseURL = "https://repo1.nfshost.com/api1") 
-            : base(userName, password, activationKey, apiBaseURL)
+            : base(userName, password, activationKey, checkIntervalMins, apiBaseURL)
         {
         }
 
