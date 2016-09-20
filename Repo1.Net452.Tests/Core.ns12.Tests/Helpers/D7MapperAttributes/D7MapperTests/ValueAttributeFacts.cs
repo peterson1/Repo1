@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using Repo1.Core.ns12.Helpers.D7MapperAttributes;
-using Repo1.Core.ns12.Helpers.D7ValueFields;
+using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
 using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7MapperTests
@@ -14,6 +14,7 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
             var poco = new SampleClass
             {
                 nid = 1234,
+                uid = 91011,
                 FileName = "this becomes title",
                 ExeNid = 5678,
                 ExeVersion = "1.645.45647",
@@ -25,7 +26,7 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
             dict.BaseField("nid", poco.nid);
             dict.BaseField("title", poco.FileName);
             dict.BaseField("status", 1);
-            dict.BaseField("uid", 0);
+            dict.BaseField("uid", poco.uid);
 
             dict.ScalarField("field_exenid", poco.ExeNid);
             dict.ScalarField("field_fileversion", poco.ExeVersion);
@@ -52,9 +53,12 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
 
 
             public int      nid            { get; set; }
+            public int      uid            { get; set; }
             public string   FullPathOrURL  { get; set; }
         }
     }
+
+
 
     public static class ValueAttributeFactsExtensions
     {
@@ -67,7 +71,7 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
         public static void ScalarField(this Dictionary<string, object> dict, string key, object value)
         {
             dict.Should().ContainKey(key);
-            var field = dict[key].As<ScalarValueField>();
+            var field = dict[key].As<UndContainer<ValueField>>();
             field.und[0].value.Should().Be(value);
         }
     }

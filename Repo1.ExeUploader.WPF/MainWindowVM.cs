@@ -8,6 +8,7 @@ using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;
 using Repo1.WPF452.SDK.Helpers.InputCommands;
 using Repo1.WPF452.SDK.Helpers;
+using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -86,8 +87,9 @@ namespace Repo1.ExeUploader.WPF
 
             if (exes.Count != 1) return Alerter.Warn((exes.Count == 0 
                 ? "No" : "More than 1") + " .exe file found.");
-            
-            var exe = ValidExeFile.ToR1Exe(exes[0]);
+
+            //var exe = ValidExeFile.ToR1Exe(exes[0]);
+            var exe = R1Exe.FromFile(exes[0]);
             return exe;
         }
     }

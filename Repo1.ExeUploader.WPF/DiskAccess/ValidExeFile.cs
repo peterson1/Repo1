@@ -33,18 +33,18 @@ namespace Repo1.ExeUploader.WPF.DiskAccess
         }
 
 
-        internal static R1Executable ToR1Exe(string exePath)
-        {
-            var r1e = new R1Executable();
-            var inf = new FileInfo(exePath);
+        //internal static R1Executable ToR1Exe(string exePath)
+        //{
+        //    var r1e = new R1Executable();
+        //    var inf = new FileInfo(exePath);
 
-            r1e.FileName      = inf.Name;
-            r1e.FileSize      = inf.Length;
-            r1e.FileHash      = inf.SHA1ForFile();
-            r1e.FileVersion   = inf.FileVersion();
-            r1e.FullPathOrURL = exePath;
+        //    r1e.FileName      = inf.Name;
+        //    r1e.FileSize      = inf.Length;
+        //    r1e.FileHash      = inf.SHA1ForFile();
+        //    r1e.FileVersion   = inf.FileVersion();
+        //    r1e.FullPathOrURL = exePath;
 
-            return r1e;
-        }
+        //    return r1e;
+        //}
     }
 }

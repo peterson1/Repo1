@@ -5,7 +5,6 @@ namespace Repo1.Core.ns12.Clients
 {
     public interface IPingClient
     {
-        R1Ping         GatherPingFields         ();
-        Task<string>   SendAndGetLatestVersion  (R1Ping pingData);
+        Task<R1Executable>  SendAndGetLatestVersion  (R1Ping pingData);
     }
 }

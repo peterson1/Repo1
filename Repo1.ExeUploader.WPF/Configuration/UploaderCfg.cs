@@ -1,9 +1,9 @@
-﻿using Repo1.Core.ns12.Models;
+﻿using Repo1.Core.ns12.Configuration;
 
 namespace Repo1.ExeUploader.WPF.Configuration
 {
-    class UploaderCfg : RestServerCredentials
+    class UploaderCfg : DownloaderCfg
     {
-        public int  ExecutableNid  { get; set; }
+        public int ExecutableNid { get; set; }
     }
 }

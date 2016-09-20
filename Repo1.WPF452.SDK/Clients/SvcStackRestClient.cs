@@ -76,6 +76,7 @@ namespace Repo1.WPF452.SDK.Clients
             => MessageBox.Show(ex.Info());
 
 
+
         private JsonServiceClient CreateClient()
             => new JsonServiceClient(_cfg.ApiBaseURL)
             {

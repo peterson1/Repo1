@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using System;
+using PropertyChanged;
 using Repo1.Core.ns12.Clients;
 
 namespace Repo1.SdkClient.DemoWPF
@@ -8,10 +9,21 @@ namespace Repo1.SdkClient.DemoWPF
     {
         public MainWindowVM(IRepo1Client repo)
         {
-            repo.StatusChanged += (s, e) => Status = e.Data;
+            repo.StatusChanged += (s, e) => AppendLog(e.Data);
+
+            repo.UpdateInstalled += (s, e) 
+                => UpdatesInstalled = true;
+
+            repo.OnWarning = x => AppendLog(x);
+
             repo.StartUpdateCheckLoop();
         }
 
-        public string  Status  { get; private set; }
+        public string    Status            { get; set; }
+        public bool      UpdatesInstalled  { get; set; }
+
+
+        private void AppendLog(string message) 
+            => Status += Environment.NewLine + message;
     }
 }

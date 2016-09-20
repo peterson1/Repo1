@@ -28,6 +28,10 @@ namespace Repo1.WPF452.SDK.Helpers.FileInfoExtensions
         }
 
 
+        public static string NamePartOnly(this FileInfo fileInfo)
+            => Path.GetFileNameWithoutExtension(fileInfo.FullName);
+
+
         public static string Base64Content(this FileInfo fileInfo)
         {
             if (!fileInfo.Exists) return null;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PropertyChanged;
 using Repo1.Core.ns12.Clients;
+using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Archivers;
@@ -16,12 +17,15 @@ namespace Repo1.WPF452.SDK.Clients
     [ImplementPropertyChanged]
     public class DownloaderClient1 : SvcStackRestClient, IDownloadClient
     {
-        public DownloaderClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        private DownloaderCfg  _dCfg;
+
+        public DownloaderClient1(DownloaderCfg downloaderCfg) : base(downloaderCfg)
         {
+            _dCfg = downloaderCfg;
         }
 
 
-        public async Task<string> AssembleParts(List<R1SplitPart> splitParts)
+        public async Task<string>  DownloadAndExtract (List<R1SplitPart> splitParts, string expectedHash)
         {
             var orderedParts = splitParts.OrderBy(x => x.PartNumber).ToList();
             var tempDir      = CreateTempFolder();
@@ -44,9 +48,13 @@ namespace Repo1.WPF452.SDK.Clients
             Status = "Merging and decompressing downloaded file ...";
             var paths = orderedParts.Select(x => x.FullPathOrURL);
             var list  = await SevenZipper1.DecompressMultiPart(paths, tempDir);
-            if (list == null) return null;
+            if (list == null) return Warn("[Decompress Fail] Downloaded file may be corrupted.", string.Empty);
 
-            return list[0];
+            var exePath = Path.Combine(tempDir, list[0]);
+            if (exePath.SHA1ForFile() == expectedHash)
+                return exePath;
+            else
+                return Warn("[Hash Mismatch] Downloaded file may be corrupted.", string.Empty);
         }
 
 
@@ -70,9 +78,11 @@ namespace Repo1.WPF452.SDK.Clients
         }
 
 
-        public Task<List<R1SplitPart>> GetPartsList(string exeVersion)
+        public async Task<List<R1SplitPart>> GetPartsList(string exeVersion, string macAddress)
         {
-            throw new NotImplementedException();
+            var key = _dCfg.GetLicenseKey(macAddress);
+            var res = await ViewsList<DownloadablesForUserDTO>(key, exeVersion);
+            return res.Select(x => x as R1SplitPart).ToList();
         }
     }
 }

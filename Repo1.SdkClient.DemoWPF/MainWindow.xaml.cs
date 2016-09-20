@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Repo1.WPF452.SDK.Helpers.ApplicationExtensions;
 
 namespace Repo1.SdkClient.DemoWPF
 {
@@ -8,5 +9,8 @@ namespace Repo1.SdkClient.DemoWPF
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) 
+            => App.Current.Relaunch();
     }
 }

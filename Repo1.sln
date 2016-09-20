@@ -49,4 +49,11 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = False
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = True
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp
+	EndGlobalSection
 EndGlobal

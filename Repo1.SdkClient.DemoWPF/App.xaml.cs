@@ -9,7 +9,9 @@ namespace Repo1.SdkClient.DemoWPF
         {
             base.OnStartup(e);
 
-            var repo = new Repo1Client("user0123", "hisPassword", "https://repo1.nfshost.com/api1");
+            var repo = new Repo1Client("Justin D. Livingstone", 
+                                       "KcGPFvSylL30AipGj6sd", 
+                                       "C96DF613E23138A63F24BB139BF96037E27E6CDA");
             repo.CatchErrors(this);
 
             var win = new MainWindow();

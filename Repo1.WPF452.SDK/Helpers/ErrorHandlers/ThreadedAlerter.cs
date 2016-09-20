@@ -20,11 +20,13 @@ namespace Repo1.WPF452.SDK.Helpers.ErrorHandlers
                 e.Handled = true;
             };
 
+
             AppDomain.CurrentDomain.UnhandledException += (s, e) => 
             {
                 msg = VisualizeException("CurrentDomain", e.ExceptionObject);
                 errorLogger?.Invoke(msg);
             };
+
 
             TaskScheduler.UnobservedTaskException += (s, e) => 
             {

@@ -1,29 +1,46 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.Helpers;
 using Repo1.Core.ns12.Helpers.PropertyChangedExtensions;
+using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns12.Models;
 
 namespace Repo1.Core.ns12.Clients
 {
     public abstract class Repo1ClientBase1 : IRepo1Client
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event EventHandler                UpdateInstalled = delegate { };
+
         const int INTERVAL_SEC = 2;
 
-        public Repo1ClientBase1(string userName, string password, string apiBaseURL)
+        public Repo1ClientBase1(string userName, string password, string activationKey, string apiBaseURL)
         {
-            _pingr = GetPingClient();
+            _cfg = new DownloaderCfg
+            {
+                Username      = userName,
+                Password      = password,
+                ApiBaseURL    = apiBaseURL,
+                ActivationKey = activationKey
+            };
+
+            _validr    = GetClientValidator();
+            _pingr     = GetPingClient();
+            _downloadr = GetDownloadClient();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        private bool            _keepChecking;
-        private bool            _isChecking;
-        private IPingClient     _pingr;
-        private IDownloadClient _downloadr;
+        private bool               _keepChecking;
+        private bool               _isChecking;
+        private IPingClient        _pingr;
+        private IClientValidator   _validr;
+        protected IDownloadClient  _downloadr;
+        protected DownloaderCfg  _cfg;
 
 
         private string _status;
-        public string Status
+        public string   Status
         {
             get { return _status; }
             set
@@ -42,13 +59,30 @@ namespace Repo1.Core.ns12.Clients
             remove { _statusChanged -= value; }
         }
 
-        protected abstract IPingClient GetPingClient();
-        protected abstract void RunOnNewThread(Task task);
+
+        public virtual Action<string>  OnWarning  { protected get; set; }
+
+        protected abstract IClientValidator  GetClientValidator    ();
+        protected abstract IPingClient       GetPingClient         ();
+        protected abstract IDownloadClient   GetDownloadClient     ();
+        protected abstract R1Executable      GetCurrentR1Exe       ();
+        protected abstract bool              ReplaceCurrentExeWith (string replacementExePath);
+        protected abstract void              RunOnNewThread        (Task task);
 
 
-        public void StartUpdateCheckLoop()
+        protected T Warn <T>(string message, T returnVal = default(T))
+        {
+            OnWarning?.Invoke(message);
+            return returnVal;
+        }
+
+
+        public async void StartUpdateCheckLoop()
         {
             if (_isChecking) return;
+            Status = $"Validating application license for “{_cfg.Username}” ...";
+            if (!(await _validr.ValidateThisMachine())) return;
+
             _isChecking   = true;
             _keepChecking = true;
             RunOnNewThread(ExecuteUpdateCheckLoop());
@@ -63,25 +97,46 @@ namespace Repo1.Core.ns12.Clients
 
         private async Task ExecuteUpdateCheckLoop()
         {
-            var latestVer = "";
+            var latest  = default(R1Executable);
+            var ping    = _validr.PingNode;
+            var current = GetCurrentR1Exe();
+            Status = $"Currently running version [{current.FileVersion}].";
 
             while (_keepChecking)
             {
-                Status    = "Checking for newer version ...";
-                var ping  = _pingr.GatherPingFields();
-                latestVer = await _pingr.SendAndGetLatestVersion(ping);
+                Status = "Checking for newer version ...";
+                latest = await _pingr.SendAndGetLatestVersion(ping);
 
                 if (!_keepChecking) return;
-                if (ping.InstalledVersion != latestVer) break;
-
-                await Task.Delay(1000 * INTERVAL_SEC);
+                if (current.FileHash == latest.FileHash)
+                {
+                    Status = $"Nothing new.  Will check again in {INTERVAL_SEC} seconds ...";
+                    await Task.Delay(1000 * INTERVAL_SEC);
+                }
+                else
+                {
+                    Status = $"Newer version found: [{latest.FileVersion}]. Downloading ...";
+                    if (await DownloadAndSwap(latest, ping))
+                    {
+                        UpdateInstalled?.Raise(this);
+                        Status = "Updates downloaded and installed.  Ready to relaunch.";
+                        return;
+                    }
+                }
             }
-
-            Status        = "Newer version found. Downloading ...";
-            var partsList = await _downloadr.GetPartsList(latestVer);
-            var exePath   = await _downloadr.AssembleParts(partsList);
         }
 
+        private async Task<bool> DownloadAndSwap(R1Executable latest, R1Ping ping)
+        {
+            var partsList = await _downloadr.GetPartsList
+                (latest.FileVersion, ping.RegisteredMacAddress);
+            if (partsList.Count == 0) return false;
+
+            var exePath = await _downloadr.DownloadAndExtract(partsList, latest.FileHash);
+            if (exePath.IsBlank()) return false;
+
+            return ReplaceCurrentExeWith(exePath);
+        }
 
 
         public virtual void RaisePropertyChanged(string propertyName)

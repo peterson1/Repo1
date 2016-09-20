@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Repo1.Core.ns12.Clients
@@ -11,5 +12,7 @@ namespace Repo1.Core.ns12.Clients
         //Task<T> Add  <T>(T newObject);
         void RaisePropertyChanged(string propertyName);
         //Task<bool> Edit<T>(T node, string revisionLog = null);
+
+        Action<string>  OnWarning  { get; set; }
     }
 }

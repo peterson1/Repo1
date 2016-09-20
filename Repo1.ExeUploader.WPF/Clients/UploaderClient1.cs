@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Repo1.Core.ns12.Helpers.StringExtensions;
+using PropertyChanged;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
+using Repo1.Core.ns12.Helpers.StringExtensions;
 using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;
 using Repo1.WPF452.SDK.Archivers;
 using Repo1.WPF452.SDK.Clients;
-using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers;
-using PropertyChanged;
+using Repo1.WPF452.SDK.Helpers.EmbeddedResourceHelpers;
 
 namespace Repo1.ExeUploader.WPF.Clients
 {
@@ -26,6 +26,9 @@ namespace Repo1.ExeUploader.WPF.Clients
         {
             _upCfg     = uploaderCfg;
             _downloadr = downloaderClient;
+
+            EmbeddedResrc.ExtractToFile<UploaderClient1>
+                ("7za.dll", "Archivers", SevenZipper1.GetLocalBinariesDir());
         }
 
 
@@ -35,7 +38,6 @@ namespace Repo1.ExeUploader.WPF.Clients
             var list = await ViewsList<UploadablesForUserDTO>(_upCfg.ExecutableNid);
             if (list == null) return null;
             var exe = list.Single(x => x.nid == _upCfg.ExecutableNid);
-            _uid = exe.uid;
             return exe;
         }
 
@@ -78,12 +80,12 @@ namespace Repo1.ExeUploader.WPF.Clients
 
         private async Task<bool> ValidateDownload(List<R1SplitPart> splitParts, string expectedHash)
         {
-            var downloaded = await _downloadr.AssembleParts(splitParts);
+            var downloaded = await _downloadr.DownloadAndExtract(splitParts, expectedHash);
             if (downloaded.IsBlank())
-                return Alerter.Warn("Failed to download/assemble the file.", false);
+                return Alerter.Warn("Failed to download/assemble/validate the file.", false);
 
-            if (downloaded.SHA1ForFile() != expectedHash)
-                return Alerter.Warn("Hash of downloaded file is different.", false);
+            //if (downloaded.SHA1ForFile() != expectedHash)
+            //    return Alerter.Warn("Hash of downloaded file is different.", false);
 
             File.Delete(downloaded);
 

@@ -39,12 +39,17 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\IClientValidator.cs" />
     <Compile Include="Clients\IDownloadClient.cs" />
     <Compile Include="Clients\IPingClient.cs" />
     <Compile Include="Clients\IRepo1Client.cs" />
     <Compile Include="Clients\IRestClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
     <Compile Include="Clients\RestClientBase.cs" />
+    <Compile Include="Configuration\DownloaderCfg.cs" />
+    <Compile Include="Configuration\DownloaderCfgExtensions.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\DownloadablesForUserDTO.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\GetPingByLicenseKeyDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\SplitPartContentByHashDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\UploadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
@@ -62,10 +67,10 @@
     <Compile Include="Helpers\D7MapperAttributes\D7TypeAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\NodeAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\NodeTitleAttribute.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\UndFields\UndContainer.cs" />
+    <Compile Include="Helpers\D7MapperAttributes\UndFields\UndFieldTypes.cs" />
     <Compile Include="Helpers\D7MapperAttributes\UserAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\ValueAttribute.cs" />
-    <Compile Include="Helpers\D7ValueFields\ScalarValueField.cs" />
-    <Compile Include="Helpers\D7ValueFields\ValueField.cs" />
     <Compile Include="Helpers\EArg.cs" />
     <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
     <Compile Include="Helpers\InputCommands\ICommandR1.cs" />

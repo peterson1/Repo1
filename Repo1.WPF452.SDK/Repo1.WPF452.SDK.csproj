@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archivers\SevenZipper1.cs" />
+    <Compile Include="Clients\ClientValidator1.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
     <Compile Include="Clients\PingClient1.cs" />
     <Compile Include="Clients\SvcStackRestClient.cs" />
@@ -84,9 +85,12 @@
     <Compile Include="Converters\VisibleIfTrueConverter.cs" />
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="Helpers\Alerter.cs" />
+    <Compile Include="Helpers\ApplicationExtensions\BasicApplicationExtensions.cs" />
+    <Compile Include="Helpers\EmbeddedResourceHelpers\EmbeddedResrc.cs" />
     <Compile Include="Helpers\ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Helpers\FileInfoExtensions\CommonFileInfoExtensions.cs" />
     <Compile Include="Helpers\InputCommands\CommandR1WPF.cs" />
+    <Compile Include="Helpers\R1ExecutableExtensions\R1Exe.cs" />
     <Compile Include="Helpers\WindowExtensions\CommonWindowExtensions.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>
@@ -141,9 +145,7 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="7zxa.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Archivers\7zxa.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

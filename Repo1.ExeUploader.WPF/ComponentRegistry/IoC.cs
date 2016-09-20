@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Builder;
+using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
@@ -14,7 +15,7 @@ namespace Repo1.ExeUploader.WPF.ComponentRegistry
         {
             var b = new ContainerBuilder();
 
-            b.RegisterInstance(cfg).As<UploaderCfg, RestServerCredentials>();
+            b.RegisterInstance(cfg).As<UploaderCfg, DownloaderCfg, RestServerCredentials>();
             b.Solo<MainWindowVM>();
             b.Multi<UploaderClient1>();
             b.Multi<DownloaderClient1>();

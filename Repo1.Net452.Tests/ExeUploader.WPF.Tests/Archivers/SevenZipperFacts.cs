@@ -107,11 +107,17 @@ namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
             archives.MustHaveFiles(7);
 
             var list = await SevenZipper1.DecompressMultiPart(archives, outDir);
+
+            foreach (var part in archives)
+                File.Exists(part).Should().BeFalse("Should delete parts after merge");
+
             list.Should().HaveCount(1);
 
             var newF = Path.Combine(outDir, list[0]);
             var newHash = newF.SHA1ForFile();
             newHash.Should().Be(oldHash, "Hashes should match");
+
+            Directory.GetFiles(outDir).Length.Should().Be(2, "Should delete OneBigF");
 
             Directory.Delete(outDir, true);
         }

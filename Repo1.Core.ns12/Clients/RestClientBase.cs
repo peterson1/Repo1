@@ -21,7 +21,6 @@ namespace Repo1.Core.ns12.Clients
 
 
         protected RestServerCredentials _cfg;
-        protected int                   _uid;
 
 
 
@@ -45,6 +44,7 @@ namespace Repo1.Core.ns12.Clients
             set { _status = value; PropertyChanged.Raise(nameof(Status), this); }
         }
 
+        public Action<string>    OnWarning    { get; set; }
 
         protected abstract Task<T>          Get  <T>          (string resourceUrl);
         protected abstract Task<T>          Post <T>          (T objToPost, string resourceUrl);
@@ -57,15 +57,20 @@ namespace Repo1.Core.ns12.Clients
         {
             var mappd = D7Mapper.ToObjectDictionary(objectToPost);
             if (mappd == null) return null;
-            mappd["uid"]    = _uid;
             mappd["status"] = isPublished ? 1 : 0;
 
             return KeepTrying(() => Post(mappd, "entity_node"));
         }
 
 
+        protected T Warn<T>(string message, T returnVal = default(T))
+        {
+            OnWarning?.Invoke(message);
+            return returnVal;
+        }
 
-        protected Task<Dictionary<string, object>> Update <T>(T node, string revisionLog = null)
+
+        protected async Task<Dictionary<string, object>> Update<T>(T node, string revisionLog = null)
         {
             var mappd = D7Mapper.ToObjectDictionary(node);
             if (mappd == null) return null;
@@ -75,14 +80,18 @@ namespace Repo1.Core.ns12.Clients
             if (!int.TryParse(mappd["nid"].ToString(), out nid)) return null;
             if (nid < 1) return null;
 
-            mappd["uid"] = _uid;
             if (!revisionLog.IsBlank())
             {
                 mappd.Add("revision", 1);
                 mappd.Add("log", revisionLog);
             }
 
-            return KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
+            var dict = await KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
+
+            if (dict == null)
+                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from PUT  to be NULL."));
+
+            return dict;
         }
 
 
@@ -105,13 +114,18 @@ namespace Repo1.Core.ns12.Clients
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";
 
-            var list = await KeepTrying(() => Get<List<T>>(url));
+            //var list = await KeepTrying(() => Get<List<T>>(url));
+            var list = await GetTilOK<List<T>>(url);
 
             if (list == null)
                 OnError(new ArgumentNullException("Wasn't expecting ViewsList to return NULL."));
 
             return list;
         }
+
+
+        protected Task<T> GetTilOK<T>(string resourceURL) 
+            => KeepTrying(() => Get<T>(resourceURL));
 
 
         private async Task<T>  KeepTrying  <T>(Func<Task<T>> action)

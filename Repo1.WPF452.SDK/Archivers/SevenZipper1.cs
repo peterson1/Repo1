@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Repo1.Core.ns12.Helpers.StringExtensions;
 using Repo1.WPF452.SDK.FileChunkers;
 using Repo1.WPF452.SDK.Helpers;
+using Repo1.WPF452.SDK.Helpers.EmbeddedResourceHelpers;
 using SevenZip;
+using static System.Environment;
 
 namespace Repo1.WPF452.SDK.Archivers
 {
@@ -20,7 +22,22 @@ namespace Repo1.WPF452.SDK.Archivers
         {
             var oneBigF = Path.Combine(targetDir, $"OneBigFile_{DateTime.Now.Ticks}.merged");
             FileChunker1.WriteOneBigFile(oneBigF, orderedParts);
-            return ExtractSoloArchive(oneBigF, targetDir);
+
+            foreach (var part in orderedParts)
+                SilentDelete(part);
+
+            var list = ExtractSoloArchive(oneBigF, targetDir);
+
+            SilentDelete(oneBigF);
+
+            return list;
+        }
+
+
+        private static void SilentDelete(string filePath)
+        {
+            try { File.Delete(filePath); }
+            catch { }
         }
 
 
@@ -96,25 +113,11 @@ namespace Repo1.WPF452.SDK.Archivers
 
 
 
-
-
-        //private static List<string> GetPartsList(string outputFilePath)
-        //{
-        //    var list  = new List<string>();
-        //    var dir   = Path.GetDirectoryName(outputFilePath);
-        //    var fName = Path.GetFileName(outputFilePath);
-
-        //    foreach (var file in Directory.GetFiles(dir, fName + "*"))
-        //    {
-        //        list.Add(file);
-        //    }
-        //    return list;
-        //}
-
-
         private static SevenZipCompressor GetUltra7z2Compressor()
         {
-            if (!SetLibraryPath(COMPRESSOR_LIB)) return null;
+            var bDir = GetLocalBinariesDir();
+            var libF = Path.Combine(bDir, COMPRESSOR_LIB);
+            SevenZipCompressor.SetLibraryPath(libF);
 
             var zpr               = new SevenZipCompressor();
             zpr.ArchiveFormat     = OutArchiveFormat.SevenZip;
@@ -122,23 +125,32 @@ namespace Repo1.WPF452.SDK.Archivers
             zpr.CompressionMethod = CompressionMethod.Lzma2;
             zpr.CompressionMode   = CompressionMode.Create;
 
-            //if (maxVolumeSizeMB.HasValue)
-            //    zpr.VolumeSize = Convert.ToInt32(1024 * 1024 * maxVolumeSizeMB);
-
             return zpr;
         }
 
 
         private static bool SetLibraryPath(string libFilename)
         {
-            var bDir = AppDomain.CurrentDomain.BaseDirectory;
+            var bDir = GetLocalBinariesDir();
             var libF = Path.Combine(bDir, libFilename);
 
             if (!File.Exists(libF))
-                throw new FileNotFoundException("Missing 7-zip library file.", libF);
-            
+                EmbeddedResrc.ExtractToFile<SevenZipper1>
+                    (libFilename, "Archivers", bDir);
+
+            //  To fix "The path is not of a legal form" error:
+            //    -  add tag in FodyWeavers.xml
+            //    -  <Costura CreateTemporaryAssemblies='true' />
             SevenZipCompressor.SetLibraryPath(libF);
+
             return true;
+        }
+
+
+        public static string GetLocalBinariesDir()
+        {
+            var appData = GetFolderPath(SpecialFolder.LocalApplicationData);
+            return Path.Combine(appData, typeof(SevenZipper1).Name);
         }
     }
 }
