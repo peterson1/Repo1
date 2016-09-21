@@ -44,8 +44,10 @@
     <Compile Include="Clients\IPingClient.cs" />
     <Compile Include="Clients\IRepo1Client.cs" />
     <Compile Include="Clients\IRestClient.cs" />
+    <Compile Include="Clients\ISessionClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
     <Compile Include="Clients\RestClientBase.cs" />
+    <Compile Include="Clients\SessionClientBase.cs" />
     <Compile Include="Configuration\DownloaderCfg.cs" />
     <Compile Include="Configuration\DownloaderCfgExtensions.cs" />
     <Compile Include="DTOs\ViewsListDTOs\DownloadablesForUserDTO.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Models\R1Executable.cs" />
     <Compile Include="Models\R1Ping.cs" />
     <Compile Include="Models\R1UserLicense.cs" />
+    <Compile Include="Models\R1UserSession.cs" />
     <Compile Include="Models\RestServerCredentials.cs" />
     <Compile Include="Models\R1SplitPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,6 +8,9 @@ namespace Repo1.Core.ns12.Clients
     {
         void  StartUpdateCheckLoop();
         void  StopUpdateCheckLoop();
+
+        void  StartTrackingUserSession();
+
         void  RaisePropertyChanged(string propertyName);
 
         event EventHandler<EArg<string>> StatusChanged;

@@ -78,6 +78,7 @@
     <Compile Include="Clients\ClientValidator1.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
     <Compile Include="Clients\PingClient1.cs" />
+    <Compile Include="Clients\SessionClient1.cs" />
     <Compile Include="Clients\SvcStackRestClient.cs" />
     <Compile Include="Converters\ToShortBytesConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
@@ -90,6 +91,8 @@
     <Compile Include="Helpers\ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Helpers\FileInfoExtensions\CommonFileInfoExtensions.cs" />
     <Compile Include="Helpers\InputCommands\CommandR1WPF.cs" />
+    <Compile Include="Helpers\NetworkInterfaces\MacAddresses.cs" />
+    <Compile Include="Helpers\NetworkInterfaces\PrivateIP.cs" />
     <Compile Include="Helpers\R1ExecutableExtensions\R1Exe.cs" />
     <Compile Include="Helpers\WindowExtensions\CommonWindowExtensions.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">

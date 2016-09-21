@@ -33,6 +33,7 @@ namespace Repo1.Core.ns12.Clients
             _validr       = GetClientValidator();
             _pingr        = GetPingClient();
             _downloadr    = GetDownloadClient();
+            _sessionr     = GetSessionClient();
         }
 
         private int                _intervalMins;
@@ -40,8 +41,9 @@ namespace Repo1.Core.ns12.Clients
         private bool               _isChecking;
         private IPingClient        _pingr;
         private IClientValidator   _validr;
+        private ISessionClient     _sessionr;
         protected IDownloadClient  _downloadr;
-        protected DownloaderCfg  _cfg;
+        protected DownloaderCfg    _cfg;
 
 
         private string _status;
@@ -70,9 +72,10 @@ namespace Repo1.Core.ns12.Clients
         protected abstract IClientValidator  GetClientValidator    ();
         protected abstract IPingClient       GetPingClient         ();
         protected abstract IDownloadClient   GetDownloadClient     ();
+        protected abstract ISessionClient    GetSessionClient      ();
         protected abstract R1Executable      GetCurrentR1Exe       ();
         protected abstract bool              ReplaceCurrentExeWith (string replacementExePath);
-        protected abstract void              RunOnNewThread        (Task task);
+        protected abstract void              RunOnNewThread        (Task task, string threadLabel);
 
 
         protected T Warn <T>(string message, T returnVal = default(T))
@@ -96,7 +99,7 @@ namespace Repo1.Core.ns12.Clients
 
             _isChecking   = true;
             _keepChecking = true;
-            RunOnNewThread(ExecuteUpdateCheckLoop());
+            RunOnNewThread(ExecuteUpdateCheckLoop(), "Update Checker Loop Thread");
         }
 
 
@@ -152,5 +155,9 @@ namespace Repo1.Core.ns12.Clients
 
         public virtual void RaisePropertyChanged(string propertyName)
             => PropertyChanged.Raise(propertyName);
+
+
+        public void StartTrackingUserSession()
+            => RunOnNewThread(_sessionr.StartTrackingLoop(), "Session Loop Thread");
     }
 }

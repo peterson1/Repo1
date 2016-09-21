@@ -7,6 +7,7 @@ using PropertyChanged;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
+using Repo1.WPF452.SDK.Helpers.ErrorHandlers;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
 
@@ -34,8 +35,17 @@ namespace Repo1.WPF452.SDK.Clients
             => new PingClient1(_cfg);
 
 
-        protected override void RunOnNewThread(Task task)
-            => new Thread(async () => await task).Start();
+        protected override ISessionClient GetSessionClient()
+            => new SessionClient1(_cfg);
+
+
+        protected override void RunOnNewThread(Task task, string threadLabel)
+            => new Thread(async () => 
+            {
+                try   { await task; }
+                catch (Exception ex) { ThreadedAlerter.Show(ex, threadLabel); }
+            }
+            ).Start();
 
 
         public override Action<string> OnWarning

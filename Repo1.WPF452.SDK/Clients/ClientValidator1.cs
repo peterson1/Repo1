@@ -11,6 +11,7 @@ using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
+using Repo1.WPF452.SDK.Helpers.NetworkInterfaces;
 
 namespace Repo1.WPF452.SDK.Clients
 {
@@ -30,7 +31,7 @@ namespace Repo1.WPF452.SDK.Clients
 
         public async Task<bool> ValidateThisMachine()
         {
-            foreach (var macAdress in GetMacAddresses())
+            foreach (var macAdress in MacAddresses.List())
             {
                 var dto = await GetPingByMacAddress(macAdress);
                 if (_creds.WasRejected) return false;
@@ -49,7 +50,7 @@ namespace Repo1.WPF452.SDK.Clients
 
             pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.PublicIP             = await GetPublicIP();
-            pingDTO.PrivateIP            = GetPrivateIP(macAddress);
+            pingDTO.PrivateIP            = PrivateIP.ForMAC(macAddress);
             pingDTO.InstalledVersion     = GetInstalledVersion();
             pingDTO.RegisteredMacAddress = macAddress;
 
@@ -71,29 +72,5 @@ namespace Repo1.WPF452.SDK.Clients
 
         private string GetInstalledVersion() => new FileInfo(
             Assembly.GetEntryAssembly().Location).FileVersion();
-
-
-        private string GetPrivateIP(string macAddress)
-        {
-            var nic = NetworkInterface.GetAllNetworkInterfaces()
-                .SingleOrDefault(x => x.GetPhysicalAddress().ToString() == macAddress);
-
-            return nic?.GetIPProperties().UnicastAddresses.SingleOrDefault(x 
-                => x.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString();
-        }
-
-
-        private async Task<string> GetPublicIP()
-        {
-            const string url = "https://api.ipify.org?format=json";
-            var resp = await GetTilOK<Dictionary<string, string>>(url);
-            return resp["ip"].ToString();
-        }
-
-
-        private List<string> GetMacAddresses()
-            => NetworkInterface.GetAllNetworkInterfaces()
-                .Where (nic => nic.OperationalStatus == OperationalStatus.Up)
-                .Select(nic => nic.GetPhysicalAddress().ToString()).ToList();
     }
 }

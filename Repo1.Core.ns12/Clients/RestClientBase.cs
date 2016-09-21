@@ -59,15 +59,10 @@ namespace Repo1.Core.ns12.Clients
             if (mappd == null) return null;
             mappd["status"] = isPublished ? 1 : 0;
 
-            return KeepTrying(() => Post(mappd, "entity_node"));
+            //return KeepTrying(() => Post(mappd, "entity_node"));
+            return Post(mappd, "entity_node");
         }
 
-
-        protected T Warn<T>(string message, T returnVal = default(T))
-        {
-            OnWarning?.Invoke(message);
-            return returnVal;
-        }
 
 
         protected async Task<Dictionary<string, object>> Update<T>(T node, string revisionLog = null)
@@ -155,6 +150,14 @@ namespace Repo1.Core.ns12.Clients
         }
 
 
+        protected async Task<string> GetPublicIP()
+        {
+            const string url = "https://api.ipify.org?format=json";
+            var resp = await GetTilOK<Dictionary<string, string>>(url);
+            return resp["ip"].ToString();
+        }
+
+
         private TimeSpan Delay(int retryAttempt)
             => TimeSpan.FromSeconds(Math.Max(5, retryAttempt));
 
@@ -192,5 +195,12 @@ namespace Repo1.Core.ns12.Clients
 
         public virtual void RaisePropertyChanged(string propertyName)
             => PropertyChanged.Raise(propertyName);
+
+
+        protected T Warn<T>(string message, T returnVal = default(T))
+        {
+            OnWarning?.Invoke(message);
+            return returnVal;
+        }
     }
 }

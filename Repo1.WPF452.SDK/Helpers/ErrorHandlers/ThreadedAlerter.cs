@@ -15,7 +15,7 @@ namespace Repo1.WPF452.SDK.Helpers.ErrorHandlers
 
             app.DispatcherUnhandledException += (s, e) => 
             {
-                msg = VisualizeException("Dispatcher", e.Exception);
+                msg = Show(e.Exception, "Dispatcher");
                 errorLogger?.Invoke(msg);
                 e.Handled = true;
             };
@@ -23,20 +23,20 @@ namespace Repo1.WPF452.SDK.Helpers.ErrorHandlers
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) => 
             {
-                msg = VisualizeException("CurrentDomain", e.ExceptionObject);
+                msg = Show(e.ExceptionObject, "CurrentDomain");
                 errorLogger?.Invoke(msg);
             };
 
 
             TaskScheduler.UnobservedTaskException += (s, e) => 
             {
-                msg = VisualizeException("TaskScheduler", e.Exception);
+                msg = Show(e.Exception, "TaskScheduler");
                 errorLogger?.Invoke(msg);
             };
         }
 
 
-        private static string VisualizeException(string thrower, object exceptionObj)
+        public static string Show(object exceptionObj, string thrower)
         {
             var shortMsg = ""; var longMsg = "";
 
