@@ -77,11 +77,21 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
             else
                 dict.Add("uid", prop.GetValue(origObj));
 
+
+            prop = props.SingleOrDefault(x => x.Name == "vid");
+            if (prop != null)
+            {
+                var val = int.Parse(prop.GetValue(origObj).ToString());
+                if (val > 0) dict.Add("vid", val);
+            }
+
+
             prop = props.SingleOrDefault(x => x.CustomAttributes.Any(y
                  => y.AttributeType == typeof(NodeTitleAttribute)));
             if (prop != null) dict.Add("title", prop.GetValue(origObj));
 
             dict.Add("status", 1);
+            //dict.Add("language", "und");
         }
     }
 }

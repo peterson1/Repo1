@@ -46,8 +46,6 @@ namespace Repo1.WPF452.SDK.Clients
 
         private async Task<R1Ping> AssemblePingNode(GetPingByLicenseKeyDTO pingDTO, string macAddress)
         {
-            var publicIP = await GetPublicIP();
-
             pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.PublicIP             = await GetPublicIP();
             pingDTO.PrivateIP            = PrivateIP.ForMAC(macAddress);

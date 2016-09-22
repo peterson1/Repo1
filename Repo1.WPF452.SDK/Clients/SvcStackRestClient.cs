@@ -9,6 +9,7 @@ using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
 using ServiceStack;
+using ServiceStack.Text;
 
 namespace Repo1.WPF452.SDK.Clients
 {
@@ -18,6 +19,7 @@ namespace Repo1.WPF452.SDK.Clients
         public SvcStackRestClient(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
             ToggleAllowUnsafeHeaderParsing(true);
+            JsConfig.ExcludeTypeInfo = true;
         }
 
 
@@ -28,15 +30,16 @@ namespace Repo1.WPF452.SDK.Clients
         protected override Task<T> Post<T>(T objToPost, string resourceUrl)
         {
             //var js = DynamicJson.Serialize(objToPost);
+            //var js = ServiceStack.Text.JsonSerializer.SerializeToString(objToPost);
             return CreateClient().PostAsync<T>(resourceUrl, objToPost);
         }
 
 
         protected override Task<T> Put<T>(T objToPut, string resourceUrl)
         {
-            var js = DynamicJson.Serialize(objToPut);
-            var client = CreateClient();
-            return client.PutAsync<T>(resourceUrl, objToPut);
+            //var js = DynamicJson.Serialize(objToPut);
+            //var js = JsonSerializer.SerializeToString(objToPut);
+            return CreateClient().PutAsync<T>(resourceUrl, objToPut);
         }
 
 

@@ -36,6 +36,7 @@ namespace Repo1.Core.ns12.Clients
             _sessionr     = GetSessionClient();
         }
 
+
         private int                _intervalMins;
         private bool               _keepChecking;
         private bool               _isChecking;
@@ -68,6 +69,13 @@ namespace Repo1.Core.ns12.Clients
 
 
         public virtual Action<string>  OnWarning  { protected get; set; }
+
+
+        public Func<string> ReadLegacyCfg
+        {
+            set { _sessionr.ReadLegacyCfg = value; }
+        }
+
 
         protected abstract IClientValidator  GetClientValidator    ();
         protected abstract IPingClient       GetPingClient         ();
@@ -151,6 +159,8 @@ namespace Repo1.Core.ns12.Clients
 
             return ReplaceCurrentExeWith(exePath);
         }
+
+
 
 
         public virtual void RaisePropertyChanged(string propertyName)

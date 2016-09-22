@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using Repo1.Core.ns12.Helpers.StringExtensions;
 
 namespace Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields
 {
@@ -42,5 +44,19 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields
 
         public static string Fmt(DateTime? date)
             => date?.ToString("yyyy-MM-dd HH:mm:ss");
+    }
+
+
+    public static class ValueFieldExtensions
+    {
+        public static string FieldValue(this Dictionary<string, object> dict, string fieldNme)
+        {
+            if (!dict.ContainsKey(fieldNme))
+                throw new MissingMemberException($"Not in returned dict: “{fieldNme}”");
+
+            var jsonStr = dict[fieldNme].ToString();
+
+            return jsonStr.Between("{und:[{value:", "}]}");
+        }
     }
 }

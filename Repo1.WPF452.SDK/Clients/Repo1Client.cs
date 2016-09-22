@@ -23,6 +23,7 @@ namespace Repo1.WPF452.SDK.Clients
         {
         }
 
+
         protected override IClientValidator GetClientValidator()
             => new ClientValidator1(_cfg);
 

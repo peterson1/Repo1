@@ -11,8 +11,13 @@ namespace Repo1.WPF452.SDK.Helpers.NetworkInterfaces
             var nic = NetworkInterface.GetAllNetworkInterfaces()
                 .SingleOrDefault(x => x.GetPhysicalAddress().ToString() == macAddress);
 
-            return nic?.GetIPProperties().UnicastAddresses.SingleOrDefault(x
+            //var addrsses = nic?.GetIPProperties().UnicastAddresses
+            //    .Where(x => x.Address.AddressFamily == AddressFamily.InterNetwork);
+
+            var i = nic?.GetIPProperties().UnicastAddresses.SingleOrDefault(x
                 => x.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString();
+
+            return i;
         }
     }
 }

@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -80,6 +81,7 @@
     <Compile Include="Clients\PingClient1.cs" />
     <Compile Include="Clients\SessionClient1.cs" />
     <Compile Include="Clients\SvcStackRestClient.cs" />
+    <Compile Include="Configuration\Repo1Cfg.cs" />
     <Compile Include="Converters\ToShortBytesConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="Helpers\Alerter.cs" />
     <Compile Include="Helpers\ApplicationExtensions\BasicApplicationExtensions.cs" />
+    <Compile Include="Helpers\Cryptographers\AESThenHMAC.cs" />
     <Compile Include="Helpers\EmbeddedResourceHelpers\EmbeddedResrc.cs" />
     <Compile Include="Helpers\ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Helpers\FileInfoExtensions\CommonFileInfoExtensions.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="Helpers\NetworkInterfaces\MacAddresses.cs" />
     <Compile Include="Helpers\NetworkInterfaces\PrivateIP.cs" />
     <Compile Include="Helpers\R1ExecutableExtensions\R1Exe.cs" />
+    <Compile Include="Helpers\Serialization\Json.cs" />
     <Compile Include="Helpers\WindowExtensions\CommonWindowExtensions.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>

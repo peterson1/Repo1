@@ -126,11 +126,11 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
 
     public static class ValueAttributeFactsExtensions
     {
-        public static void BaseField(this Dictionary<string, object> dict, string key, object value)
-        {
-            dict.Should().ContainKey(key);
-            dict[key].Should().Be(value);
-        }
+        //public static void BaseField(this Dictionary<string, object> dict, string key, object value)
+        //{
+        //    dict.Should().ContainKey(key);
+        //    dict[key].Should().Be(value);
+        //}
 
         public static void ScalarField(this Dictionary<string, object> dict, string key, object value)
         {

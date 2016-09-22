@@ -47,7 +47,6 @@
     <Compile Include="Clients\ISessionClient.cs" />
     <Compile Include="Clients\Repo1ClientBase1.cs" />
     <Compile Include="Clients\RestClientBase.cs" />
-    <Compile Include="Clients\SessionClientBase.cs" />
     <Compile Include="Configuration\DownloaderCfg.cs" />
     <Compile Include="Configuration\DownloaderCfgExtensions.cs" />
     <Compile Include="DTOs\ViewsListDTOs\DownloadablesForUserDTO.cs" />
@@ -55,6 +54,7 @@
     <Compile Include="DTOs\ViewsListDTOs\SplitPartContentByHashDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\UploadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\UserSessionsByKeyDTO.cs" />
     <Compile Include="HashLib\Crypto\SHA0.cs" />
     <Compile Include="HashLib\Crypto\SHA1.cs" />
     <Compile Include="HashLib\Extensions\ArrayExtensions.cs" />

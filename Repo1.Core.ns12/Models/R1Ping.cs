@@ -16,6 +16,7 @@ namespace Repo1.Core.ns12.Models
 
         public int    nid                  { get; set; }
         public int    uid                  { get; set; }
+        public int    vid                  { get; set; }
         public string RegisteredMacAddress { get; set; }
         //public string  LatestExeVersion  { get; set; } do not place this here -- it'll confuse you
     }

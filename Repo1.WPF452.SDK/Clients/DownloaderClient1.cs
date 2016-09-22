@@ -48,13 +48,20 @@ namespace Repo1.WPF452.SDK.Clients
             Status = "Merging and decompressing downloaded file ...";
             var paths = orderedParts.Select(x => x.FullPathOrURL);
             var list  = await SevenZipper1.DecompressMultiPart(paths, tempDir);
-            if (list == null) return Warn("[Decompress Fail] Downloaded file may be corrupted.", string.Empty);
+            if (list == null)
+            {
+                Warn("[Decompress Fail] Downloaded file may be corrupted.");
+                return null;
+            }
 
             var exePath = Path.Combine(tempDir, list[0]);
             if (exePath.SHA1ForFile() == expectedHash)
                 return exePath;
             else
-                return Warn("[Hash Mismatch] Downloaded file may be corrupted.", string.Empty);
+            {
+                Warn("[Hash Mismatch] Downloaded file may be corrupted.");
+                return null;
+            }
         }
 
 

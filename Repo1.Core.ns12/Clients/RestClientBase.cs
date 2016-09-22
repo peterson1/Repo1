@@ -75,6 +75,8 @@ namespace Repo1.Core.ns12.Clients
             if (!int.TryParse(mappd["nid"].ToString(), out nid)) return null;
             if (nid < 1) return null;
 
+            //mappd.Add("vid", 0);
+
             if (!revisionLog.IsBlank())
             {
                 mappd.Add("revision", 1);
@@ -113,7 +115,7 @@ namespace Repo1.Core.ns12.Clients
             var list = await GetTilOK<List<T>>(url);
 
             if (list == null)
-                OnError(new ArgumentNullException("Wasn't expecting ViewsList to return NULL."));
+                OnError(new ArgumentNullException($"ViewsList ‹{typeof(T).Name}› returned NULL."));
 
             return list;
         }
@@ -197,7 +199,7 @@ namespace Repo1.Core.ns12.Clients
             => PropertyChanged.Raise(propertyName);
 
 
-        protected T Warn<T>(string message, T returnVal = default(T))
+        protected bool Warn(string message, bool returnVal = false)
         {
             OnWarning?.Invoke(message);
             return returnVal;
