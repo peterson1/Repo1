@@ -102,16 +102,8 @@
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>
     </Compile>
-    <Page Include="UserControl1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="UserControls\TextPair.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

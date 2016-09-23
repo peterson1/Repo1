@@ -78,6 +78,7 @@
     <Compile Include="Helpers\EArg.cs" />
     <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
     <Compile Include="Helpers\InputCommands\ICommandR1.cs" />
+    <Compile Include="Helpers\Obfuscators\FakeFactory.cs" />
     <Compile Include="Helpers\PropertyChangedExtensions\BasicPropertyChangedExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\BasicStringExtensions.cs" />
     <Compile Include="Helpers\StringExtensions\HashExtensions.cs" />
