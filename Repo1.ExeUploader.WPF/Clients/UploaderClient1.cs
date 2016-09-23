@@ -66,7 +66,11 @@ namespace Repo1.ExeUploader.WPF.Clients
             }
 
             var ok = await ValidateDownload(splitParts, localExe.FileHash);
-            if (!ok) return Alerter.Warn("Uploaded parts are invalid.", false);
+            if (!ok)
+            {
+                //todo: delete corrupted uploaded parts
+                return Alerter.Warn("Uploaded parts are invalid.", false);
+            }
 
             IsBusy = false;
             return true;

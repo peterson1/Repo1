@@ -20,6 +20,7 @@ namespace Repo1.ExeUploader.WPF.DiskAccess
             part.Base64Content = inf.Base64Content();
             part.PartNumber    = partNumber;
             part.TotalParts    = totalParts;
+            part.uid           = r1Exe.uid;
 
             return part;
         }

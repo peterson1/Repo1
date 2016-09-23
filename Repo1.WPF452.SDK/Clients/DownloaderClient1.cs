@@ -96,17 +96,28 @@ namespace Repo1.WPF452.SDK.Clients
 
         public async Task<List<R1SplitPart>> GetPartsList(string exeVersion, string macAddress)
         {
-            var key  = _dCfg.GetLicenseKey(macAddress);
-            var list = await ViewsList<DownloadablesForUserDTO>(key, exeVersion);
+            var key     = _dCfg.GetLicenseKey(macAddress);
+            var list    = await ViewsList<DownloadablesForUserDTO>(key, exeVersion);
+            var trimmed = TrimPartsList(list);
 
-            if (!ValidatePartsList(list)) return null;
+            if (!ValidatePartsList(trimmed)) return null;
 
-            return list.Select(x => x as R1SplitPart).ToList();
+            return trimmed.Select(x => x as R1SplitPart).ToList();
+        }
+
+
+        private List<DownloadablesForUserDTO> TrimPartsList(List<DownloadablesForUserDTO> list)
+        {
+            if (list.Count == 0) return list;
+            return list.Take(list.First().TotalParts).ToList();
         }
 
 
         private bool ValidatePartsList(List<DownloadablesForUserDTO> list)
         {
+            if (list.Count == 0)
+                throw new InvalidDataException("Parts list should not be empty.");
+
             var byTotalParts = list.GroupBy(x => x.TotalParts)
                                    .Select(x => x.First());
 

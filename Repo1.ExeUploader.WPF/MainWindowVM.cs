@@ -77,6 +77,7 @@ namespace Repo1.ExeUploader.WPF
             if (RemoteExe.FileHash == LocalExe.FileHash) return;
 
             LocalExe.nid = RemoteExe.nid;
+            LocalExe.uid = RemoteExe.uid;
             HasChanges   = true;
         }
 
