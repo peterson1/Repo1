@@ -22,11 +22,14 @@ namespace Repo1.WPF452.SDK.Clients
         private bool          _isTracking;
         private DownloaderCfg _cfg;
         private Func<string>  _readLegacyCfg;
+        private string        _uniqCfgKey;
 
 
-        public SessionClient1(DownloaderCfg downloaderCfg) : base(downloaderCfg)
+        public SessionClient1(DownloaderCfg downloaderCfg, int sendIntervalMins) : base(downloaderCfg)
         {
-            _cfg = downloaderCfg;
+            _cfg             = downloaderCfg;
+            _uniqCfgKey      = _cfg.ActivationKey;
+            SendIntervalMins = sendIntervalMins;
         }
 
 
@@ -47,6 +50,9 @@ namespace Repo1.WPF452.SDK.Clients
             if (savd == null)
                 savd = await PostNewSession();
 
+            if (!Repo1Cfg.Found(_uniqCfgKey))
+                 Repo1Cfg.WriteBlank(_uniqCfgKey);
+
             while (true)
             {
                 //await Task.Delay(1000 * 60 * SendIntervalMins);
@@ -63,10 +69,11 @@ namespace Repo1.WPF452.SDK.Clients
         private async Task<R1UserSession> PostNewSession()
         {
             var sess = await GatherSessionInfo();
-            var dict = await Create(sess);
-            sess.nid = int.Parse(dict["nid"].ToString());
-            sess.uid = int.Parse(dict["uid"].ToString());
-            sess.vid = int.Parse(dict["vid"].ToString());
+            var dict = await Create(sess, async () => 
+            {
+                var list = await FindSavedSessions();
+                return list?.FirstOrDefault();
+            } );
             return sess;
         }
 
@@ -89,7 +96,7 @@ namespace Repo1.WPF452.SDK.Clients
             ssn.Workgroup        = GetWorkgroup();
 
             ssn.LegacyCfgJson    = B64(_readLegacyCfg?.Invoke());
-            ssn.Repo1CfgJson     = B64(Repo1Cfg.Read(_cfg.ActivationKey));
+            ssn.Repo1CfgJson     = B64(Repo1Cfg.Read(_uniqCfgKey));
             ssn.SessionKey       = GetSessionKey();
 
             ssn.Description      = ssn.WindowsAccount
@@ -129,7 +136,7 @@ namespace Repo1.WPF452.SDK.Clients
         private string GetSessionKey()
             => (string.Join(",", MacAddresses.List())
                                + GetExePath()
-                               + _cfg.ActivationKey).SHA1ForUTF8();
+                               + _uniqCfgKey).SHA1ForUTF8();
 
 
 

@@ -12,7 +12,7 @@ namespace Repo1.Core.ns12.Models
         [Value(Key = "field_privateip"         )]  public string        PrivateIP          { get; set; }
         [Value(Key = "field_installedversion"  )]  public string        InstalledVersion   { get; set; }
         [Value(Key = "field_lastactdescription")]  public string        LastActDescription { get; set; }
-        [Value(Key = "field_lastacttimestamp‎ " )]  public DateTime      LastActTimestamp   { get; set; }
+        [Value(Key = "field_lastacttimestamp"  )]  public DateTime      LastActTimestamp   { get; set; }
 
         public int    nid                  { get; set; }
         public int    uid                  { get; set; }

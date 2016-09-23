@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using Polly;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
@@ -53,14 +51,38 @@ namespace Repo1.Core.ns12.Clients
         protected abstract void             OnError           (Exception ex);
 
 
-        protected Task<Dictionary<string, object>> Create <T>(T objectToPost, bool isPublished = true)
+        protected async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished = true)
         {
             var mappd = D7Mapper.ToObjectDictionary(objectToPost);
             if (mappd == null) return null;
             mappd["status"] = isPublished ? 1 : 0;
 
-            //return KeepTrying(() => Post(mappd, "entity_node"));
-            return Post(mappd, "entity_node");
+            //var dict = await Post(mappd, "entity_node");
+            //todo: check if posted before retrying
+            //var dict = await KeepTrying(() => Post(mappd, "entity_node"));
+            var dict = await KeepTrying(async () =>
+            {
+                Dictionary<string, object> resp = null;
+                try
+                {
+                    resp = await Post(mappd, "entity_node");
+                }
+                catch (Exception ex)
+                {
+                    var savd = await postedNodeGetter.Invoke();
+                    if (savd == null) throw ex;
+                    if (resp == null)
+                        resp = D7Mapper.CopyNodeIDs(savd);
+                }
+                return resp;
+            });
+
+            if (dict == null)
+                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from POST to be NULL."));
+
+            dict.SetNodeIDs(objectToPost);
+
+            return dict;
         }
 
 
@@ -75,8 +97,6 @@ namespace Repo1.Core.ns12.Clients
             if (!int.TryParse(mappd["nid"].ToString(), out nid)) return null;
             if (nid < 1) return null;
 
-            //mappd.Add("vid", 0);
-
             if (!revisionLog.IsBlank())
             {
                 mappd.Add("revision", 1);
@@ -86,20 +106,13 @@ namespace Repo1.Core.ns12.Clients
             var dict = await KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
 
             if (dict == null)
-                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from PUT  to be NULL."));
+                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from PUT to be NULL."));
+
+            dict.SetNodeIDs(node);
 
             return dict;
         }
 
-
-
-        private void TrySetServerGeneratedValues<T>(T objectToPost, Dictionary<string, object> saved)
-        {
-            object nid;
-            if (!saved.TryGetValue("nid", out nid)) return;
-            var prop = typeof(T).GetRuntimeProperties().SingleOrDefault(x => x.Name == "nid");
-            if (prop != null) prop.SetValue(objectToPost, int.Parse(nid.ToString()));
-        }
 
 
         protected async Task<List<T>> ViewsList<T>(params object[] args)
@@ -131,7 +144,7 @@ namespace Repo1.Core.ns12.Clients
                 .WaitAndRetryForeverAsync(attempts
                 => Delay(attempts), (ex, span) => OnRetry(ex, span));
 
-            IsBusy = true;
+            IsBusy   = true;
             T result = default(T);
             try
             {
@@ -168,6 +181,8 @@ namespace Repo1.Core.ns12.Clients
         {
             Status = exception.Message + L.F 
                    + $"Retrying in {timespan.TotalSeconds} seconds ...";
+
+            Warn(Status);
         }
 
 

@@ -11,6 +11,8 @@ namespace Repo1.Core.ns12.Models
         [Value(Key = "field_fileversion")] public string  FileVersion     { get; set; }
 
         public int     nid             { get; set; }
+        public int     uid             { get; set; }
+        public int     vid             { get; set; }
         public string  FullPathOrURL   { get; set; }
     }
 }

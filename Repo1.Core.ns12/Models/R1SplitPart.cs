@@ -13,7 +13,9 @@ namespace Repo1.Core.ns12.Models
         [Value(Key = "field_partnumber"   )]  public int           PartNumber     { get; set; }
         [Value(Key = "field_totalparts"   )]  public int           TotalParts     { get; set; }
 
-        public int      nid            { get; set; }
-        public string   FullPathOrURL  { get; set; }
+        public int      nid             { get; set; }
+        public int      uid             { get; set; }
+        public int      vid             { get; set; }
+        public string   FullPathOrURL   { get; set; }
     }
 }

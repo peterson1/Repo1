@@ -52,6 +52,7 @@
     <Compile Include="DTOs\ViewsListDTOs\DownloadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\GetPingByLicenseKeyDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\SplitPartContentByHashDTO.cs" />
+    <Compile Include="DTOs\ViewsListDTOs\SplitPartIDsByHashDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\UploadablesForUserDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\IViewsListDTO.cs" />
     <Compile Include="DTOs\ViewsListDTOs\UserSessionsByKeyDTO.cs" />

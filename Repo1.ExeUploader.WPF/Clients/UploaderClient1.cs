@@ -58,7 +58,9 @@ namespace Repo1.ExeUploader.WPF.Clients
                 var r1Part = FilePart.ToR1Part(partPaths[i], 
                                 localExe, i + 1, partPaths.Count);
 
-                var node = await Create(r1Part);
+                var node = await Create(r1Part, 
+                      () => GetSplitPartIDsByHash(r1Part.PartHash));
+
                 if (node == null) return false;
                 splitParts.Add(r1Part);
             }
@@ -68,6 +70,17 @@ namespace Repo1.ExeUploader.WPF.Clients
 
             IsBusy = false;
             return true;
+        }
+
+
+        private async Task<R1SplitPart> GetSplitPartIDsByHash(string partHash)
+        {
+            var list = await ViewsList<SplitPartIDsByHashDTO>(partHash);
+            if (list == null) return null;
+            if (list.Count > 1)
+                Warn($"Split part w/ hash “{partHash}” was uploaded {list.Count} times.");
+
+            return list.FirstOrDefault();
         }
 
 

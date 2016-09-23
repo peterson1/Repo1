@@ -20,6 +20,14 @@ namespace Repo1.WPF452.SDK.Configuration
         }
 
 
+        public static void WriteBlank(string configKey)
+            => new Repo1Cfg().Save(configKey);
+
+
+        public static bool Found(string configKey)
+            => File.Exists(GetPath(configKey));
+
+
         public static Repo1Cfg Parse(string configKey)
             => Json.Deserialize<Repo1Cfg>(Read(configKey));
 

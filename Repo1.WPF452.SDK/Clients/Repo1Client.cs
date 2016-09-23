@@ -36,8 +36,8 @@ namespace Repo1.WPF452.SDK.Clients
             => new PingClient1(_cfg);
 
 
-        protected override ISessionClient GetSessionClient()
-            => new SessionClient1(_cfg);
+        protected override ISessionClient GetSessionClient(int checkIntervalMins)
+            => new SessionClient1(_cfg, checkIntervalMins);
 
 
         protected override void RunOnNewThread(Task task, string threadLabel)
@@ -54,8 +54,9 @@ namespace Repo1.WPF452.SDK.Clients
             protected get { return base.OnWarning; }
             set
             {
-                base.OnWarning = value;
+                base.OnWarning       = value;
                 _downloadr.OnWarning = value;
+                _sessionr .OnWarning = value;
             }
         }
 

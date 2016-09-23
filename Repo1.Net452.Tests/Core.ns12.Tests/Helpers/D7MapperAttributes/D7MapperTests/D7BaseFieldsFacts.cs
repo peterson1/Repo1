@@ -36,6 +36,25 @@ namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7Mapper
         }
 
 
+        [Fact(DisplayName = "Maps base fields to node")]
+        public void Case2()
+        {
+            var poco = new SampleClass();
+            var dict = new Dictionary<string, object>
+            {
+                { "nid", 123 },
+                { "vid", 456 },
+                { "uid", 789 },
+            };
+
+            dict.SetNodeIDs(poco);
+
+            poco.nid.Should().Be(123);
+            poco.vid.Should().Be(456);
+            poco.uid.Should().Be(789);
+        }
+
+
         [D7Type(Key = "sample_class")]
         private class SampleClass
         {

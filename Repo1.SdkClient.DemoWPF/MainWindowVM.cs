@@ -10,7 +10,7 @@ namespace Repo1.SdkClient.DemoWPF
         public MainWindowVM(IRepo1Client repo)
         {
             repo.StatusChanged += (s, e) => AppendLog(e.Data);
-
+            
             repo.UpdateInstalled += (s, e) 
                 => UpdatesInstalled = true;
 

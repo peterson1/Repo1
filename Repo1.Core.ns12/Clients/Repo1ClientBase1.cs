@@ -33,16 +33,16 @@ namespace Repo1.Core.ns12.Clients
             _validr       = GetClientValidator();
             _pingr        = GetPingClient();
             _downloadr    = GetDownloadClient();
-            _sessionr     = GetSessionClient();
+            _sessionr     = GetSessionClient(checkIntervalMins);
         }
 
 
         private int                _intervalMins;
         private bool               _keepChecking;
         private bool               _isChecking;
-        private IPingClient        _pingr;
-        private IClientValidator   _validr;
-        private ISessionClient     _sessionr;
+        protected IPingClient      _pingr;
+        protected IClientValidator _validr;
+        protected ISessionClient   _sessionr;
         protected IDownloadClient  _downloadr;
         protected DownloaderCfg    _cfg;
 
@@ -80,7 +80,7 @@ namespace Repo1.Core.ns12.Clients
         protected abstract IClientValidator  GetClientValidator    ();
         protected abstract IPingClient       GetPingClient         ();
         protected abstract IDownloadClient   GetDownloadClient     ();
-        protected abstract ISessionClient    GetSessionClient      ();
+        protected abstract ISessionClient    GetSessionClient      (int checkIntervalMins);
         protected abstract R1Executable      GetCurrentR1Exe       ();
         protected abstract bool              ReplaceCurrentExeWith (string replacementExePath);
         protected abstract void              RunOnNewThread        (Task task, string threadLabel);

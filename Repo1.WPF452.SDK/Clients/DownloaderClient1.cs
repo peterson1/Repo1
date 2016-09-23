@@ -47,7 +47,16 @@ namespace Repo1.WPF452.SDK.Clients
 
             Status = "Merging and decompressing downloaded file ...";
             var paths = orderedParts.Select(x => x.FullPathOrURL);
-            var list  = await SevenZipper1.DecompressMultiPart(paths, tempDir);
+            List<string> list = null;
+            try
+            {
+                list = await SevenZipper1.DecompressMultiPart(paths, tempDir);
+            }
+            catch (Exception)
+            {
+                Warn("[Decompress Error] Downloaded file may be corrupted.");
+                return null;
+            }
             if (list == null)
             {
                 Warn("[Decompress Fail] Downloaded file may be corrupted.");
@@ -87,9 +96,30 @@ namespace Repo1.WPF452.SDK.Clients
 
         public async Task<List<R1SplitPart>> GetPartsList(string exeVersion, string macAddress)
         {
-            var key = _dCfg.GetLicenseKey(macAddress);
-            var res = await ViewsList<DownloadablesForUserDTO>(key, exeVersion);
-            return res.Select(x => x as R1SplitPart).ToList();
+            var key  = _dCfg.GetLicenseKey(macAddress);
+            var list = await ViewsList<DownloadablesForUserDTO>(key, exeVersion);
+
+            if (!ValidatePartsList(list)) return null;
+
+            return list.Select(x => x as R1SplitPart).ToList();
+        }
+
+
+        private bool ValidatePartsList(List<DownloadablesForUserDTO> list)
+        {
+            var byTotalParts = list.GroupBy(x => x.TotalParts)
+                                   .Select(x => x.First());
+
+            if (byTotalParts.Count() != 1)
+                throw new InvalidDataException("All parts should have same values for ‹TotalParts›.");
+
+            var expctd = byTotalParts.First().TotalParts;
+            var actual = list.Count;
+
+            if (actual != expctd)
+                throw new InvalidDataException($"Expected list to have {expctd} parts but had {actual}.");
+
+            return true;
         }
     }
 }

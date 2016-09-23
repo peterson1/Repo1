@@ -6,7 +6,7 @@ using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
 
 namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
 {
-    public class D7Mapper
+    public static class D7Mapper
     {
         public static Dictionary<string, object> ToObjectDictionary<T>(T origObj)
         {
@@ -17,6 +17,37 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
             AddUndTargetIdFields  (dict, origObj);
 
             return dict;
+        }
+
+
+        public static void SetNodeIDs<T>(this Dictionary<string, object> dict, T nodeObj)
+        {
+            CopyIntPropertyToNode("nid", dict, nodeObj);
+            CopyIntPropertyToNode("uid", dict, nodeObj);
+            CopyIntPropertyToNode("vid", dict, nodeObj);
+        }
+
+
+        private static void CopyIntPropertyToNode<T>(string propertyName, Dictionary<string, object> dict, T node)
+        {
+            object val = null;
+            int id = 0;
+            if (!dict.TryGetValue(propertyName, out val)) return;
+            if (val == null) return;
+            if (!int.TryParse(val.ToString(), out id)) return;
+            if (id == 0) return;
+
+            var prop = typeof(T).GetRuntimeProperty(propertyName);
+            prop?.SetValue(node, id);
+        }
+
+
+        private static void CopyPropertyFromNode<T>(string propertyName, T node, Dictionary<string, object> dict)
+        {
+            if (node == null) return;
+            var prop = typeof(T).GetRuntimeProperty(propertyName);
+            if (prop == null) return;
+            dict.Add(propertyName, prop.GetValue(node));
         }
 
 
@@ -52,6 +83,16 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
         private static CustomAttributeData GetAttrib<T>(PropertyInfo prop)
             => prop.CustomAttributes.SingleOrDefault(x
                     => x.AttributeType == typeof(T));
+
+
+        public static Dictionary<string, object> CopyNodeIDs<T>(T node)
+        {
+            var dict = new Dictionary<string, object>();
+            CopyPropertyFromNode("nid", node, dict);
+            CopyPropertyFromNode("uid", node, dict);
+            CopyPropertyFromNode("vid", node, dict);
+            return dict;
+        }
 
 
         private static void AddBaseNodeFields<T>(Dictionary<string, object> dict, T origObj)

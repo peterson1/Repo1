@@ -6,6 +6,6 @@ namespace Repo1.Core.ns12.DTOs.ViewsListDTOs
     {
         public string ViewsDisplayURL => "uploadables_for_current_user?display_id=page";
 
-        public int uid { get; set; }
+        //public int uid { get; set; }
     }
 }
