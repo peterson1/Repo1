@@ -9,30 +9,30 @@ using static System.Environment;
 
 namespace Repo1.WPF452.SDK.Configuration
 {
-    public class Repo1Cfg : DownloaderCfg
+    internal class Repo1Cfg : DownloaderCfg
     {
-        public void Save(string configKey)
-        {
-            var json = Json.Serialize(this);
-            var pwd  = GetPassword(configKey);
-            var encr = AESThenHMAC.SimpleEncryptWithPassword(json, pwd);
-            File.WriteAllText(GetPath(configKey), encr);
-        }
+        //private void Save(string configKey)
+        //{
+        //    var json = Json.Serialize(this);
+        //    var pwd  = GetPassword(configKey);
+        //    var encr = AESThenHMAC.SimpleEncryptWithPassword(json, pwd);
+        //    File.WriteAllText(GetPath(configKey), encr);
+        //}
 
 
-        public static void WriteBlank(string configKey)
-            => new Repo1Cfg().Save(configKey);
+        internal static void WriteBlank(string configKey)
+            => Rewrite(Json.Serialize(new Repo1Cfg()), configKey);
 
 
-        public static bool Found(string configKey)
+        internal static bool Found(string configKey)
             => File.Exists(GetPath(configKey));
 
 
-        public static Repo1Cfg Parse(string configKey)
+        internal static Repo1Cfg Parse(string configKey)
             => Json.Deserialize<Repo1Cfg>(Read(configKey));
 
 
-        public static string Read(string configKey)
+        internal static string Read(string configKey)
         {
             var path = GetPath(configKey);
             if (!File.Exists(path)) return null;
@@ -62,6 +62,14 @@ namespace Repo1.WPF452.SDK.Configuration
             if (text.IsBlank()) return null;
             var byts = Encoding.UTF8.GetBytes(text);
             return Convert.ToBase64String(byts);
+        }
+
+
+        internal static void Rewrite(string json, string configKey)
+        {
+            var pwd = GetPassword(configKey);
+            var encr = AESThenHMAC.SimpleEncryptWithPassword(json, pwd);
+            File.WriteAllText(GetPath(configKey), encr);
         }
     }
 }

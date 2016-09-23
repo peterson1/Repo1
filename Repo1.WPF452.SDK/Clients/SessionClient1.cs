@@ -14,6 +14,7 @@ using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Configuration;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.NetworkInterfaces;
+using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
 
 namespace Repo1.WPF452.SDK.Clients
 {
@@ -58,12 +59,20 @@ namespace Repo1.WPF452.SDK.Clients
                 //await Task.Delay(1000 * 60 * SendIntervalMins);
                 await Task.Delay(1000 * 1);
 
-                var sess = await GatherSessionInfo(savd);
-                await Update(sess);
+                var sess   = await GatherSessionInfo(savd);
+                var newCfg = await SendAndGetNewCfg(sess);
+
+                if (newCfg != sess.Repo1CfgJson)
+                    Repo1Cfg.Rewrite(newCfg, _uniqCfgKey);
             }
         }
 
 
+        private async Task<string> SendAndGetNewCfg(R1UserSession session)
+        {
+            var dict = await Update(session);
+            return dict.FieldValue("field_expectedcfg");
+        }
 
 
         private async Task<R1UserSession> PostNewSession()
@@ -95,10 +104,10 @@ namespace Repo1.WPF452.SDK.Clients
             ssn.ComputerName     = Environment.MachineName;
             ssn.Workgroup        = GetWorkgroup();
 
-            ssn.LegacyCfgJson    = B64(_readLegacyCfg?.Invoke());
-            ssn.Repo1CfgJson     = B64(Repo1Cfg.Read(_uniqCfgKey));
+            ssn.LegacyCfgJson    = _readLegacyCfg?.Invoke();
+            ssn.Repo1CfgJson     = Repo1Cfg.Read(_uniqCfgKey);
             ssn.SessionKey       = GetSessionKey();
-
+            ssn.ExpectedCfg      = "< ignore me >";
             ssn.Description      = ssn.WindowsAccount
                         + " on " + ssn.Workgroup
                            + "/" + ssn.ComputerName;

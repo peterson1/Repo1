@@ -16,6 +16,8 @@ namespace Repo1.Core.ns12.Models
         [Value(Key = "field_workgroup"       )]  public string    Workgroup         { get; set; }
         [Value(Key = "field_legacycfgjson"   )]  public string    LegacyCfgJson     { get; set; }
         [Value(Key = "field_repo1cfgjson"    )]  public string    Repo1CfgJson      { get; set; }
+        [Value(Key = "field_expectedcfg"     )]  public string    ExpectedCfg { get; set; }
+
 
         public int   nid   { get; set; }
         public int   uid   { get; set; }
