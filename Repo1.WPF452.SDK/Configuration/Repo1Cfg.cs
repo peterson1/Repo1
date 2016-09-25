@@ -69,7 +69,9 @@ namespace Repo1.WPF452.SDK.Configuration
         {
             var pwd = GetPassword(configKey);
             var encr = AESThenHMAC.SimpleEncryptWithPassword(json, pwd);
-            File.WriteAllText(GetPath(configKey), encr);
+            var path = GetPath(configKey);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllText(path, encr);
         }
     }
 }
