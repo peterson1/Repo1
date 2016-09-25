@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Repo1.SdkClient.DemoWPF"
+        xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:bhv="clr-namespace:Repo1.WPF452.SDK.Behaviours.TextBoxBehaviors;assembly=Repo1.WPF452.SDK"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
-
         <Button DockPanel.Dock="Bottom"
                 IsEnabled="{Binding UpdatesInstalled}"
                 Click="Button_Click"
@@ -16,6 +17,10 @@
 
         <TextBox Text="{Binding Status}"
                  AcceptsReturn="True"
-                 />
+                 >
+            <int:Interaction.Behaviors>
+                <bhv:ScrollOnChangeBehavior />
+            </int:Interaction.Behaviors>
+        </TextBox>
     </DockPanel>
 </Window>

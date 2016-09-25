@@ -34,6 +34,11 @@ namespace Repo1.Core.ns12.Clients
             _pingr        = GetPingClient();
             _downloadr    = GetDownloadClient();
             _sessionr     = GetSessionClient(checkIntervalMins);
+            _sessionr.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(_sessionr.Status))
+                    Status = _sessionr.Status;
+            };
         }
 
 

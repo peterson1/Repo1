@@ -7,6 +7,8 @@
         xmlns:ruc="clr-namespace:Repo1.WPF452.SDK.UserControls;assembly=Repo1.WPF452.SDK"
         xmlns:cnv="clr-namespace:Repo1.WPF452.SDK.Converters;assembly=Repo1.WPF452.SDK"
         xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:bhv="clr-namespace:Repo1.WPF452.SDK.Behaviours.WindowBehaviors;assembly=Repo1.WPF452.SDK"
+        xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="{Binding Title}"
         SizeToContent="WidthAndHeight"
@@ -14,6 +16,9 @@
         WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=txtVerChanges}"
         >
+    <int:Interaction.Behaviors>
+        <bhv:DraggableBehavior />
+    </int:Interaction.Behaviors>
     <Window.Resources>
         <cnv:ToShortBytesConverter x:Key="shortB" />
         <cnv:VisibleIfNotNullConverter x:Key="visIfNotNull" />

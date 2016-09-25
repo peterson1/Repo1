@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Repo1.WPF452.SDK.Helpers.WindowExtensions;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -9,10 +8,10 @@ namespace Repo1.ExeUploader.WPF
         {
             InitializeComponent();
 
-            Loaded += (a, b) =>
-            {
-                this.MakeDraggable();
-            };
+            //Loaded += (a, b) =>
+            //{
+            //    this.MakeDraggable();
+            //};
         }
     }
 }

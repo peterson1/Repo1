@@ -15,6 +15,7 @@ using Repo1.WPF452.SDK.Configuration;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.NetworkInterfaces;
 using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
+using System.Diagnostics;
 
 namespace Repo1.WPF452.SDK.Clients
 {
@@ -43,6 +44,7 @@ namespace Repo1.WPF452.SDK.Clients
             if (_isTracking) return;
             _isTracking = true;
 
+            Status = "FindSavedSessions ...";
             var recs = await FindSavedSessions();
             if (recs == null) return;
             if (recs.Count > 1) return;
@@ -56,8 +58,8 @@ namespace Repo1.WPF452.SDK.Clients
 
             while (true)
             {
-                //await Task.Delay(1000 * 60 * SendIntervalMins);
-                await Task.Delay(1000 * 1);
+                await Task.Delay(1000 * 60 * SendIntervalMins);
+                //await Task.Delay(1000 * 1);
 
                 var sess   = await GatherSessionInfo(savd);
                 var newCfg = await SendAndGetNewCfg(sess);
@@ -77,6 +79,7 @@ namespace Repo1.WPF452.SDK.Clients
 
         private async Task<R1UserSession> PostNewSession()
         {
+            Status = "PostNewSession ...";
             var sess = await GatherSessionInfo();
             var dict = await Create(sess, async () => 
             {
@@ -90,6 +93,7 @@ namespace Repo1.WPF452.SDK.Clients
         private async Task<R1UserSession> GatherSessionInfo
             (R1UserSession savedNode = null)
         {
+            var exePath          = GetExePath();
             var ssn              = new R1UserSession();
             ssn.nid              = savedNode?.nid ?? 0;
             ssn.uid              = savedNode?.uid ?? 0;
@@ -98,7 +102,7 @@ namespace Repo1.WPF452.SDK.Clients
 
             ssn.MacAndPrivateIPs = GetMacAndPrivateIPs();
             ssn.ExeVersion       = GetExeVersion();
-            ssn.ExePath          = GetExePath().Replace("\\", "/");
+            ssn.ExePath          = exePath.Replace("\\", "/");
 
             ssn.WindowsAccount   = Environment.UserName;
             ssn.ComputerName     = Environment.MachineName;
@@ -108,11 +112,16 @@ namespace Repo1.WPF452.SDK.Clients
             ssn.Repo1CfgJson     = Repo1Cfg.Read(_uniqCfgKey);
             ssn.SessionKey       = GetSessionKey();
             ssn.ExpectedCfg      = "< ignore me >";
-            ssn.Description      = ssn.WindowsAccount
+            ssn.Description      = NoExt(exePath)
                         + " on " + ssn.Workgroup
-                           + "/" + ssn.ComputerName;
+                           + "/" + ssn.ComputerName
+                           + "/" + ssn.WindowsAccount;
             return ssn;
         }
+
+
+        private string NoExt(string filePath) 
+            => Path.GetFileNameWithoutExtension(filePath);
 
 
         private string B64(string text)
