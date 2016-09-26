@@ -97,17 +97,19 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
 
         private static void AddBaseNodeFields<T>(Dictionary<string, object> dict, T origObj)
         {
-            var typ   = typeof(T);
-            var props = typ.GetRuntimeProperties();
+            //var typ   = typeof(T);
+            var props = typeof(T).GetRuntimeProperties();
 
-            var att = typ.GetTypeInfo().CustomAttributes.SingleOrDefault(x
-                    => x.AttributeType == typeof(D7TypeAttribute));
+            //var att = typ.GetTypeInfo().CustomAttributes.SingleOrDefault(x
+            //        => x.AttributeType == typeof(D7TypeAttribute));
 
-            if (att == null)
-                throw new MissingMemberException("Missing attribute from class: « D7Type »");
+            //if (att == null)
+            //    throw new MissingMemberException("Missing attribute from class: « D7Type »");
 
-            dict.Add("type", att.NamedArguments.SingleOrDefault(x
-                => x.MemberName == nameof(D7TypeAttribute.Key)).TypedValue.Value);
+            //dict.Add("type", att.NamedArguments.SingleOrDefault(x
+            //    => x.MemberName == nameof(D7TypeAttribute.Key)).TypedValue.Value);
+
+            dict.Add("type", D7Type.GetKey<T>());
 
             var prop = props.SingleOrDefault(x => x.Name == "nid");
             if (prop != null) dict.Add("nid", prop.GetValue(origObj));

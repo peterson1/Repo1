@@ -109,6 +109,8 @@
     <Compile Include="Helpers\R1ExecutableExtensions\R1Exe.cs" />
     <Compile Include="Helpers\Serialization\Json.cs" />
     <Compile Include="Helpers\WindowExtensions\CommonWindowExtensions.cs" />
+    <Compile Include="InputCommands\LabeledCommand.cs" />
+    <Compile Include="InputCommands\RelayCommand.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>
     </Compile>
