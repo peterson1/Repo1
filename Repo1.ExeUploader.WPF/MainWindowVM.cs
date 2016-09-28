@@ -9,6 +9,8 @@ using Repo1.ExeUploader.WPF.DiskAccess;
 using Repo1.WPF452.SDK.Helpers.InputCommands;
 using Repo1.WPF452.SDK.Helpers;
 using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
+using System;
+using System.IO;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -72,7 +74,7 @@ namespace Repo1.ExeUploader.WPF
 
         private async Task GetRemoteExe()
         {
-            RemoteExe = await Client.GetExecutable();
+            RemoteExe = await Client.GetExecutable(LocalExe.FileName);
             if (RemoteExe == null) return;
             if (RemoteExe.FileHash == LocalExe.FileHash) return;
 
@@ -84,13 +86,24 @@ namespace Repo1.ExeUploader.WPF
 
         private R1Executable FindLocalExe()
         {
-            var exes = ValidExeFile.FindAll();
+            var exePath = "";
 
-            if (exes.Count != 1) return Alerter.Warn((exes.Count == 0 
-                ? "No" : "More than 1") + " .exe file found.");
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                exePath = args[1];
+                if (!File.Exists(exePath)) return Alerter.Warn(
+                    $"Exe path from argument is invalid:{L.f}   {exePath}");
+            }
+            else
+            {
+                var exes = ValidExeFile.FindAll();
+                if (exes.Count != 1) return Alerter.Warn((exes.Count == 0 
+                    ? "No" : "More than 1") + " .exe file found.");
+                exePath = exes[0];
+            }
 
-            //var exe = ValidExeFile.ToR1Exe(exes[0]);
-            var exe = R1Exe.FromFile(exes[0]);
+            var exe = R1Exe.FromFile(exePath);
             return exe;
         }
     }

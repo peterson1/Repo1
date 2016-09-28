@@ -4,6 +4,6 @@ namespace Repo1.ExeUploader.WPF.Configuration
 {
     class UploaderCfg : DownloaderCfg
     {
-        public int ExecutableNid { get; set; }
+        //public int ExecutableNid { get; set; }
     }
 }

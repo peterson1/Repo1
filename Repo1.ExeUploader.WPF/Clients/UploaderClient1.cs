@@ -32,12 +32,12 @@ namespace Repo1.ExeUploader.WPF.Clients
         }
 
 
-        internal async Task<R1Executable> GetExecutable()
+        internal async Task<R1Executable> GetExecutable(string exeFileName)
         {
             Status   = "Querying uploadables for this user ...";
-            var list = await ViewsList<UploadablesForUserDTO>(_upCfg.ExecutableNid);
+            var list = await ViewsList<UploadablesForUserDTO>();
             if (list == null) return null;
-            var exe = list.Single(x => x.nid == _upCfg.ExecutableNid);
+            var exe = list.SingleOrDefault(x => x.FileName == exeFileName);
             return exe;
         }
 
