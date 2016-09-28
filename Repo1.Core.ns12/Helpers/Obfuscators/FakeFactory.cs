@@ -15,7 +15,7 @@ namespace Repo1.Core.ns12.Helpers.Obfuscators
 
         public FakeFactory()
         {
-            _random = ThreadSafe.LocalRandom;
+            _random = ThreadSafeRandom.LocalRandom;
             _companySuffixes = new string[] { "Inc.", "Ltd.", "Co." };
 
             _vowels = new string[] { "a", "e", "i", "o", "u" };
@@ -279,26 +279,40 @@ namespace Repo1.Core.ns12.Helpers.Obfuscators
 
 
 
-
-
+        public      string  Male1stName    ()          => RandomAmerican.Male1stName   ();
+        public      string  Female1stName  ()          => RandomAmerican.Female1stName ();
+        public      string  LastName       ()          => RandomAmerican.LastName      ();
+        public List<string> FirstNames     (int count) => RandomAmerican.FirstNames    (count);
+        public List<string> Male1stNames   (int count) => RandomAmerican.Male1stNames  (count);
+        public List<string> Female1stNames (int count) => RandomAmerican.Female1stNames(count);
+        public List<string> LastNames      (int count) => RandomAmerican.LastNames     (count);
     }
 
 
-    internal static class ThreadSafe
+    public static class ThreadSafeRandom
     {
+        [ThreadStatic] private static Random _localRandom;
+
         // from http://stackoverflow.com/a/1262619/3973863
-        [ThreadStatic]
-        private static Random _localRandom;
-        public static Random LocalRandom => _localRandom ?? (_localRandom = new Random(unchecked(Environment.TickCount * 31)));
-    }
+        public static Random LocalRandom => _localRandom ?? (_localRandom 
+            = new Random(unchecked(Environment.TickCount * 31)));
 
 
-    internal static class ItemRandomizer
-    {
         public static T RandomItem<T>(this IEnumerable<T> list)
+            => list.ElementAt(LocalRandom.Next(list.Count() - 1));
+
+
+        public static void Shuffle<T>(this IList<T> list)
         {
-            var i = ThreadSafe.LocalRandom.Next(list.Count() - 1);
-            return list.ElementAt(i);
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = LocalRandom.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
     }
 }

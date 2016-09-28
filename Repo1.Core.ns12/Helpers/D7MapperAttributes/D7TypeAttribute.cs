@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
 {
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class D7TypeAttribute : Attribute
     {
         public string Key { get; set; }
@@ -14,14 +15,26 @@ namespace Repo1.Core.ns12.Helpers.D7MapperAttributes
     {
         public static string GetKey<T>()
         {
-            var att = typeof(T).GetTypeInfo().CustomAttributes.SingleOrDefault(x
-                    => x.AttributeType == typeof(D7TypeAttribute));
+            var att = typeof(T).GetTypeInfo()
+                .GetCustomAttributes<D7TypeAttribute>(true).SingleOrDefault();
 
             if (att == null)
                 throw new MissingMemberException("Missing attribute from class: « D7Type »");
 
-            return att.NamedArguments.SingleOrDefault(x
-                => x.MemberName == nameof(D7TypeAttribute.Key)).TypedValue.Value.ToString();
+            return att.Key;
         }
+
+
+        //public static string GetKey<T>()
+        //{
+        //    var att = typeof(T).GetTypeInfo().CustomAttributes.SingleOrDefault(x
+        //            => x.AttributeType == typeof(D7TypeAttribute));
+
+        //    if (att == null)
+        //        throw new MissingMemberException("Missing attribute from class: « D7Type »");
+
+        //    return att.NamedArguments.SingleOrDefault(x
+        //        => x.MemberName == nameof(D7TypeAttribute.Key)).TypedValue.Value.ToString();
+        //}
     }
 }

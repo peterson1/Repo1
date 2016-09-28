@@ -110,8 +110,10 @@ namespace Repo1.WPF452.SDK.Clients
 
             ssn.LegacyCfgJson    = _readLegacyCfg?.Invoke();
             ssn.Repo1CfgJson     = Repo1Cfg.Read(_uniqCfgKey);
-            ssn.SessionKey       = GetSessionKey();
             ssn.ExpectedCfg      = "< ignore me >";
+
+            ssn.SessionKey       = GetSessionKey();
+            ssn.FutureLicenseKey = GetFutureLicenseKey();
             ssn.Description      = NoExt(exePath)
                         + " on " + ssn.Workgroup
                            + "/" + ssn.ComputerName
@@ -146,6 +148,19 @@ namespace Repo1.WPF452.SDK.Clients
 
             for (int i = 0; i < list.Count; i++)
                 list[i] += " : " + PrivateIP.ForMAC(list[i]);
+
+            return string.Join(L.f, list);
+        }
+
+
+        private string GetFutureLicenseKey()
+        {
+            var rCfg = Repo1Cfg.Parse(_uniqCfgKey);
+            if (rCfg == null) return null;
+            var list = MacAddresses.List();
+
+            for (int i = 0; i < list.Count; i++)
+                list[i] = rCfg.GetLicenseKey(list[i]);
 
             return string.Join(L.f, list);
         }
