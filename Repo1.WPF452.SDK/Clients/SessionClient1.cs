@@ -22,15 +22,11 @@ namespace Repo1.WPF452.SDK.Clients
     class SessionClient1 : SvcStackRestClient, ISessionClient
     {
         private bool          _isTracking;
-        private DownloaderCfg _cfg;
         private Func<string>  _readLegacyCfg;
-        private string        _uniqCfgKey;
 
 
-        public SessionClient1(DownloaderCfg downloaderCfg, int sendIntervalMins) : base(downloaderCfg)
+        public SessionClient1(int sendIntervalMins) : base(null)
         {
-            _cfg             = downloaderCfg;
-            _uniqCfgKey      = _cfg.ActivationKey;
             SendIntervalMins = sendIntervalMins;
         }
 
@@ -38,9 +34,19 @@ namespace Repo1.WPF452.SDK.Clients
         public int SendIntervalMins { get; set; } = 2;
 
 
+        public string ConfigKey { get; set; }
 
-        public async Task StartTrackingLoop()
+
+
+        public async Task StartSessionUpdateLoop(string userName, string password)
         {
+            _creds = new RestServerCredentials
+            {
+                Username   = userName,
+                Password   = password,
+                ApiBaseURL = Repo1Client.API_URL,
+            };
+
             if (_isTracking) return;
             _isTracking = true;
 
@@ -53,19 +59,19 @@ namespace Repo1.WPF452.SDK.Clients
             if (savd == null)
                 savd = await PostNewSession();
 
-            if (!Repo1Cfg.Found(_uniqCfgKey))
-                 Repo1Cfg.WriteBlank(_uniqCfgKey);
+            if (!Repo1Cfg.Found(ConfigKey))
+                 Repo1Cfg.WriteBlank(ConfigKey);
 
             while (true)
             {
                 await Task.Delay(1000 * 60 * SendIntervalMins);
-                //await Task.Delay(1000 * 1);
+                //await Task.Delay(1000);
 
                 var sess   = await GatherSessionInfo(savd);
                 var newCfg = await SendAndGetNewCfg(sess);
 
                 if (newCfg != sess.Repo1CfgJson)
-                    Repo1Cfg.Rewrite(newCfg, _uniqCfgKey);
+                    Repo1Cfg.Rewrite(newCfg, ConfigKey);
             }
         }
 
@@ -109,7 +115,7 @@ namespace Repo1.WPF452.SDK.Clients
             ssn.Workgroup        = GetWorkgroup();
 
             ssn.LegacyCfgJson    = _readLegacyCfg?.Invoke();
-            ssn.Repo1CfgJson     = Repo1Cfg.Read(_uniqCfgKey);
+            ssn.Repo1CfgJson     = Repo1Cfg.Read(ConfigKey);
             ssn.ExpectedCfg      = "< ignore me >";
 
             ssn.SessionKey       = GetSessionKey();
@@ -155,7 +161,7 @@ namespace Repo1.WPF452.SDK.Clients
 
         private string GetFutureLicenseKey()
         {
-            var rCfg = Repo1Cfg.Parse(_uniqCfgKey);
+            var rCfg = Repo1Cfg.Parse(ConfigKey);
             if (rCfg == null) return null;
             var list = MacAddresses.List();
 
@@ -169,7 +175,7 @@ namespace Repo1.WPF452.SDK.Clients
         private string GetSessionKey()
             => (string.Join(",", MacAddresses.List())
                                + GetExePath()
-                               + _uniqCfgKey).SHA1ForUTF8();
+                               + ConfigKey).SHA1ForUTF8();
 
 
 

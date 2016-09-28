@@ -29,7 +29,14 @@ namespace Repo1.WPF452.SDK.Configuration
 
 
         internal static Repo1Cfg Parse(string configKey)
-            => Json.Deserialize<Repo1Cfg>(Read(configKey));
+        {
+            try
+            {
+                return Json.Deserialize<Repo1Cfg>(Read(configKey));
+            }
+            catch (Exception) { }
+            return null;
+        }
 
 
         internal static string Read(string configKey)

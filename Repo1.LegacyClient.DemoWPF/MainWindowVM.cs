@@ -15,14 +15,12 @@ namespace Repo1.LegacyClient.DemoWPF
         {
             var cfg  = LegacyCfg.ReadAndParse();
 
-            _repo = new Repo1Client(cfg.Username, 
-                                    cfg.Password, 
-                                    cfg.UniqueCfgKey);
+            _repo = new Repo1Client(cfg.UniqueCfgKey);
 
             _repo.ReadLegacyCfg = () => LegacyCfg.Read();
 
             StartTrackingCmd = new RelayCommand(x 
-                => _repo.StartTrackingUserSession());
+                => _repo.StartSessionUpdateLoop(cfg.Username, cfg.Password));
 
             StartTrackingCmd.Execute(null);
         }

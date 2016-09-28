@@ -6,9 +6,9 @@ namespace Repo1.Core.ns12.Clients
 {
     public interface IRepo1Client : INotifyPropertyChanged
     {
-        void  StartUpdateCheckLoop     ();
-        void  StopUpdateCheckLoop      ();
-        void  StartTrackingUserSession ();
+        void  StartUpdateCheckLoop   ();
+        void  StopUpdateCheckLoop    ();
+        void  StartSessionUpdateLoop (string userName, string password);
 
         void  RaisePropertyChanged(string propertyName);
 

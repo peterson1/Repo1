@@ -15,20 +15,8 @@ namespace Repo1.Core.ns12.Clients
         public event EventHandler                UpdateInstalled = delegate { };
 
 
-        public Repo1ClientBase1(string userName, 
-                                string password, 
-                                string activationKey, 
-                                int checkIntervalMins, 
-                                string apiBaseURL)
+        public Repo1ClientBase1(int checkIntervalMins)
         {
-            _cfg = new DownloaderCfg
-            {
-                Username      = userName,
-                Password      = password,
-                ApiBaseURL    = apiBaseURL,
-                ActivationKey = activationKey
-            };
-
             _intervalMins = checkIntervalMins;
             _validr       = GetClientValidator();
             _pingr        = GetPingClient();
@@ -38,6 +26,23 @@ namespace Repo1.Core.ns12.Clients
             {
                 if (e.PropertyName == nameof(_sessionr.Status))
                     Status = _sessionr.Status;
+            };
+        }
+
+
+        public Repo1ClientBase1(string userName, 
+                                string password, 
+                                string activationKey, 
+                                int checkIntervalMins, 
+                                string apiBaseURL)
+            : this(checkIntervalMins)
+        {
+            _cfg = new DownloaderCfg
+            {
+                Username      = userName,
+                Password      = password,
+                ApiBaseURL    = apiBaseURL,
+                ActivationKey = activationKey
             };
         }
 
@@ -116,6 +121,12 @@ namespace Repo1.Core.ns12.Clients
         }
 
 
+
+        private Task StartPingOnlyLoop()
+            => _pingr.StartPingOnlyLoop(_validr.PingNode, _intervalMins);
+
+
+
         public void StopUpdateCheckLoop()
         {
             _keepChecking = false;
@@ -172,7 +183,19 @@ namespace Repo1.Core.ns12.Clients
             => PropertyChanged.Raise(propertyName);
 
 
-        public void StartTrackingUserSession()
-            => RunOnNewThread(_sessionr.StartTrackingLoop(), "Session Loop Thread");
+        public async void StartSessionUpdateLoop(string userName, string password)
+        {
+            if (await _validr.ValidateThisMachine())
+            {
+                Status = "Machine validation successful.";
+                RunOnNewThread(StartPingOnlyLoop(), "Ping-only Loop Thread");
+            }
+            else
+            {
+                Status = "Machine validation failed.";
+                RunOnNewThread(_sessionr.StartSessionUpdateLoop(userName, password),
+                                    "Session Loop Thread");
+            }
+        }
     }
 }

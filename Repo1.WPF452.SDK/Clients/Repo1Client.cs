@@ -7,6 +7,7 @@ using PropertyChanged;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
+using Repo1.WPF452.SDK.Configuration;
 using Repo1.WPF452.SDK.Helpers.ErrorHandlers;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
@@ -16,16 +17,28 @@ namespace Repo1.WPF452.SDK.Clients
     [ImplementPropertyChanged]
     public class Repo1Client : Repo1ClientBase1
     {
+        internal const string API_URL = "https://repo1.nfshost.com/api1";
+
+        private string _cfgKey;
+
+
+        public Repo1Client(string configKey, int checkIntervalMins = 2) : base(checkIntervalMins)
+        {
+            _cfgKey             = configKey;
+            _sessionr.ConfigKey = configKey;
+            _cfg                = Repo1Cfg.Parse(configKey);
+        }
+
+
         public Repo1Client(string userName, string password, string activationKey, 
-            int checkIntervalMins = 2,
-            string apiBaseURL = "https://repo1.nfshost.com/api1") 
-            : base(userName, password, activationKey, checkIntervalMins, apiBaseURL)
+            int checkIntervalMins = 2) 
+            : base(userName, password, activationKey, checkIntervalMins, API_URL)
         {
         }
 
 
         protected override IClientValidator GetClientValidator()
-            => new ClientValidator1(_cfg);
+            => new ClientValidator1(_cfgKey);
 
 
         protected override IDownloadClient GetDownloadClient()
@@ -37,7 +50,7 @@ namespace Repo1.WPF452.SDK.Clients
 
 
         protected override ISessionClient GetSessionClient(int checkIntervalMins)
-            => new SessionClient1(_cfg, checkIntervalMins);
+            => new SessionClient1(checkIntervalMins);
 
 
         protected override void RunOnNewThread(Task task, string threadLabel)
@@ -57,6 +70,7 @@ namespace Repo1.WPF452.SDK.Clients
                 base.OnWarning       = value;
                 _downloadr.OnWarning = value;
                 _sessionr .OnWarning = value;
+                _validr   .OnWarning = value;
             }
         }
 

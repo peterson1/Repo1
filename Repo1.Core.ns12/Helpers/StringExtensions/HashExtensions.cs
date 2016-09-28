@@ -16,6 +16,7 @@ namespace Repo1.Core.ns12.Helpers.StringExtensions
         /// <returns></returns>
         public static string SHA1ForUTF8(this string utf8Text)
         {
+            if (utf8Text == null) utf8Text = "";
             var algo = new HashLib.Crypto.SHA1();
             var res = algo.ComputeString(utf8Text, Encoding.UTF8);
             return res.ToString().ToLower();

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
 using Repo1.Core.ns12.Models;
+using Repo1.WPF452.SDK.Configuration;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.NetworkInterfaces;
 
@@ -17,12 +15,11 @@ namespace Repo1.WPF452.SDK.Clients
 {
     public class ClientValidator1 : SvcStackRestClient, IClientValidator
     {
-        private DownloaderCfg _dCfg;
+        private string _cfgKey;
 
-
-        public ClientValidator1(DownloaderCfg downloaderCfg) : base(downloaderCfg)
+        public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
         {
-            _dCfg = downloaderCfg;
+            _cfgKey = configKey;
         }
 
 
@@ -31,16 +28,26 @@ namespace Repo1.WPF452.SDK.Clients
 
         public async Task<bool> ValidateThisMachine()
         {
+            if (_creds == null)
+                return Warn("Credentials object is NULL.");
+
             foreach (var macAdress in MacAddresses.List())
             {
                 var dto = await GetPingByMacAddress(macAdress);
-                if (_creds.WasRejected) return false;
-                if (dto == null) continue;
+
+                if (_creds.WasRejected)
+                    return Warn("Server rejected the credentials.");
+
+                if (dto == null)
+                {
+                    Warn($"Unregisted MAC address: {macAdress}");
+                    continue;
+                }
 
                 PingNode = await AssemblePingNode(dto, macAdress);
                 return true;
             }
-            return false;
+            return Warn("No valid MAC addresses found."); 
         }
 
 
@@ -58,7 +65,15 @@ namespace Repo1.WPF452.SDK.Clients
 
         private async Task<GetPingByLicenseKeyDTO> GetPingByMacAddress(string macAddress)
         {
-            var key  = _dCfg.GetLicenseKey(macAddress);
+            var cfg = Repo1Cfg.Parse(_cfgKey);
+            if (cfg == null)
+            {
+                Warn($"Config file is unparseable.");
+                return null;
+            }
+            var key  = cfg.GetLicenseKey(macAddress);
+Warn($"Using activation: {cfg.ActivationKey}");
+Warn($"Using key: {key}");
             var list = await ViewsList<GetPingByLicenseKeyDTO>(key);
             return list?.SingleOrDefault();
         }

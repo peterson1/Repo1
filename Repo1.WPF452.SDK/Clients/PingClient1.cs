@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
 using Repo1.Core.ns12.Models;
@@ -7,6 +8,8 @@ namespace Repo1.WPF452.SDK.Clients
 {
     internal class PingClient1 : SvcStackRestClient, IPingClient
     {
+        private bool _isPinging;
+
         public PingClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
         }
@@ -21,6 +24,19 @@ namespace Repo1.WPF452.SDK.Clients
                 FileVersion = dict.FieldValue("field_fileversion"),
                 FileHash    = dict.FieldValue("field_filehash"),
             };
+        }
+
+
+        public async Task StartPingOnlyLoop(R1Ping pingNode, int intervalMins)
+        {
+            if (_isPinging) return;
+            _isPinging = true;
+
+            while (true)
+            {
+                await Update(pingNode);
+                await Task.Delay(1000 * intervalMins * 60);
+            }
         }
 
 
