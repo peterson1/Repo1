@@ -65,7 +65,6 @@ namespace Repo1.WPF452.SDK.Clients
             while (true)
             {
                 await Task.Delay(1000 * 60 * SendIntervalMins);
-                //await Task.Delay(1000);
 
                 var sess   = await GatherSessionInfo(savd);
                 var newCfg = await SendAndGetNewCfg(sess);

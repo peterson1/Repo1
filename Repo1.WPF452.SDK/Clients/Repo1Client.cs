@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PropertyChanged;
 using Repo1.Core.ns12.Clients;
+using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Configuration;
@@ -19,22 +20,13 @@ namespace Repo1.WPF452.SDK.Clients
     {
         internal const string API_URL = "https://repo1.nfshost.com/api1";
 
-        private string _cfgKey;
 
 
-        public Repo1Client(string configKey, int checkIntervalMins = 2) : base(checkIntervalMins)
+        public Repo1Client(string configKey, int checkIntervalMins = 2) : base(configKey, checkIntervalMins)
         {
-            _cfgKey             = configKey;
             _sessionr.ConfigKey = configKey;
-            _cfg                = Repo1Cfg.Parse(configKey);
         }
 
-
-        public Repo1Client(string userName, string password, string activationKey, 
-            int checkIntervalMins = 2) 
-            : base(userName, password, activationKey, checkIntervalMins, API_URL)
-        {
-        }
 
 
         protected override IClientValidator GetClientValidator()
@@ -51,6 +43,14 @@ namespace Repo1.WPF452.SDK.Clients
 
         protected override ISessionClient GetSessionClient(int checkIntervalMins)
             => new SessionClient1(checkIntervalMins);
+
+
+        protected override R1Executable GetCurrentR1Exe()
+            => R1Exe.FromFile(Assembly.GetEntryAssembly().Location);
+
+
+        protected override DownloaderCfg ParseDownloaderCfg(string configKey)
+            => Repo1Cfg.Parse(configKey);
 
 
         protected override void RunOnNewThread(Task task, string threadLabel)
@@ -96,9 +96,5 @@ namespace Repo1.WPF452.SDK.Clients
             }
             return File.Exists(origPath);
         }
-
-
-        protected override R1Executable GetCurrentR1Exe()
-            => R1Exe.FromFile(Assembly.GetEntryAssembly().Location);
     }
 }

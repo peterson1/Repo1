@@ -8,6 +8,7 @@ using PropertyChanged;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
+using Repo1.WPF452.SDK.Helpers.HtmlTools;
 using ServiceStack;
 using ServiceStack.Text;
 
@@ -47,6 +48,9 @@ namespace Repo1.WPF452.SDK.Clients
             => GetStatus(ex as WebException)
             ?? (ex as WebServiceException)?.GetStatus();
 
+
+        protected override void DecodeHtmlInStrings<T>(T obj)
+            => HtmlDecoder.ReplaceStrings(obj);
 
 
         private HttpStatusCode? GetStatus(WebException wx)

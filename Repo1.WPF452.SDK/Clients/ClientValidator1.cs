@@ -15,11 +15,8 @@ namespace Repo1.WPF452.SDK.Clients
 {
     public class ClientValidator1 : SvcStackRestClient, IClientValidator
     {
-        private string _cfgKey;
-
         public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
         {
-            _cfgKey = configKey;
         }
 
 
@@ -65,15 +62,14 @@ namespace Repo1.WPF452.SDK.Clients
 
         private async Task<GetPingByLicenseKeyDTO> GetPingByMacAddress(string macAddress)
         {
-            var cfg = Repo1Cfg.Parse(_cfgKey);
+            var cfg = _creds as DownloaderCfg;
             if (cfg == null)
             {
-                Warn($"Config file is unparseable.");
+                Warn($"Config is not a ‹{typeof(DownloaderCfg).Name}›");
                 return null;
             }
+
             var key  = cfg.GetLicenseKey(macAddress);
-Warn($"Using activation: {cfg.ActivationKey}");
-Warn($"Using key: {key}");
             var list = await ViewsList<GetPingByLicenseKeyDTO>(key);
             return list?.SingleOrDefault();
         }

@@ -44,11 +44,12 @@ namespace Repo1.Core.ns12.Clients
 
         public Action<string>    OnWarning    { get; set; }
 
-        protected abstract Task<T>          Get  <T>          (string resourceUrl);
-        protected abstract Task<T>          Post <T>          (T objToPost, string resourceUrl);
-        protected abstract Task<T>          Put  <T>          (T objToPost, string resourceUrl);
-        protected abstract HttpStatusCode?  GetStatusCode<T>  (T exception);
-        protected abstract void             OnError           (Exception ex);
+        protected abstract Task<T>          Get  <T>                (string resourceUrl);
+        protected abstract Task<T>          Post <T>                (T objToPost, string resourceUrl);
+        protected abstract Task<T>          Put  <T>                (T objToPost, string resourceUrl);
+        protected abstract HttpStatusCode?  GetStatusCode<T>        (T exception);
+        protected abstract void             OnError                 (Exception ex);
+        protected abstract void             DecodeHtmlInStrings <T> (T obj);
 
 
         protected async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished = true)
@@ -129,6 +130,9 @@ namespace Repo1.Core.ns12.Clients
 
             if (list == null)
                 OnError(new ArgumentNullException($"ViewsList ‹{typeof(T).Name}› returned NULL."));
+
+            foreach (var item in list)
+                DecodeHtmlInStrings(item);
 
             return list;
         }

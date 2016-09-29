@@ -65,6 +65,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -103,6 +104,7 @@
     <Compile Include="Helpers\EmbeddedResourceHelpers\EmbeddedResrc.cs" />
     <Compile Include="Helpers\ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Helpers\FileInfoExtensions\CommonFileInfoExtensions.cs" />
+    <Compile Include="Helpers\HtmlTools\HtmlDecoder.cs" />
     <Compile Include="Helpers\InputCommands\CommandR1WPF.cs" />
     <Compile Include="Helpers\NetworkInterfaces\MacAddresses.cs" />
     <Compile Include="Helpers\NetworkInterfaces\PrivateIP.cs" />

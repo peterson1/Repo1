@@ -7,6 +7,8 @@ using PropertyChanged;
 using Repo1.Core.ns12.Clients;
 using Repo1.Core.ns12.Configuration;
 using Repo1.Core.ns12.DTOs.ViewsListDTOs;
+using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns12.Helpers.ExceptionExtensions;
 using Repo1.Core.ns12.Models;
 using Repo1.WPF452.SDK.Archivers;
 using Repo1.WPF452.SDK.Helpers;
@@ -52,9 +54,9 @@ namespace Repo1.WPF452.SDK.Clients
             {
                 list = await SevenZipper1.DecompressMultiPart(paths, tempDir);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Warn("[Decompress Error] Downloaded file may be corrupted.");
+                Warn("[Decompress Error] Downloaded file may be corrupted." + L.f + ex.Info());
                 return null;
             }
             if (list == null)

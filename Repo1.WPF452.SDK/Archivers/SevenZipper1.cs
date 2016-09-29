@@ -141,6 +141,11 @@ namespace Repo1.WPF452.SDK.Archivers
             //  To fix "The path is not of a legal form" error:
             //    -  add tag in FodyWeavers.xml
             //    -  <Costura CreateTemporaryAssemblies='true' />
+
+
+            //  To fix "Can not load 7-zip library or internal COM error! Message: failed to load library."
+            //    = proj. properties > Build > Prefer 32-bit
+
             SevenZipCompressor.SetLibraryPath(libF);
 
             return true;

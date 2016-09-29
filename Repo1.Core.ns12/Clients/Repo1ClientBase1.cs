@@ -14,9 +14,21 @@ namespace Repo1.Core.ns12.Clients
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public event EventHandler                UpdateInstalled = delegate { };
 
+        private int                _intervalMins;
+        private bool               _keepChecking;
+        private bool               _isChecking;
+        protected IPingClient      _pingr;
+        protected IClientValidator _validr;
+        protected ISessionClient   _sessionr;
+        protected IDownloadClient  _downloadr;
+        protected DownloaderCfg    _cfg;
+        protected string           _cfgKey;
 
-        public Repo1ClientBase1(int checkIntervalMins)
+
+        public Repo1ClientBase1(string configKey, int checkIntervalMins)
         {
+            _cfgKey       = configKey;
+            _cfg          = ParseDownloaderCfg(configKey);
             _intervalMins = checkIntervalMins;
             _validr       = GetClientValidator();
             _pingr        = GetPingClient();
@@ -30,31 +42,22 @@ namespace Repo1.Core.ns12.Clients
         }
 
 
-        public Repo1ClientBase1(string userName, 
-                                string password, 
-                                string activationKey, 
-                                int checkIntervalMins, 
-                                string apiBaseURL)
-            : this(checkIntervalMins)
-        {
-            _cfg = new DownloaderCfg
-            {
-                Username      = userName,
-                Password      = password,
-                ApiBaseURL    = apiBaseURL,
-                ActivationKey = activationKey
-            };
-        }
+        //public Repo1ClientBase1(string userName, 
+        //                        string password, 
+        //                        string activationKey, 
+        //                        int checkIntervalMins, 
+        //                        string apiBaseURL)
+        //    : this(checkIntervalMins)
+        //{
+        //    _cfg = new DownloaderCfg
+        //    {
+        //        Username      = userName,
+        //        Password      = password,
+        //        ApiBaseURL    = apiBaseURL,
+        //        ActivationKey = activationKey
+        //    };
+        //}
 
-
-        private int                _intervalMins;
-        private bool               _keepChecking;
-        private bool               _isChecking;
-        protected IPingClient      _pingr;
-        protected IClientValidator _validr;
-        protected ISessionClient   _sessionr;
-        protected IDownloadClient  _downloadr;
-        protected DownloaderCfg    _cfg;
 
 
         private string _status;
@@ -94,6 +97,7 @@ namespace Repo1.Core.ns12.Clients
         protected abstract R1Executable      GetCurrentR1Exe       ();
         protected abstract bool              ReplaceCurrentExeWith (string replacementExePath);
         protected abstract void              RunOnNewThread        (Task task, string threadLabel);
+        protected abstract DownloaderCfg     ParseDownloaderCfg    (string configKey); 
 
 
         protected T Warn <T>(string message, T returnVal = default(T))
@@ -183,12 +187,14 @@ namespace Repo1.Core.ns12.Clients
             => PropertyChanged.Raise(propertyName);
 
 
+
         public async void StartSessionUpdateLoop(string userName, string password)
         {
             if (await _validr.ValidateThisMachine())
             {
                 Status = "Machine validation successful.";
-                RunOnNewThread(StartPingOnlyLoop(), "Ping-only Loop Thread");
+                //RunOnNewThread(StartPingOnlyLoop(), "Ping-only Loop Thread");
+                StartUpdateCheckLoop();
             }
             else
             {
