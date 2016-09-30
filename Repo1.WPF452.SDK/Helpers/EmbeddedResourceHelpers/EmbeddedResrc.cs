@@ -6,6 +6,7 @@ namespace Repo1.WPF452.SDK.Helpers.EmbeddedResourceHelpers
     {
         public static string ExtractToFile<T>(string resrcFileName, string resrcFolder, string targetDir)
         {
+            Directory.CreateDirectory(targetDir);
             var targPath = Path.Combine(targetDir, resrcFileName);
             var assembly = typeof(T).Assembly;
             var rsrcPath = $"{assembly.GetName().Name}.{resrcFolder}.{resrcFileName}";
