@@ -149,6 +149,11 @@ namespace Repo1.Core.ns12.Clients
                 Status = "Checking for newer version ...";
                 latest = await _pingr.SendAndGetLatestVersion(ping);
 
+                //todo: rewrite local Repo1Cfg if server's copy changed
+
+                //todo: rewrite local legacyCfg if server's copy changed
+
+
                 if (!_keepChecking) return;
                 if (current.FileHash == latest.FileHash)
                 {

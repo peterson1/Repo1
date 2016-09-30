@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using PropertyChanged;
 using Repo1.Core.ns12.Helpers.InputCommands;
-using Repo1.Core.ns12.Models;
 using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns12.Models;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;
-using Repo1.WPF452.SDK.Helpers.InputCommands;
 using Repo1.WPF452.SDK.Helpers;
+using Repo1.WPF452.SDK.Helpers.InputCommands;
 using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
-using System;
-using System.IO;
 
 namespace Repo1.ExeUploader.WPF
 {
@@ -76,6 +76,7 @@ namespace Repo1.ExeUploader.WPF
         {
             RemoteExe = await Client.GetExecutable(LocalExe.FileName);
             if (RemoteExe == null) return;
+            if (RemoteExe.FileVersion == LocalExe.FileVersion) return;
             if (RemoteExe.FileHash == LocalExe.FileHash) return;
 
             LocalExe.nid = RemoteExe.nid;
