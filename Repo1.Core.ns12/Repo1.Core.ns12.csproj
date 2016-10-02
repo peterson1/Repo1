@@ -75,6 +75,7 @@
     <Compile Include="Helpers\D7MapperAttributes\UndFields\ValueField.cs" />
     <Compile Include="Helpers\D7MapperAttributes\UserAttribute.cs" />
     <Compile Include="Helpers\D7MapperAttributes\ValueAttribute.cs" />
+    <Compile Include="Helpers\DecimalExtensions\CommonDecimalExtensions.cs" />
     <Compile Include="Helpers\EArg.cs" />
     <Compile Include="Helpers\ExceptionExtensions\BasicExceptionExtensions.cs" />
     <Compile Include="Helpers\InputCommands\ICommandR1.cs" />
