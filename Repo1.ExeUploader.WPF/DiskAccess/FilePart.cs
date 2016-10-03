@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using Repo1.Core.ns11.R1Models;
-using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
+using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 
 namespace Repo1.ExeUploader.WPF.DiskAccess
 {

@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Repo1.WPF452.SDK.Helpers.Serialization;
+using Repo1.WPF45.SDK.Serialization;
 using static System.Environment;
 
 namespace Repo1.LegacyClient.DemoWPF.Configuration

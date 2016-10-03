@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
 using Repo1.Core.ns11.R1Clients;
 using Repo1.LegacyClient.DemoWPF.Configuration;
-using Repo1.WPF452.SDK.Clients;
-using Repo1.WPF452.SDK.InputCommands;
+using Repo1.WPF45.SDK.Clients;
+using Repo1.WPF45.SDK.InputCommands;
 
 namespace Repo1.LegacyClient.DemoWPF
 {

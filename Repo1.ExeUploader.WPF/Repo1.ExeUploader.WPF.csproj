@@ -168,9 +168,9 @@
       <Project>{7a17361c-1261-46d8-802c-fed02d009543}</Project>
       <Name>Repo1.Core.ns11</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Repo1.WPF452.SDK\Repo1.WPF452.SDK.csproj">
-      <Project>{4FDB6C7A-A8FF-42D2-A933-54F3EB4130CE}</Project>
-      <Name>Repo1.WPF452.SDK</Name>
+    <ProjectReference Include="..\Repo1.WPF45.SDK\Repo1.WPF45.SDK.csproj">
+      <Project>{472ef9b4-03a4-4867-8377-5b217d476763}</Project>
+      <Name>Repo1.WPF45.SDK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

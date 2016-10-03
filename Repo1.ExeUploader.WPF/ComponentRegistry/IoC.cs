@@ -3,7 +3,7 @@ using Autofac.Builder;
 using Repo1.Core.ns11.Configuration;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
-using Repo1.WPF452.SDK.Clients;
+using Repo1.WPF45.SDK.Clients;
 
 namespace Repo1.ExeUploader.WPF.ComponentRegistry
 {

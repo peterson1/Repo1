@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Repo1.WPF452.SDK.Clients;
+using Repo1.WPF45.SDK.Clients;
 
 namespace Repo1.SdkClient.DemoWPF
 {

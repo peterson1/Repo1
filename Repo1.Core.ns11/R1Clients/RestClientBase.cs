@@ -128,7 +128,11 @@ namespace Repo1.Core.ns11.R1Clients
             var list = await GetTilOK<List<T>>(url);
 
             if (list == null)
-                OnError(new ArgumentNullException($"ViewsList ‹{typeof(T).Name}› returned NULL."));
+            {
+                //OnError(new ArgumentNullException($"ViewsList ‹{typeof(T)?.Name}› returned NULL."));
+                Warn($"ViewsList ‹{typeof(T)?.Name}› returned NULL.");
+                return null;
+            }
 
             foreach (var item in list)
                 DecodeHtmlInStrings(item);

@@ -9,10 +9,10 @@ using Repo1.Core.ns11.R1Models;
 using Repo1.Core.ns11.R1Models.ViewsLists;
 using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;
-using Repo1.WPF452.SDK.Archivers;
-using Repo1.WPF452.SDK.Clients;
-using Repo1.WPF452.SDK.Helpers;
-using Repo1.WPF452.SDK.Helpers.EmbeddedResourceHelpers;
+using Repo1.WPF45.SDK.Archivers;
+using Repo1.WPF45.SDK.Clients;
+using Repo1.WPF45.SDK.EmbeddedResources;
+using Repo1.WPF45.SDK.ErrorHandlers;
 
 namespace Repo1.ExeUploader.WPF.Clients
 {

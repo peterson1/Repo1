@@ -1,9 +1,8 @@
-﻿using System.Net;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
 using Repo1.ExeUploader.WPF.ComponentRegistry;
 using Repo1.ExeUploader.WPF.Configuration;
-using Repo1.WPF452.SDK.Helpers.ErrorHandlers;
+using Repo1.WPF45.SDK.ErrorHandlers;
 
 namespace Repo1.ExeUploader.WPF
 {

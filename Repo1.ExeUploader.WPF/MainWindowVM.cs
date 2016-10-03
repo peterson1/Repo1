@@ -2,15 +2,15 @@
 using System.IO;
 using System.Threading.Tasks;
 using PropertyChanged;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.InputCommands;
 using Repo1.Core.ns11.R1Models;
-using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;
-using Repo1.WPF452.SDK.Helpers;
-using Repo1.WPF452.SDK.Helpers.InputCommands;
-using Repo1.WPF452.SDK.Helpers.R1ExecutableExtensions;
+using Repo1.WPF45.SDK.ErrorHandlers;
+using Repo1.WPF45.SDK.Extensions.R1ModelExtensions;
+using Repo1.WPF45.SDK.InputCommands;
 
 namespace Repo1.ExeUploader.WPF
 {

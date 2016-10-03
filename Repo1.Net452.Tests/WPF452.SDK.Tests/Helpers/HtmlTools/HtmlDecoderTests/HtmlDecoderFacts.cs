@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Repo1.WPF452.SDK.Helpers.HtmlTools;
+using Repo1.WPF45.SDK.HtmlTools;
 using Xunit;
 
 namespace Repo1.Net452.Tests.WPF452.SDK.Tests.Helpers.HtmlTools.HtmlDecoderTests

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers.SampleFiles;
 using Repo1.Net452.Tests.Helpers;
-using Repo1.WPF452.SDK.Archivers;
-using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
+using Repo1.WPF45.SDK.Archivers;
+using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 using Xunit;
 
 namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers

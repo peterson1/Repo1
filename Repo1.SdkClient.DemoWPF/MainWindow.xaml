@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Repo1.SdkClient.DemoWPF"
         xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:bhv="clr-namespace:Repo1.WPF452.SDK.Behaviours.TextBoxBehaviors;assembly=Repo1.WPF452.SDK"
+        xmlns:bhv="clr-namespace:Repo1.WPF45.SDK.ControlBehaviors.TextBoxBehaviors;assembly=Repo1.WPF45.SDK"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
