@@ -2,9 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using PropertyChanged;
-using Repo1.Core.ns12.Helpers.InputCommands;
-using Repo1.Core.ns12.Helpers.StringExtensions;
-using Repo1.Core.ns12.Models;
+using Repo1.Core.ns11.InputCommands;
+using Repo1.Core.ns11.R1Models;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
 using Repo1.ExeUploader.WPF.DiskAccess;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Repo1.Core.ns12.Configuration;
-using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns11.Configuration;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.WPF452.SDK.Helpers.Cryptographers;
 using Repo1.WPF452.SDK.Helpers.Serialization;
 using static System.Environment;

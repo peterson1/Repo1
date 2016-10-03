@@ -164,9 +164,9 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Repo1.Core.ns12\Repo1.Core.ns12.csproj">
-      <Project>{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}</Project>
-      <Name>Repo1.Core.ns12</Name>
+    <ProjectReference Include="..\Repo1.Core.ns11\Repo1.Core.ns11.csproj">
+      <Project>{7a17361c-1261-46d8-802c-fed02d009543}</Project>
+      <Name>Repo1.Core.ns11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repo1.WPF452.SDK\Repo1.WPF452.SDK.csproj">
       <Project>{4FDB6C7A-A8FF-42D2-A933-54F3EB4130CE}</Project>

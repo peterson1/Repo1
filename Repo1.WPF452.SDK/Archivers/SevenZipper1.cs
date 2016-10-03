@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.WPF452.SDK.FileChunkers;
 using Repo1.WPF452.SDK.Helpers;
 using Repo1.WPF452.SDK.Helpers.EmbeddedResourceHelpers;

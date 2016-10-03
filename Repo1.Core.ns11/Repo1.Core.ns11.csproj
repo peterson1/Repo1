@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A17361C-1261-46D8-802C-FED02D009543}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Repo1.Core.ns11</RootNamespace>
+    <AssemblyName>Repo1.Core.ns11</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\DownloaderCfg.cs" />
+    <Compile Include="Configuration\DownloaderCfgExtensions.cs" />
+    <Compile Include="Configuration\RestServerCredentials.cs" />
+    <Compile Include="Drupal7Tools\D7Mapper.cs" />
+    <Compile Include="Drupal7Tools\D7TypeAttribute.cs" />
+    <Compile Include="Drupal7Tools\NodeAttribute.cs" />
+    <Compile Include="Drupal7Tools\NodeTitleAttribute.cs" />
+    <Compile Include="Drupal7Tools\UndFields\TargetIdField.cs" />
+    <Compile Include="Drupal7Tools\UndFields\UndContainer.cs" />
+    <Compile Include="Drupal7Tools\UndFields\ValueField.cs" />
+    <Compile Include="Drupal7Tools\UserAttribute.cs" />
+    <Compile Include="Drupal7Tools\ValueAttribute.cs" />
+    <Compile Include="EventArguments\EArg.cs" />
+    <Compile Include="EventArguments\PropertyChangedExtensions.cs" />
+    <Compile Include="Extensions\DecimalExtensions\CommonDecimalExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions\BasicExceptionExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions\BasicStringExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions\HashExtensions.cs" />
+    <Compile Include="HashLib\Crypto\SHA0.cs" />
+    <Compile Include="HashLib\Crypto\SHA1.cs" />
+    <Compile Include="HashLib\Extensions\ArrayExtensions.cs" />
+    <Compile Include="HashLib\Extensions\Converters.cs" />
+    <Compile Include="HashLib\Hash.cs" />
+    <Compile Include="HashLib\HashBuffer.cs" />
+    <Compile Include="HashLib\HashCryptoNotBuildIn.cs" />
+    <Compile Include="HashLib\HashResult.cs" />
+    <Compile Include="HashLib\IHash.cs" />
+    <Compile Include="HashLib\IHashInfo.cs" />
+    <Compile Include="InputCommands\ICommandR1.cs" />
+    <Compile Include="Obfuscators\FakeFactory.cs" />
+    <Compile Include="Obfuscators\RandomAmerican.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="R1Clients\IClientValidator.cs" />
+    <Compile Include="R1Clients\IDownloadClient.cs" />
+    <Compile Include="R1Clients\IPingClient.cs" />
+    <Compile Include="R1Clients\IRepo1Client.cs" />
+    <Compile Include="R1Clients\IRestClient.cs" />
+    <Compile Include="R1Clients\ISessionClient.cs" />
+    <Compile Include="R1Clients\Repo1ClientBase1.cs" />
+    <Compile Include="R1Clients\RestClientBase.cs" />
+    <Compile Include="R1Models\R1Executable.cs" />
+    <Compile Include="R1Models\R1Ping.cs" />
+    <Compile Include="R1Models\R1SplitPart.cs" />
+    <Compile Include="R1Models\R1UserLicense.cs" />
+    <Compile Include="R1Models\R1UserSession.cs" />
+    <Compile Include="R1Models\ViewsLists\DownloadablesForUserDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\GetPingByLicenseKeyDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\IR1ViewsListDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\SplitPartContentByHashDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\SplitPartIDsByHashDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\UploadablesForUserDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\UserSessionsByKeyDTO.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

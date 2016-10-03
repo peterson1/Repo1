@@ -1,10 +1,8 @@
 ﻿using Autofac;
 using Autofac.Builder;
-using Repo1.Core.ns12.Configuration;
-using Repo1.Core.ns12.Models;
+using Repo1.Core.ns11.Configuration;
 using Repo1.ExeUploader.WPF.Clients;
 using Repo1.ExeUploader.WPF.Configuration;
-using Repo1.WPF452.SDK.Archivers;
 using Repo1.WPF452.SDK.Clients;
 
 namespace Repo1.ExeUploader.WPF.ComponentRegistry

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Repo1.Core.ns12.Helpers.StringExtensions;
 using System.Net.NetworkInformation;
 
 namespace Repo1.WPF452.SDK.Helpers.NetworkInterfaces

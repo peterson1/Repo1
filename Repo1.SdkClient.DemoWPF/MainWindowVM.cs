@@ -1,6 +1,6 @@
 ﻿using System;
 using PropertyChanged;
-using Repo1.Core.ns12.Clients;
+using Repo1.Core.ns11.R1Clients;
 
 namespace Repo1.SdkClient.DemoWPF
 {

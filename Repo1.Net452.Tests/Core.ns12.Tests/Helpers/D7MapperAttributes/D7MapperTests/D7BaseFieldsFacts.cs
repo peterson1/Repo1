@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using Repo1.Core.ns12.Helpers.D7MapperAttributes;
+using Repo1.Core.ns11.Drupal7Tools;
 using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7MapperTests

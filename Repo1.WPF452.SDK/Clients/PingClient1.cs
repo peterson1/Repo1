@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Repo1.Core.ns12.Clients;
-using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
-using Repo1.Core.ns12.Models;
+﻿using System.Threading.Tasks;
+using Repo1.Core.ns11.Configuration;
+using Repo1.Core.ns11.Drupal7Tools.UndFields;
+using Repo1.Core.ns11.R1Clients;
+using Repo1.Core.ns11.R1Models;
 
 namespace Repo1.WPF452.SDK.Clients
 {

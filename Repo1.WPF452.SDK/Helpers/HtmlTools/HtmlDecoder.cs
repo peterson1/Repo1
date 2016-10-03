@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
-using Repo1.Core.ns12.Helpers.StringExtensions;
 using System.Web;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.WPF452.SDK.Helpers.HtmlTools
 {

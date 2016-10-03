@@ -1,4 +1,4 @@
-﻿using Repo1.Core.ns12.Configuration;
+﻿using Repo1.Core.ns11.Configuration;
 
 namespace Repo1.ExeUploader.WPF.Configuration
 {

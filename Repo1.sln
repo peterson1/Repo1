@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo1.Core.ns12", "Repo1.Core.ns12\Repo1.Core.ns12.csproj", "{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo1.SdkClient.DemoWPF", "Repo1.SdkClient.DemoWPF\Repo1.SdkClient.DemoWPF.csproj", "{E9370379-EC14-4F95-98E3-D4E96469F107}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo1.WPF452.SDK", "Repo1.WPF452.SDK\Repo1.WPF452.SDK.csproj", "{4FDB6C7A-A8FF-42D2-A933-54F3EB4130CE}"
@@ -21,16 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo1.LegacyClient.DemoWPF", "Repo1.LegacyClient.DemoWPF\Repo1.LegacyClient.DemoWPF.csproj", "{96D11F2C-3415-42D1-AC82-9F9C30AB243D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo1.Core.ns11", "Repo1.Core.ns11\Repo1.Core.ns11.csproj", "{7A17361C-1261-46D8-802C-FED02D009543}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9370379-EC14-4F95-98E3-D4E96469F107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9370379-EC14-4F95-98E3-D4E96469F107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9370379-EC14-4F95-98E3-D4E96469F107}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,15 +47,12 @@ Global
 		{96D11F2C-3415-42D1-AC82-9F9C30AB243D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D11F2C-3415-42D1-AC82-9F9C30AB243D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D11F2C-3415-42D1-AC82-9F9C30AB243D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A17361C-1261-46D8-802C-FED02D009543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A17361C-1261-46D8-802C-FED02D009543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A17361C-1261-46D8-802C-FED02D009543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A17361C-1261-46D8-802C-FED02D009543}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(AutomaticVersions) = postSolution
-		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = True
-		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp
 	EndGlobalSection
 EndGlobal

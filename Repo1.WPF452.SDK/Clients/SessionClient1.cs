@@ -6,16 +6,15 @@ using System.Management;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Repo1.Core.ns12.Clients;
-using Repo1.Core.ns12.Configuration;
-using Repo1.Core.ns12.DTOs.ViewsListDTOs;
-using Repo1.Core.ns12.Helpers.StringExtensions;
-using Repo1.Core.ns12.Models;
+using Repo1.Core.ns11.Configuration;
+using Repo1.Core.ns11.Drupal7Tools.UndFields;
+using Repo1.Core.ns11.Extensions.StringExtensions;
+using Repo1.Core.ns11.R1Clients;
+using Repo1.Core.ns11.R1Models;
+using Repo1.Core.ns11.R1Models.ViewsLists;
 using Repo1.WPF452.SDK.Configuration;
 using Repo1.WPF452.SDK.Helpers.FileInfoExtensions;
 using Repo1.WPF452.SDK.Helpers.NetworkInterfaces;
-using Repo1.Core.ns12.Helpers.D7MapperAttributes.UndFields;
-using System.Diagnostics;
 
 namespace Repo1.WPF452.SDK.Clients
 {

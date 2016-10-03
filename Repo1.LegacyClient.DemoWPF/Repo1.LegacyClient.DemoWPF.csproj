@@ -105,9 +105,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Repo1.Core.ns12\Repo1.Core.ns12.csproj">
-      <Project>{66F453DA-8F17-4828-B9AC-5FF99D04D3D9}</Project>
-      <Name>Repo1.Core.ns12</Name>
+    <ProjectReference Include="..\Repo1.Core.ns11\Repo1.Core.ns11.csproj">
+      <Project>{7A17361C-1261-46D8-802C-FED02D009543}</Project>
+      <Name>Repo1.Core.ns11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repo1.WPF452.SDK\Repo1.WPF452.SDK.csproj">
       <Project>{4FDB6C7A-A8FF-42D2-A933-54F3EB4130CE}</Project>
@@ -136,8 +136,7 @@
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System" />
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System.IO" />
       <Using xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Namespace="System.Xml.Linq" />
-      <Code xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Type="Fragment" Language="cs">
-<![CDATA[
+      <Code xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Type="Fragment" Language="cs"><![CDATA[
 var config = XElement.Load(Config.ItemSpec).Elements("Costura").FirstOrDefault();
 
 if (config == null) return true;
@@ -156,8 +155,8 @@ var filesToCleanup = Files.Select(f => f.ItemSpec).Where(f => !excludedAssemblie
 
 foreach (var item in filesToCleanup)
   File.Delete(item);
-]]>
-      </Code></Task>
+]]></Code>
+    </Task>
   </UsingTask>
   <Target Name="CleanReferenceCopyLocalPaths" AfterTargets="AfterBuild;NonWinFodyTarget">
     <CosturaCleanup Config="FodyWeavers.xml" Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />

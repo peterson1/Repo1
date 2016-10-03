@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Repo1.Core.ns12.Helpers.ExceptionExtensions;
-using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns11.Extensions.ExceptionExtensions;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.WPF452.SDK.Helpers.ErrorHandlers
 {

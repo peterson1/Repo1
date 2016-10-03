@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using PropertyChanged;
-using Repo1.Core.ns12.Helpers.ExceptionExtensions;
-using Repo1.Core.ns12.Helpers.InputCommands;
+using Repo1.Core.ns11.InputCommands;
+using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 
 namespace Repo1.WPF452.SDK.Helpers.InputCommands
 {

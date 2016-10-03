@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using Repo1.Core.ns12.Helpers.StringExtensions;
 using Xunit;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.HashLib
 {

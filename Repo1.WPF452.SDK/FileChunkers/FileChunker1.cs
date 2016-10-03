@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Repo1.Core.ns12.Helpers.StringExtensions;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.WPF452.SDK.FileChunkers
 {
