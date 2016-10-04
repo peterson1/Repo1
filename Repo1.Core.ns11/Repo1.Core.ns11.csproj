@@ -55,6 +55,7 @@
     <Compile Include="EventArguments\PropertyChangedExtensions.cs" />
     <Compile Include="Extensions\DecimalExtensions\CommonDecimalExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions\BasicExceptionExtensions.cs" />
+    <Compile Include="Extensions\IntegerExtensions\DateBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions\BasicStringExtensions.cs" />
     <Compile Include="Extensions\StringExtensions\HashExtensions.cs" />
     <Compile Include="HashLib\Crypto\SHA0.cs" />

@@ -11,6 +11,15 @@ namespace Repo1.Core.ns11.Obfuscators
         private static bool _isInitialized;
 
 
+        public static string FullName()
+            => FirstName() + " " + LastName();
+
+
+        public static string FirstName()
+            => new List<bool> { true, false }.RandomItem() 
+                ? Male1stName() : Female1stName();
+
+
         public static string Male1stName()
         {
             Initialize(false);

@@ -49,6 +49,21 @@ namespace Repo1.Core.ns11.Obfuscators
         public string Letter => _vowels.Concat(_consonants).RandomItem();
 
 
+        public string MarketSection
+            => RandomItem("Dry A", "Dry B", "Dry Expansion", "Wet A", "Wet B", "Wet Expansion", 
+                          "Plaza", "Night Market", "Tiangge", "Freezer");
+
+
+        public string MarketStall(string sectionName)
+        {
+            var prefx = new string(sectionName.Trim().Split(' ').Select(x => x[0]).ToArray());
+            return $"{prefx} {Int(1, 200):000}";
+        }
+
+
+        private string RandomItem(params string[] items) => items.RandomItem();
+
+
         public string PrintCompany
         {
             get
@@ -279,13 +294,15 @@ namespace Repo1.Core.ns11.Obfuscators
 
 
 
-        public string Male1stName() => RandomAmerican.Male1stName();
-        public string Female1stName() => RandomAmerican.Female1stName();
-        public string LastName() => RandomAmerican.LastName();
-        public List<string> FirstNames(int count) => RandomAmerican.FirstNames(count);
-        public List<string> Male1stNames(int count) => RandomAmerican.Male1stNames(count);
-        public List<string> Female1stNames(int count) => RandomAmerican.Female1stNames(count);
-        public List<string> LastNames(int count) => RandomAmerican.LastNames(count);
+        public string       FirstName      ()          => RandomAmerican.FirstName();
+        public string       Male1stName    ()          => RandomAmerican.Male1stName();
+        public string       Female1stName  ()          => RandomAmerican.Female1stName();
+        public string       LastName       ()          => RandomAmerican.LastName();
+        public string       FullName       ()          => RandomAmerican.FullName();
+        public List<string> FirstNames     (int count) => RandomAmerican.FirstNames(count);
+        public List<string> Male1stNames   (int count) => RandomAmerican.Male1stNames(count);
+        public List<string> Female1stNames (int count) => RandomAmerican.Female1stNames(count);
+        public List<string> LastNames      (int count) => RandomAmerican.LastNames(count);
     }
 
 
