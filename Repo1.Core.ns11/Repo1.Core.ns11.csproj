@@ -53,6 +53,7 @@
     <Compile Include="Drupal7Tools\ValueAttribute.cs" />
     <Compile Include="EventArguments\EArg.cs" />
     <Compile Include="EventArguments\PropertyChangedExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions\CommonCollectionExtensions.cs" />
     <Compile Include="Extensions\DecimalExtensions\CommonDecimalExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions\BasicExceptionExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions\DateBuilderExtensions.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="R1Models\ViewsLists\SplitPartIDsByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\UploadablesForUserDTO.cs" />
     <Compile Include="R1Models\ViewsLists\UserSessionsByKeyDTO.cs" />
+    <Compile Include="ReflectionTools\NestedPropertyFinder.cs" />
+    <Compile Include="ReflectionTools\PropertyValueCopier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

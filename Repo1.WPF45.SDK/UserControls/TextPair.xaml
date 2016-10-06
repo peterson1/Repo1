@@ -8,20 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding Text1Width, 
-                              RelativeSource={RelativeSource 
-                              AncestorType=local:TextPair}}"
-                              />
-
-            <ColumnDefinition Width="{Binding GapWidth, 
-                              RelativeSource={RelativeSource 
-                              AncestorType=local:TextPair}}"
-                              />
-
-            <ColumnDefinition Width="{Binding Text2Width, 
-                              RelativeSource={RelativeSource 
-                              AncestorType=local:TextPair}}"
-                              />
+            <ColumnDefinition x:Name="colDef1" />
+            <ColumnDefinition x:Name="colDefGap" />
+            <ColumnDefinition x:Name="colDef2" />
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="txt1"

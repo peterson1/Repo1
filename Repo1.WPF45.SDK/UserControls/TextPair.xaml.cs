@@ -17,11 +17,11 @@ namespace Repo1.WPF45.SDK.UserControls
             Text1Wrapping = TextWrapping.Wrap;
             Text2Wrapping = TextWrapping.Wrap;
 
-            Text1Alignment = TextAlignment.Right;
-            Text2Alignment = TextAlignment.Left;
+            //Text1Alignment = TextAlignment.Right;
+            //Text2Alignment = TextAlignment.Left;
 
-            Text1Weight = FontWeights.Medium;
-            Text2Weight = FontWeights.Normal;
+            //Text1Weight = FontWeights.Medium;
+            //Text2Weight = FontWeights.Normal;
 
             txt1.HandleClick();
             txt2.HandleClick();
@@ -29,8 +29,8 @@ namespace Repo1.WPF45.SDK.UserControls
             txt1.Bind(nameof(Text1), TextBlock.TextProperty);
             txt2.Bind(nameof(Text2), TextBlock.TextProperty);
 
-            txt1.Bind(nameof(Text1Alignment), TextBlock.TextAlignmentProperty);
-            txt2.Bind(nameof(Text2Alignment), TextBlock.TextAlignmentProperty);
+            //txt1.Bind(nameof(Text1Alignment), TextBlock.TextAlignmentProperty);
+            //txt2.Bind(nameof(Text2Alignment), TextBlock.TextAlignmentProperty);
 
             txt1.Bind(nameof(Text1Wrapping), TextBlock.TextWrappingProperty);
             txt2.Bind(nameof(Text2Wrapping), TextBlock.TextWrappingProperty);
@@ -38,44 +38,60 @@ namespace Repo1.WPF45.SDK.UserControls
             txt1.Bind(nameof(Text1Brush), TextBlock.ForegroundProperty);
             txt2.Bind(nameof(Text2Brush), TextBlock.ForegroundProperty);
 
-            txt1.Bind(nameof(Text1Weight), TextBlock.FontWeightProperty);
-            txt2.Bind(nameof(Text2Weight), TextBlock.FontWeightProperty);
+            //txt1.Bind(nameof(Text1Weight), TextBlock.FontWeightProperty);
+            //txt2.Bind(nameof(Text2Weight), TextBlock.FontWeightProperty);
 
             txt1.Bind(nameof(Text1FontStyle), TextBlock.FontStyleProperty);
             txt2.Bind(nameof(Text2FontStyle), TextBlock.FontStyleProperty);
 
             Loaded += (s, e) =>
             {
-                if (Text1Width.IsAuto && Text1Width.Value == 1)
-                    Text1Width = new GridLength(70);
+                //if (!Text1Width.HasValue) Text1Width = new GridLength(70);
+                //if (!GapWidth  .HasValue) GapWidth   = new GridLength(8);
+                //if (!Text2Width.HasValue) Text2Width = new GridLength();
 
-                if (GapWidth.IsAuto)    GapWidth = new GridLength(8);
+                colDef1  .Width = Text1Width ?? new GridLength(70);
+                colDefGap.Width = GapWidth   ?? new GridLength(8);
+                colDef2  .Width = Text2Width ?? new GridLength();
+
                 if (Text1Brush == null) Text1Brush = Brushes.Gray;
                 if (Text2Brush == null) Text2Brush = Brushes.Black;
+
+                txt1.FontWeight = Text1Weight ?? FontWeights.Medium;
+                txt2.FontWeight = Text2Weight ?? FontWeights.Normal;
+
+                txt1.FontSize = Text1Size ?? 12;
+                txt2.FontSize = Text2Size ?? 12;
+
+                txt1.TextAlignment = Text1Alignment ?? TextAlignment.Right;
+                txt2.TextAlignment = Text2Alignment ?? TextAlignment.Left;
             };
         }
 
-        public string         Text1           { get; set; }
-        public string         Text2           { get; set; }
-                                              
-        public GridLength     Text1Width      { get; set; }
-        public GridLength     GapWidth        { get; set; }
-        public GridLength     Text2Width      { get; set; }
+        public string          Text1           { get; set; }
+        public string          Text2           { get; set; }
+                                               
+        public GridLength?     Text1Width      { get; set; }
+        public GridLength?     GapWidth        { get; set; }
+        public GridLength?     Text2Width      { get; set; }
 
-        public TextAlignment  Text1Alignment  { get; set; }
-        public TextAlignment  Text2Alignment  { get; set; }
+        public TextAlignment?  Text1Alignment  { get; set; }
+        public TextAlignment?  Text2Alignment  { get; set; }
 
-        public TextWrapping   Text1Wrapping   { get; set; }
-        public TextWrapping   Text2Wrapping   { get; set; }
-
-        public Brush          Text1Brush      { get; set; }
-        public Brush          Text2Brush      { get; set; }
-
-        public FontWeight     Text1Weight     { get; set; }
-        public FontWeight     Text2Weight     { get; set; }
-
-        public FontStyle      Text1FontStyle  { get; set; }
-        public FontStyle      Text2FontStyle  { get; set; }
+        public TextWrapping    Text1Wrapping   { get; set; }
+        public TextWrapping    Text2Wrapping   { get; set; }
+                               
+        public Brush           Text1Brush      { get; set; }
+        public Brush           Text2Brush      { get; set; }
+                               
+        public FontWeight?     Text1Weight     { get; set; }
+        public FontWeight?     Text2Weight     { get; set; }
+                               
+        public FontStyle       Text1FontStyle  { get; set; }
+        public FontStyle       Text2FontStyle  { get; set; }
+                               
+        public double?         Text1Size       { get; set; }
+        public double?         Text2Size       { get; set; }
     }
 
 

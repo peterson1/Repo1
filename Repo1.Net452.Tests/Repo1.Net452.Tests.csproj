@@ -68,11 +68,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core.ns12.Tests\HashLib\SHA1Facts.cs" />
-    <Compile Include="Core.ns12.Tests\Helpers\D7MapperAttributes\D7MapperTests\D7BaseFieldsFacts.cs" />
-    <Compile Include="Core.ns12.Tests\Helpers\D7MapperAttributes\D7MapperTests\NodeAttributeFacts.cs" />
-    <Compile Include="Core.ns12.Tests\Helpers\D7MapperAttributes\D7MapperTests\ValueAttributeFacts.cs" />
-    <Compile Include="Core.ns12.Tests\Helpers\D7MapperAttributes\D7TypeAttributeTests\StaticMethodsFacts.cs" />
+    <Compile Include="Core.ns11.Tests\HashLib\SHA1Facts.cs" />
+    <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\D7BaseFieldsFacts.cs" />
+    <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\NodeAttributeFacts.cs" />
+    <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\ValueAttributeFacts.cs" />
+    <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7TypeAttributeTests\StaticMethodsFacts.cs" />
+    <Compile Include="Core.ns11.Tests\ReflectionTools\NestedPropertyFinderTests\InterfacePropertiesFacts.cs" />
+    <Compile Include="Core.ns11.Tests\ReflectionTools\PropertyValueCopierTests\CopyByNameFacts.cs" />
     <Compile Include="ExeUploader.WPF.Tests\Archivers\SampleFiles\SampleFinder.cs" />
     <Compile Include="ExeUploader.WPF.Tests\Archivers\SevenZipperFacts.cs" />
     <Compile Include="Helpers\TempDir.cs" />

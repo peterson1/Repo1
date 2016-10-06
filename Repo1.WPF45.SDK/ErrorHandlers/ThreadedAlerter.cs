@@ -57,17 +57,18 @@ namespace Repo1.WPF45.SDK.ErrorHandlers
             longMsg = $"Error from ‹{thrower}›" + L.f + ex.Info(true, true);
 
             PreExit:
-            ShowOnNewThread($"Error from ‹{thrower}›", shortMsg);
+            Show($"Error from ‹{thrower}›", shortMsg);
             return longMsg;
         }
 
 
-        private static void ShowOnNewThread(string caption, string message)
+        public static void Show(string caption, string message, 
+                                MessageBoxImage image = MessageBoxImage.Error, 
+                                MessageBoxButton button = MessageBoxButton.OK)
         {
             new Thread(new ThreadStart(delegate
             {
-                MessageBox.Show(message, caption,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(message, $"   {caption}", button, image);
             }
             )).Start();
         }
