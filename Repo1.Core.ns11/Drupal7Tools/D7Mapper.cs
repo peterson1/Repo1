@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
-using System.Threading.Tasks;
 using Repo1.Core.ns11.Drupal7Tools.UndFields;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Core.ns11.Drupal7Tools
 {
@@ -32,6 +30,9 @@ namespace Repo1.Core.ns11.Drupal7Tools
 
         private static void CopyIntPropertyToNode<T>(string propertyName, Dictionary<string, object> dict, T node)
         {
+            if (propertyName.IsBlank()) return;
+            if (dict == null) return;
+
             object val = null;
             int id = 0;
             if (!dict.TryGetValue(propertyName, out val)) return;
@@ -46,6 +47,8 @@ namespace Repo1.Core.ns11.Drupal7Tools
 
         private static void CopyPropertyFromNode<T>(string propertyName, T node, Dictionary<string, object> dict)
         {
+            if (propertyName.IsBlank()) return;
+            if (dict == null) return;
             if (node == null) return;
             var prop = typeof(T).GetRuntimeProperty(propertyName);
             if (prop == null) return;
