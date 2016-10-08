@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using PropertyChanged;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.InputCommands;
@@ -49,6 +50,8 @@ namespace Repo1.ExeUploader.WPF
 
         private async Task PublishLocalExe()
         {
+            Clipboard.SetText(VersionChanges);
+
             UploadCmd.CurrentLabel = "Uploading ...";
             var ok = await Client.UploadNew(LocalExe, MaxPartSizeMB);
             if (!ok)
