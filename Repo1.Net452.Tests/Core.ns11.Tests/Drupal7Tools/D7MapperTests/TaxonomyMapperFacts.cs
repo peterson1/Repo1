@@ -23,7 +23,7 @@ namespace Repo1.Net452.Tests.Core.ns11.Tests.Drupal7Tools.D7MapperTests
         }
 
 
-        [Vocabulary(Key = "sample_enum1")]
+        //[Vocabulary(Key = "sample_enum1")]
         enum SampleEnum1
         {
             Val1 = 12,

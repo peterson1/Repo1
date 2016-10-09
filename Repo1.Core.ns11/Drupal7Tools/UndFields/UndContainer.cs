@@ -6,6 +6,12 @@ namespace Repo1.Core.ns11.Drupal7Tools.UndFields
 {
     public class UndContainer<T>
     {
+        public UndContainer(T item)
+        {
+            und.Add(item);
+        }
+
+
         public List<T> und { get; set; } = new List<T>();
     }
 
@@ -13,12 +19,7 @@ namespace Repo1.Core.ns11.Drupal7Tools.UndFields
     public class und
     {
         public static UndContainer<ValueField> Value(PropertyInfo propertyInf, object sourceObj)
-        {
-            var valueField = ValueField.Wrap(propertyInf, sourceObj);
-            var container = new UndContainer<ValueField>();
-            container.und.Add(valueField);
-            return container;
-        }
+            => new UndContainer<ValueField>(ValueField.Wrap(propertyInf, sourceObj));
 
 
         public static UndContainer<TargetIdField> TargetID(PropertyInfo propertyInf, object sourceObj)
@@ -28,20 +29,14 @@ namespace Repo1.Core.ns11.Drupal7Tools.UndFields
             if (nidProp == null)
                 throw new MissingMemberException($"No “nid” property found in {propertyInf.Name}.");
 
-            var nid = int.Parse(nidProp.GetValue(nodeObj).ToString());
-            var targF = new TargetIdField { target_id = nid };
-            var container = new UndContainer<TargetIdField>();
-            container.und.Add(targF);
+            var nid       = int.Parse(nidProp.GetValue(nodeObj).ToString());
+            var targF     = new TargetIdField { target_id = nid };
+            var container = new UndContainer<TargetIdField>(targF);
             return container;
         }
 
 
-        public static UndContainer<ValueField> TermID(PropertyInfo propertyInf, object sourceObj)
-        {
-            var valueField = ValueField.Wrap(propertyInf, sourceObj);
-            var container = new UndContainer<ValueField>();
-            container.und.Add(valueField);
-            return container;
-        }
+        public static UndContainer<TermIdField> TermID(PropertyInfo propertyInf, object sourceObj)
+            => new UndContainer<TermIdField>(TermIdField.Wrap(propertyInf, sourceObj));
     }
 }

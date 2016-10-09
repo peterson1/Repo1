@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Repo1.Core.ns11.Drupal7Tools.UndFields;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Core.ns11.Drupal7Tools
 {
@@ -11,18 +10,19 @@ namespace Repo1.Core.ns11.Drupal7Tools
     {
         public static void Map<T>(Dictionary<string, object> dict, T obj)
         {
-            //foreach (var prop in typeof(T).GetRuntimeProperties())
-            //{
-            //    var attr = prop.CustomAttributes.SingleOrDefault(x
-            //        => x.AttributeType == typeof(TermAttribute));
-            //    if (attr == null) continue;
+            foreach (var prop in typeof(T).GetRuntimeProperties())
+            {
+                var attr = prop.CustomAttributes.SingleOrDefault(x
+                    => x.AttributeType == typeof(TermAttribute));
+                if (attr == null) continue;
 
-            //    var key = attr.NamedArguments.SingleOrDefault(x
-            //            => x.MemberName == nameof(TermAttribute.Key))
-            //                .TypedValue.Value.ToString();
+                var key = attr.NamedArguments.SingleOrDefault(x
+                        => x.MemberName == nameof(TermAttribute.Key))
+                            .TypedValue.Value.ToString();
+                if (key.IsBlank()) continue;
 
-            //    dict.Add(key, und.TargetID(prop, origObj));
-            //}
+                dict.Add(key, und.TermID(prop, obj));
+            }
         }
     }
 }

@@ -80,10 +80,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="R1Clients\IClientValidator.cs" />
     <Compile Include="R1Clients\IDownloadClient.cs" />
+    <Compile Include="R1Clients\IIssuePosterClient.cs" />
     <Compile Include="R1Clients\IPingClient.cs" />
     <Compile Include="R1Clients\IRepo1Client.cs" />
     <Compile Include="R1Clients\IRestClient.cs" />
     <Compile Include="R1Clients\ISessionClient.cs" />
+    <Compile Include="R1Clients\IssuePosterBase.cs" />
     <Compile Include="R1Clients\Repo1ClientBase1.cs" />
     <Compile Include="R1Clients\RestClientBase.cs" />
     <Compile Include="R1Models\R1Executable.cs" />
