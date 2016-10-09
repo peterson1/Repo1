@@ -3,7 +3,7 @@
 namespace Repo1.Core.ns11.R1Models
 {
     [D7Type(Key = "user_session")]
-    public class R1UserSession
+    public class R1UserSession : D7NodeBase
     {
         [NodeTitle]                              public string    Description       { get; set; }
         [Value(Key = "field_publicip"        )]  public string    PublicIP          { get; set; }
@@ -18,10 +18,5 @@ namespace Repo1.Core.ns11.R1Models
         [Value(Key = "field_legacycfgjson"   )]  public string    LegacyCfgJson     { get; set; }
         [Value(Key = "field_repo1cfgjson"    )]  public string    Repo1CfgJson      { get; set; }
         [Value(Key = "field_expectedcfg"     )]  public string    ExpectedCfg       { get; set; }
-
-
-        public int   nid   { get; set; }
-        public int   uid   { get; set; }
-        public int   vid   { get; set; }
     }
 }

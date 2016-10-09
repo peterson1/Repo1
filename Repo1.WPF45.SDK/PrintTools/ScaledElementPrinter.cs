@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Printing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Repo1.WPF45.SDK.PrintTools
 {
@@ -15,6 +18,16 @@ namespace Repo1.WPF45.SDK.PrintTools
 
 
         public static void Print(string printJobDesc, params FrameworkElement[] frameworkElements)
+        {
+            //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded,
+            //new Action(() =>
+            //{
+                ExecutePrintMultiPageDoc(printJobDesc, frameworkElements);
+            //}));
+        }
+
+
+        private static void ExecutePrintMultiPageDoc(string printJobDesc, params FrameworkElement[] frameworkElements)
         {
             var dlg = new PrintDialog();
             if (dlg.ShowDialog() != true) return;
@@ -46,14 +59,28 @@ namespace Repo1.WPF45.SDK.PrintTools
                 panl.Children.Remove(ctrl);
                 pg.Children.Add(ctrl);
                 ctrl.DataContext = ctxt;
+                //ctrl.InvalidateVisual(); ctrl.UpdateLayout(); ctrl.Focus();
+                //Dispatch(() => ctrl.UpdateLayout());
 
                 var pgContent = new PageContent();
                 ((IAddChild)pgContent).AddChild(pg);
                 doc.Pages.Add(pgContent);
+
+                //ctrl.Focus();
+                //pg.Focus();
+                pg.InvalidateVisual();
+                Thread.Sleep(100);
             }
 
             dlg.PrintDocument(doc.DocumentPaginator, printJobDesc);
         }
+
+        private static void Dispatch(Action action)
+            => Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+            {
+                Thread.Sleep(10);
+                action.Invoke();
+            }));
 
 
         public static void AskToPrint(ContentPresenter content

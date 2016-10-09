@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core.ns11.Tests\Drupal7Tools\D7MapperTests\TaxonomyMapperFacts.cs" />
     <Compile Include="Core.ns11.Tests\HashLib\SHA1Facts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\D7BaseFieldsFacts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\NodeAttributeFacts.cs" />

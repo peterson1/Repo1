@@ -34,5 +34,14 @@ namespace Repo1.Core.ns11.Drupal7Tools.UndFields
             container.und.Add(targF);
             return container;
         }
+
+
+        public static UndContainer<ValueField> TermID(PropertyInfo propertyInf, object sourceObj)
+        {
+            var valueField = ValueField.Wrap(propertyInf, sourceObj);
+            var container = new UndContainer<ValueField>();
+            container.und.Add(valueField);
+            return container;
+        }
     }
 }

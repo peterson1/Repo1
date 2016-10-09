@@ -12,9 +12,10 @@ namespace Repo1.Core.ns11.Drupal7Tools
         {
             var dict = new Dictionary<string, object>();
 
-            AddBaseNodeFields(dict, origObj);
-            AddUndValueFields(dict, origObj);
-            AddUndTargetIdFields(dict, origObj);
+            AddBaseNodeFields    (dict, origObj);
+            AddUndValueFields    (dict, origObj);
+            AddUndTargetIdFields (dict, origObj);
+            D7TaxonomyMapper.Map (dict, origObj);
 
             return dict;
         }
