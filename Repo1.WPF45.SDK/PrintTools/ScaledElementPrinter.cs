@@ -49,7 +49,8 @@ namespace Repo1.WPF45.SDK.PrintTools
                 ctrl.DataContext = ctxt;
 
                 var pgContent = new PageContent();
-                ((IAddChild)pgContent).AddChild(pg);
+                //((IAddChild)pgContent).AddChild(pg);
+                pgContent.Child = pg;
                 doc.Pages.Add(pgContent);
             }
 
