@@ -10,12 +10,12 @@ namespace Repo1.WPF45.SDK.PrintTools
 {
     public static class ScaledElementPrinter
     {
-        public static void PrintScaled(this FrameworkElement elm, string printJobDesc = "scaled_printout")
-            => ScaledElementPrinter.AskToPrint(elm, printJobDesc);
+        //public static void PrintScaled(this FrameworkElement elm, string printJobDesc = "scaled_printout")
+        //    => ScaledElementPrinter.AskToPrint(elm, printJobDesc);
 
 
 
-        public static void Print(string printJobDesc, params FrameworkElement[] frameworkElements)
+        public static void PrintMulti(string printJobDesc, params FrameworkElement[] frameworkElements)
         {
             var dlg = new PrintDialog();
             if (dlg.ShowDialog() != true) return;
@@ -58,9 +58,9 @@ namespace Repo1.WPF45.SDK.PrintTools
         }
 
 
-        public static void AskToPrint(ContentPresenter content
-                                    , double printScaleOffset
-                                    , string printJobDesc = "Tab Content Visual")
+        public static void PrintSolo(ContentPresenter content
+                                   , double printScaleOffset
+                                   , string printJobDesc = "Tab Content Visual")
         {
             var dlg = new PrintDialog();
             if (dlg.ShowDialog() != true) return;
@@ -76,8 +76,8 @@ namespace Repo1.WPF45.SDK.PrintTools
         }
 
 
-        public static void AskToPrint(FrameworkElement ctrl
-                                    , string printJobDesc = "Scaled Visual")
+        public static void PrintSolo(this FrameworkElement ctrl
+                                   , string printJobDesc = "Scaled Visual")
         {
             PrintDialog print = new PrintDialog();
             if (print.ShowDialog() != true) return;
