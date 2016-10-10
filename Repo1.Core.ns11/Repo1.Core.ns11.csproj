@@ -56,6 +56,7 @@
     <Compile Include="Drupal7Tools\UserAttribute.cs" />
     <Compile Include="Drupal7Tools\ValueAttribute.cs" />
     <Compile Include="Drupal7Tools\VocabularyAttribute.cs" />
+    <Compile Include="EnumHelpers\EnumTool.cs" />
     <Compile Include="EventArguments\EArg.cs" />
     <Compile Include="EventArguments\PropertyChangedExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions\CommonCollectionExtensions.cs" />
