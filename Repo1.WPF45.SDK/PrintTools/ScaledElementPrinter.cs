@@ -3,7 +3,6 @@ using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace Repo1.WPF45.SDK.PrintTools
@@ -49,12 +48,14 @@ namespace Repo1.WPF45.SDK.PrintTools
                 ctrl.DataContext = ctxt;
 
                 var pgContent = new PageContent();
-                //((IAddChild)pgContent).AddChild(pg);
                 pgContent.Child = pg;
                 doc.Pages.Add(pgContent);
             }
 
             dlg.PrintDocument(doc.DocumentPaginator, printJobDesc);
+            //var win = new PrintPreviewWindow1();
+            //win.vwr.Document = doc;
+            //win.Show();
         }
 
 

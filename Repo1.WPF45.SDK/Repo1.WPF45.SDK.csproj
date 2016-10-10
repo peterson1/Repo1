@@ -115,6 +115,10 @@
     <Compile Include="InputCommands\RelayCommand.cs" />
     <Compile Include="NetworkTools\MacAddresses.cs" />
     <Compile Include="NetworkTools\PrivateIP.cs" />
+    <Compile Include="PrintTools\PrintPreviewer.cs" />
+    <Compile Include="PrintTools\PrintPreviewWindow1.xaml.cs">
+      <DependentUpon>PrintPreviewWindow1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PrintTools\ScaledElementPrinter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -145,6 +149,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PrintTools\PrintPreviewWindow1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\TextPair.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
