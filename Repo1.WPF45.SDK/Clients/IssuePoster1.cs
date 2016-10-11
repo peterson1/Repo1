@@ -22,10 +22,10 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        public async Task PostError(Exception ex, string errorCaughtBy, 
+        public async Task PostError(string errorMessage,
             string configKey, Func<string> readLegacyCfg = null)
         {
-            var issue = CastError(ex, errorCaughtBy);
+            var issue = CastError(errorMessage);
             await _specs.AddProfileTo(issue, readLegacyCfg, configKey);
             _lastHash = issue.RecordHash = Json.Serialize(issue).SHA1ForUTF8();
 
@@ -40,12 +40,11 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        private R1Issue CastError(Exception ex, string errorCaughtBy)
+        private R1Issue CastError(string errorMessage)
         {
             var issue         = new R1Issue();
-            issue.Title       = ex?.Message ?? "Exception is NULL";
-            issue.Description = ex?.Info(true, true) + L.f 
-                              + $"caught by: {errorCaughtBy}";
+            issue.Title       = errorMessage.Split(L.f.ToCharArray())[0];
+            issue.Description = errorMessage;
             issue.Category    = IssueCategories.RuntimeError;
             issue.Status      = IssueStates.NeedsReview;
             issue.Priority    = IssuePriorities.High;

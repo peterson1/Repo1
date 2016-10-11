@@ -7,7 +7,7 @@ namespace Repo1.Core.ns11.R1Clients
     {
         int           SendIntervalMins  { get; set; }
         string        ConfigKey         { get; set; }
-        Func<string>  ReadLegacyCfg     { set; }
+        Func<string>  ReadLegacyCfg     { get; set; }
 
         Task  StartSessionUpdateLoop  (string userName, string password);
     }

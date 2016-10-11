@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Repo1.Core.ns11.EventArguments;
 
 namespace Repo1.Core.ns11.R1Clients
@@ -9,6 +10,7 @@ namespace Repo1.Core.ns11.R1Clients
         void  StartUpdateCheckLoop   ();
         void  StopUpdateCheckLoop    ();
         void  StartSessionUpdateLoop (string userName, string password);
+        Task  PostRuntimeError       (string errorMessage);
 
         void  RaisePropertyChanged(string propertyName);
 

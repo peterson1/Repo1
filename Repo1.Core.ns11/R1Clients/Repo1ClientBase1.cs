@@ -16,26 +16,28 @@ namespace Repo1.Core.ns11.R1Clients
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public event EventHandler UpdateInstalled = delegate { };
 
-        private int _intervalMins;
-        private bool _keepChecking;
-        private bool _isChecking;
-        protected IPingClient _pingr;
-        protected IClientValidator _validr;
-        protected ISessionClient _sessionr;
-        protected IDownloadClient _downloadr;
-        protected DownloaderCfg _cfg;
-        protected string _cfgKey;
+        private   int                _intervalMins;
+        private   bool               _keepChecking;
+        private   bool               _isChecking;
+        protected IPingClient        _pingr;
+        protected IClientValidator   _validr;
+        protected ISessionClient     _sessionr;
+        protected IDownloadClient    _downloadr;
+        private   IIssuePosterClient _postr;
+        protected DownloaderCfg      _cfg;
+        protected string             _cfgKey;
 
 
         public Repo1ClientBase1(string configKey, int checkIntervalMins)
         {
-            _cfgKey = configKey;
-            _cfg = ParseDownloaderCfg(configKey);
+            _cfgKey       = configKey;
+            _cfg          = ParseDownloaderCfg(configKey);
             _intervalMins = checkIntervalMins;
-            _validr = GetClientValidator();
-            _pingr = GetPingClient();
-            _downloadr = GetDownloadClient();
-            _sessionr = GetSessionClient(checkIntervalMins);
+            _validr       = GetClientValidator();
+            _pingr        = GetPingClient();
+            _downloadr    = GetDownloadClient();
+            _postr        = GetPosterClient();
+            _sessionr     = GetSessionClient(checkIntervalMins);
             _sessionr.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(_sessionr.Status))
@@ -96,6 +98,7 @@ namespace Repo1.Core.ns11.R1Clients
         protected abstract IPingClient GetPingClient();
         protected abstract IDownloadClient GetDownloadClient();
         protected abstract ISessionClient GetSessionClient(int checkIntervalMins);
+        protected abstract IIssuePosterClient GetPosterClient();
         protected abstract R1Executable GetCurrentR1Exe();
         protected abstract bool ReplaceCurrentExeWith(string replacementExePath);
         protected abstract void RunOnNewThread(Task task, string threadLabel);
@@ -210,5 +213,9 @@ namespace Repo1.Core.ns11.R1Clients
                                     "Session Loop Thread");
             }
         }
+
+
+        public Task PostRuntimeError(string errorMessage)
+            => _postr.PostError(errorMessage, _cfgKey, _sessionr.ReadLegacyCfg);
     }
 }

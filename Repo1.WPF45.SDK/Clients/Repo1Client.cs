@@ -45,6 +45,10 @@ namespace Repo1.WPF45.SDK.Clients
             => new SessionClient1(checkIntervalMins);
 
 
+        protected override IIssuePosterClient GetPosterClient()
+            => new IssuePoster1(_cfg);
+
+
         protected override R1Executable GetCurrentR1Exe()
             => R1Exe.FromFile(Assembly.GetEntryAssembly().Location);
 

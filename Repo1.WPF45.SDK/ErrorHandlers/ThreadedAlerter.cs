@@ -53,11 +53,11 @@ namespace Repo1.WPF45.SDK.ErrorHandlers
                 goto PreExit;
             }
 
-            shortMsg = ex.Info(false, true);
-            longMsg = $"Error from ‹{thrower}›" + L.f + ex.Info(true, true);
+            shortMsg = ex.Info(false, false);
+            longMsg = ex.Info(true, true) + L.f + $"Final thrower :  ‹{thrower}›";
 
             PreExit:
-            Show($"Error from ‹{thrower}›", shortMsg);
+            //Show($"Error from ‹{thrower}›", shortMsg);
             return longMsg;
         }
 

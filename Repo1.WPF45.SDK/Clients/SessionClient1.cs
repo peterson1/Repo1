@@ -177,6 +177,10 @@ namespace Repo1.WPF45.SDK.Clients
 
 
 
-        public Func<string> ReadLegacyCfg { set { _readLegacyCfg = value; } }
+        public Func<string> ReadLegacyCfg
+        {
+            get { return _readLegacyCfg;  }
+            set { _readLegacyCfg = value; }
+        }
     }
 }
