@@ -86,11 +86,11 @@
     <Compile Include="R1Clients\IRepo1Client.cs" />
     <Compile Include="R1Clients\IRestClient.cs" />
     <Compile Include="R1Clients\ISessionClient.cs" />
-    <Compile Include="R1Clients\IssuePosterBase.cs" />
     <Compile Include="R1Clients\Repo1ClientBase1.cs" />
     <Compile Include="R1Clients\RestClientBase.cs" />
     <Compile Include="R1Models\R1Executable.cs" />
     <Compile Include="R1Models\R1Issue.cs" />
+    <Compile Include="R1Models\R1MachineSpecsBase.cs" />
     <Compile Include="R1Models\R1Ping.cs" />
     <Compile Include="R1Models\R1SplitPart.cs" />
     <Compile Include="R1Models\R1TaxonomyEnums.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="R1Models\ViewsLists\DownloadablesForUserDTO.cs" />
     <Compile Include="R1Models\ViewsLists\GetPingByLicenseKeyDTO.cs" />
     <Compile Include="R1Models\ViewsLists\IR1ViewsListDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\IssuesForUserByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\SplitPartContentByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\SplitPartIDsByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\UploadablesForUserDTO.cs" />

@@ -25,6 +25,7 @@ namespace Repo1.Core.ns11.Drupal7Tools.UndFields
         public static UndContainer<TargetIdField> TargetID(PropertyInfo propertyInf, object sourceObj)
         {
             var nodeObj = propertyInf.GetValue(sourceObj);
+            if (nodeObj == null) return null;
             var nidProp = nodeObj.GetType().GetRuntimeProperty("nid");
             if (nidProp == null)
                 throw new MissingMemberException($"No “nid” property found in {propertyInf.Name}.");

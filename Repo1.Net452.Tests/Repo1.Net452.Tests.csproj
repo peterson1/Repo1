@@ -42,6 +42,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Polly, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.4.3.0\lib\net45\Polly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,6 +75,7 @@
     <Compile Include="Core.ns11.Tests\Drupal7Tools\D7MapperTests\TaxonomyMapperFacts.cs" />
     <Compile Include="Core.ns11.Tests\HashLib\SHA1Facts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\D7BaseFieldsFacts.cs" />
+    <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\InheritedPropertiesFacts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\NodeAttributeFacts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7MapperTests\ValueAttributeFacts.cs" />
     <Compile Include="Core.ns11.Tests\Helpers\D7MapperAttributes\D7TypeAttributeTests\StaticMethodsFacts.cs" />
@@ -80,6 +85,7 @@
     <Compile Include="ExeUploader.WPF.Tests\Archivers\SevenZipperFacts.cs" />
     <Compile Include="Helpers\TempDir.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPF45.SDK.Tests\Clients\IssuePoster1Tests\IssuePoster1Facts.cs" />
     <Compile Include="WPF452.SDK.Tests\Helpers\HtmlTools\HtmlDecoderTests\HtmlDecoderFacts.cs" />
   </ItemGroup>
   <ItemGroup>

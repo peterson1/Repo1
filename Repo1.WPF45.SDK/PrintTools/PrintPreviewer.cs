@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.WPF45.SDK.PrintTools
 {
@@ -11,14 +11,15 @@ namespace Repo1.WPF45.SDK.PrintTools
     {
         const double PPI = 96;
 
-        public static void FitToLongBond(string printJobDesc, params FrameworkElement[] frameworkElements)
+        public static void FitTo (double inchesWidth, double inchesHeight, params FrameworkElement[] frameworkElements)
         {
-            var doc = new FixedDocument();
-            var width = 8.5 * PPI;
-            var height = 14 * PPI;
-            MessageBox.Show("Layout optimized for printing on long bond paper.", 
-                          "  Page Size: Long Bond paper", 
-                             MessageBoxButton.OK, MessageBoxImage.Information);
+            var doc    = new FixedDocument();
+            var width  = inchesWidth * PPI;
+            var height = inchesHeight * PPI;
+            //MessageBox.Show($"page count :  {frameworkElements.Length} sheets" + L.f
+            //              + $"paper size :  {inchesWidth:N1} x {inchesHeight:N1} inches", 
+            //              "   Print Preview Summary", 
+            //                  MessageBoxButton.OK, MessageBoxImage.Information);
 
             doc.DocumentPaginator.PageSize = new Size(width, height);
 
@@ -52,6 +53,7 @@ namespace Repo1.WPF45.SDK.PrintTools
 
             var win = new PrintPreviewWindow1();
             win.vwr.Document = doc;
+            win.Title = $"  Print Preview for {frameworkElements.Length} sheets on {inchesWidth:N1} x {inchesHeight:N1} inches";
             win.Show();
         }
     }

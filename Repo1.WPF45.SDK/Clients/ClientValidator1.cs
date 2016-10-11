@@ -1,22 +1,23 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.R1Clients;
 using Repo1.Core.ns11.R1Models;
 using Repo1.Core.ns11.R1Models.ViewsLists;
 using Repo1.WPF45.SDK.Configuration;
-using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 using Repo1.WPF45.SDK.NetworkTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
     internal class ClientValidator1 : SvcStackRestClient, IClientValidator
     {
+        private MachineProfiler1 _specs;
+
+
         public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
         {
+            _specs = new MachineProfiler1(_creds);
         }
 
 
@@ -50,11 +51,11 @@ namespace Repo1.WPF45.SDK.Clients
 
         private async Task<R1Ping> AssemblePingNode(GetPingByLicenseKeyDTO pingDTO, string macAddress)
         {
-            pingDTO.UserLicense = new R1UserLicense { nid = pingDTO.UserLicenseNid };
-            pingDTO.PublicIP = await GetPublicIP();
-            pingDTO.PrivateIP = PrivateIP.ForMAC(macAddress);
-            pingDTO.InstalledVersion = GetInstalledVersion();
+            pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.RegisteredMacAddress = macAddress;
+            pingDTO.PublicIP             = await _specs.GetPublicIP();
+            pingDTO.PrivateIP            =       _specs.GetPrivateIP(macAddress);
+            pingDTO.InstalledVersion     =       _specs.GetExeVersion();
 
             return pingDTO;
         }
@@ -79,7 +80,7 @@ namespace Repo1.WPF45.SDK.Clients
         protected override void OnError(Exception ex) { }
 
 
-        private string GetInstalledVersion() => new FileInfo(
-            Assembly.GetEntryAssembly().Location).FileVersion();
+        //private string GetInstalledVersion() => new FileInfo(
+        //    Assembly.GetEntryAssembly().Location).FileVersion();
     }
 }

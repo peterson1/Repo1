@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Management;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
@@ -13,7 +11,6 @@ using Repo1.Core.ns11.R1Clients;
 using Repo1.Core.ns11.R1Models;
 using Repo1.Core.ns11.R1Models.ViewsLists;
 using Repo1.WPF45.SDK.Configuration;
-using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 using Repo1.WPF45.SDK.NetworkTools;
 
 namespace Repo1.WPF45.SDK.Clients
@@ -22,11 +19,13 @@ namespace Repo1.WPF45.SDK.Clients
     {
         private bool _isTracking;
         private Func<string> _readLegacyCfg;
+        private MachineProfiler1 _specs;
 
 
         public SessionClient1(int sendIntervalMins) : base(null)
         {
             SendIntervalMins = sendIntervalMins;
+            _specs = new MachineProfiler1(_creds);
         }
 
 
@@ -97,23 +96,24 @@ namespace Repo1.WPF45.SDK.Clients
         private async Task<R1UserSession> GatherSessionInfo
             (R1UserSession savedNode = null)
         {
-            var exePath = GetExePath();
+            var exePath = _specs.GetExePath();
             var ssn = new R1UserSession();
             ssn.nid = savedNode?.nid ?? 0;
             ssn.uid = savedNode?.uid ?? 0;
             ssn.vid = savedNode?.vid ?? 0;
-            ssn.PublicIP = await GetPublicIP();
 
-            ssn.MacAndPrivateIPs = GetMacAndPrivateIPs();
-            ssn.ExeVersion = GetExeVersion();
-            ssn.ExePath = exePath.Replace("\\", "/");
+            await _specs.AddProfileTo(ssn, _readLegacyCfg, ConfigKey);
 
-            ssn.WindowsAccount = Environment.UserName;
-            ssn.ComputerName = Environment.MachineName;
-            ssn.Workgroup = GetWorkgroup();
+            //ssn.PublicIP = await GetPublicIP();
+            //ssn.MacAndPrivateIPs = GetMacAndPrivateIPs();
+            //ssn.ExeVersion = GetExeVersion();
+            //ssn.ExePath = exePath.Replace("\\", "/");
+            //ssn.WindowsAccount = Environment.UserName;
+            //ssn.ComputerName = Environment.MachineName;
+            //ssn.Workgroup = GetWorkgroup();
+            //ssn.LegacyCfgJson = _readLegacyCfg?.Invoke();
+            //ssn.Repo1CfgJson = Repo1Cfg.Read(ConfigKey);
 
-            ssn.LegacyCfgJson = _readLegacyCfg?.Invoke();
-            ssn.Repo1CfgJson = Repo1Cfg.Read(ConfigKey);
             ssn.ExpectedCfg = "< ignore me >";
 
             ssn.SessionKey = GetSessionKey();
@@ -138,24 +138,6 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        private string GetWorkgroup()
-        {
-            var nme = $"Win32_ComputerSystem.Name='{Environment.MachineName}'";
-            var inf = new ManagementObject(nme);
-            return inf["Workgroup"].ToString();
-        }
-
-
-        private string GetMacAndPrivateIPs()
-        {
-            var list = MacAddresses.List();
-
-            for (int i = 0; i < list.Count; i++)
-                list[i] += " : " + PrivateIP.ForMAC(list[i]);
-
-            return string.Join(L.f, list);
-        }
-
 
         private string GetFutureLicenseKey()
         {
@@ -172,7 +154,7 @@ namespace Repo1.WPF45.SDK.Clients
 
         private string GetSessionKey()
             => (string.Join(",", MacAddresses.List())
-                               + GetExePath()
+                               + _specs.GetExePath()
                                + ConfigKey).SHA1ForUTF8();
 
 
@@ -191,15 +173,10 @@ namespace Repo1.WPF45.SDK.Clients
 
 
 
-        private string GetExeVersion()
-            => new FileInfo(GetExePath()).FileVersion();
 
 
-        private string GetExePath()
-            => Assembly.GetEntryAssembly().Location;
 
 
-        public Func<string> ReadLegacyCfg
-        { set { _readLegacyCfg = value; } }
+        public Func<string> ReadLegacyCfg { set { _readLegacyCfg = value; } }
     }
 }

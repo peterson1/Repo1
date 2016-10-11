@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Repo1.WPF45.SDK.PrintTools"
         mc:Ignorable="d"
-        Title="Print Preview" Height="700" Width="700">
+        Title="Print Preview"
+        SizeToContent="WidthAndHeight"
+        MaxHeight="700"
+        MaxWidth="1300"
+        WindowStartupLocation="CenterScreen"
+        >
     <Grid>
         <DocumentViewer x:Name="vwr"
                         />

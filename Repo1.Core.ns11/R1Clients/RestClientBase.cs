@@ -172,14 +172,6 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
 
-        protected async Task<string> GetPublicIP()
-        {
-            const string url = "https://api.ipify.org?format=json";
-            var resp = await GetTilOK<Dictionary<string, string>>(url);
-            return resp["ip"].ToString();
-        }
-
-
         private TimeSpan Delay(int retryAttempt)
             => TimeSpan.FromSeconds(Math.Max(5, retryAttempt));
 
