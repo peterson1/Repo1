@@ -43,9 +43,11 @@ namespace Repo1.Core.ns11.R1Clients
 
         public Action<string> OnWarning { get; set; }
 
-        protected abstract Task<T> Get<T>(string resourceUrl);
-        protected abstract Task<T> Post<T>(T objToPost, string resourceUrl);
-        protected abstract Task<T> Put<T>(T objToPost, string resourceUrl);
+        protected abstract Task<T>  Get    <T>(string resourceUrl);
+        protected abstract Task<T>  Post   <T>(T objToPost, string resourceUrl);
+        protected abstract Task<T>  Put    <T>(T objToPost, string resourceUrl);
+        protected abstract Task<T>  Delete <T>(string resourceUrl);
+
         protected abstract HttpStatusCode? GetStatusCode<T>(T exception);
         protected abstract void OnError(Exception ex);
         protected abstract void DecodeHtmlInStrings<T>(T obj);
@@ -115,6 +117,13 @@ namespace Repo1.Core.ns11.R1Clients
 
 
 
+        protected async Task<bool>  Delete (int nodeID)
+        {
+            await KeepTrying(() => Delete<string>($"entity_node/{nodeID}"));
+            return true;
+        }
+
+
         protected async Task<List<T>> ViewsList<T>(params object[] args)
             where T : IR1ViewsListDTO, new()
         {
@@ -124,12 +133,10 @@ namespace Repo1.Core.ns11.R1Clients
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";
 
-            //var list = await KeepTrying(() => Get<List<T>>(url));
             var list = await GetTilOK<List<T>>(url);
 
             if (list == null)
             {
-                //OnError(new ArgumentNullException($"ViewsList ‹{typeof(T)?.Name}› returned NULL."));
                 Warn($"ViewsList ‹{typeof(T)?.Name}› returned NULL.");
                 return null;
             }
@@ -142,7 +149,15 @@ namespace Repo1.Core.ns11.R1Clients
 
 
         protected Task<T> GetTilOK<T>(string resourceURL)
-            => KeepTrying(() => Get<T>(resourceURL));
+            //=> KeepTrying(() => Get<T>(resourceURL));
+        {
+            var busyMsg = Status;
+            return KeepTrying(() => 
+            {
+                Status = busyMsg;
+                return Get<T>(resourceURL);
+            });
+        }
 
 
         private async Task<T> KeepTrying<T>(Func<Task<T>> action)

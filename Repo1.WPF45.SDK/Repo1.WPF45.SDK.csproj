@@ -103,6 +103,7 @@
     <Compile Include="Converters\ToShortBytesConverter.cs" />
     <Compile Include="Converters\VisibleIfFalseConverter.cs" />
     <Compile Include="Converters\VisibleIfNotNullConverter.cs" />
+    <Compile Include="Converters\VisibleIfNotZeroConverter.cs" />
     <Compile Include="Converters\VisibleIfTrueConverter.cs" />
     <Compile Include="Cryptographers\AESThenHMAC.cs" />
     <Compile Include="EmbeddedResources\EmbeddedResrc.cs" />
@@ -113,8 +114,8 @@
     <Compile Include="Extensions\R1ModelExtensions\R1ExecutableExtensions.cs" />
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="HtmlTools\HtmlDecoder.cs" />
-    <Compile Include="InputCommands\CommandR1WPF.cs" />
-    <Compile Include="InputCommands\LabeledCommand.cs" />
+    <Compile Include="InputCommands\R1AsyncCommandWPF.cs" />
+    <Compile Include="InputCommands\R1CommandFactoryWPF.cs" />
     <Compile Include="InputCommands\RelayCommand.cs" />
     <Compile Include="NetworkTools\MacAddresses.cs" />
     <Compile Include="NetworkTools\PrivateIP.cs" />

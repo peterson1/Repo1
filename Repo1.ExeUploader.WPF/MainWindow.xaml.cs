@@ -8,6 +8,8 @@ namespace Repo1.ExeUploader.WPF
         {
             InitializeComponent();
 
+            Application.Current.MainWindow = this;
+
             //Loaded += (a, b) =>
             //{
             //    this.MakeDraggable();

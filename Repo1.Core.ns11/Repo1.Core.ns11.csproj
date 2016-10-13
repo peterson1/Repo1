@@ -75,7 +75,7 @@
     <Compile Include="HashLib\HashResult.cs" />
     <Compile Include="HashLib\IHash.cs" />
     <Compile Include="HashLib\IHashInfo.cs" />
-    <Compile Include="InputCommands\ICommandR1.cs" />
+    <Compile Include="InputCommands\IR1Command.cs" />
     <Compile Include="Obfuscators\FakeFactory.cs" />
     <Compile Include="Obfuscators\RandomAmerican.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="R1Models\ViewsLists\GetPingByLicenseKeyDTO.cs" />
     <Compile Include="R1Models\ViewsLists\IR1ViewsListDTO.cs" />
     <Compile Include="R1Models\ViewsLists\IssuesForUserByHashDTO.cs" />
+    <Compile Include="R1Models\ViewsLists\PartsUploadedByUser.cs" />
     <Compile Include="R1Models\ViewsLists\SplitPartContentByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\SplitPartIDsByHashDTO.cs" />
     <Compile Include="R1Models\ViewsLists\UploadablesForUserDTO.cs" />

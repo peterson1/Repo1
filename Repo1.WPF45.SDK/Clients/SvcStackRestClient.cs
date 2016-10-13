@@ -24,11 +24,15 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override Task<T> Get<T>(string resourceUrl)
+        protected override Task<T>  Get  <T>(string resourceUrl)
             => CreateClient().GetAsync<T>(resourceUrl);
 
 
-        protected override Task<T> Post<T>(T objToPost, string resourceUrl)
+        protected override Task<T>  Delete  <T>(string resourceUrl)
+            => CreateClient().DeleteAsync<T>(resourceUrl);
+
+
+        protected override Task<T>  Post  <T>(T objToPost, string resourceUrl)
         {
             //var js = DynamicJson.Serialize(objToPost);
             //var js = ServiceStack.Text.JsonSerializer.SerializeToString(objToPost);
@@ -36,7 +40,7 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override Task<T> Put<T>(T objToPut, string resourceUrl)
+        protected override Task<T>  Put  <T>(T objToPut, string resourceUrl)
         {
             //var js = DynamicJson.Serialize(objToPut);
             //var js = JsonSerializer.SerializeToString(objToPut);

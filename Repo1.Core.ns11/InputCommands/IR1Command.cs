@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Repo1.Core.ns11.InputCommands
 {
-    public interface ICommandR1 : ICommand
+    public interface IR1Command : ICommand
     {
         string    CurrentLabel      { get; set; }
         bool      IsBusy            { get; }

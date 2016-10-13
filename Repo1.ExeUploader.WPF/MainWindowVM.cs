@@ -19,30 +19,31 @@ namespace Repo1.ExeUploader.WPF
     class MainWindowVM
     {
 
-        public MainWindowVM(UploaderCfg uploaderCfg, UploaderClient1 uploaderClient1)
+        public MainWindowVM(UploaderCfg uploaderCfg, UploaderClient1 uploaderClient1, DeleterClient1 deleterClient1)
         {
-            Config  = uploaderCfg;
-            Client  = uploaderClient1;
-            Title   = $"Repo 1 Uploader  :  “{Config.Username}”  :  {Config.ApiBaseURL}";
-
-            LocalExe  = FindLocalExe();
+            Config   = uploaderCfg;
+            Uploader = uploaderClient1;
+            Deleter  = deleterClient1;
+            Title    = $"Repo 1 Uploader  :  “{Config.Username}”  :  {Config.ApiBaseURL}";
+            LocalExe = FindLocalExe();
             if (LocalExe == null) return;
 
-            RefreshCmd = new CommandR1WPF(async x => await GetRemoteExe());
-            RefreshCmd.ExecuteIfItCan();
+            RefreshCmd = R1Command.Async(GetRemoteExe);
+            UploadCmd  = R1Command.Async(PublishLocalExe,
+                     x => HasChanges && !VersionChanges.IsBlank(), "Upload");
 
-            UploadCmd = new CommandR1WPF(async x => await PublishLocalExe(),
-                    x => HasChanges && !VersionChanges.IsBlank(), "Upload");
+            RefreshCmd.ExecuteIfItCan();
         }
 
 
+        public UploaderCfg      Config          { get; private set; }
+        public UploaderClient1  Uploader        { get; private set; }
+        public DeleterClient1   Deleter         { get; private set; }
         public string           Title           { get; private set; }
-        public UploaderClient1  Client          { get; private set; }
         public R1Executable     LocalExe        { get; private set; }
         public R1Executable     RemoteExe       { get; private set; }
-        public UploaderCfg      Config          { get; private set; }
-        public ICommandR1       RefreshCmd      { get; private set; }
-        public ICommandR1       UploadCmd       { get; private set; }
+        public IR1Command       RefreshCmd      { get; private set; }
+        public IR1Command       UploadCmd       { get; private set; }
         public bool             HasChanges      { get; private set; }
         public string           VersionChanges  { get; set; }
         public double           MaxPartSizeMB   { get; set; } = 0.5;
@@ -53,19 +54,19 @@ namespace Repo1.ExeUploader.WPF
             Clipboard.SetText(VersionChanges);
 
             UploadCmd.CurrentLabel = "Uploading ...";
-            var ok = await Client.UploadNew(LocalExe, MaxPartSizeMB);
+            var ok = await Uploader.UploadNew(LocalExe, MaxPartSizeMB);
             if (!ok)
             {
                 UploadCmd.CurrentLabel = "Uploading Error";
                 return;
             }
 
-            RemoteExe.FileName       = LocalExe.FileName;
-            RemoteExe.FileSize       = LocalExe.FileSize;
-            RemoteExe.FileHash       = LocalExe.FileHash;
-            RemoteExe.FileVersion    = LocalExe.FileVersion;
+            RemoteExe.FileName    = LocalExe.FileName;
+            RemoteExe.FileSize    = LocalExe.FileSize;
+            RemoteExe.FileHash    = LocalExe.FileHash;
+            RemoteExe.FileVersion = LocalExe.FileVersion;
 
-            ok = await Client.Edit(RemoteExe, VersionChanges);
+            ok = await Uploader.Edit(RemoteExe, VersionChanges);
             if (!ok)
             {
                 UploadCmd.CurrentLabel = "Updating Error";
@@ -77,10 +78,12 @@ namespace Repo1.ExeUploader.WPF
 
         private async Task GetRemoteExe()
         {
-            RemoteExe = await Client.GetExecutable(LocalExe.FileName);
+            RemoteExe = await Uploader.GetExecutable(LocalExe.FileName);
             if (RemoteExe == null) return;
+            Deleter.Initialize(RemoteExe);
+
             if (RemoteExe.FileVersion == LocalExe.FileVersion) return;
-            if (RemoteExe.FileHash == LocalExe.FileHash) return;
+            if (RemoteExe.FileHash    == LocalExe.FileHash   ) return;
 
             LocalExe.nid = RemoteExe.nid;
             LocalExe.uid = RemoteExe.uid;

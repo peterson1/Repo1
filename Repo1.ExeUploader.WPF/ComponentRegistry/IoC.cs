@@ -15,7 +15,8 @@ namespace Repo1.ExeUploader.WPF.ComponentRegistry
 
             b.RegisterInstance(cfg).As<UploaderCfg, DownloaderCfg, RestServerCredentials>();
             b.Solo<MainWindowVM>();
-            b.Multi<UploaderClient1>();
+            b.Solo<DeleterClient1>();
+            b.Solo<UploaderClient1>();
             b.Multi<DownloaderClient1>();
 
             return b.Build();

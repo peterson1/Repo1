@@ -21,6 +21,7 @@ namespace Repo1.Core.ns11.R1Models
         Postponed               = 8,
         Postponed_NeedsMoreInfo = 9,
         Closed_Duplicate        = 10,
+        Closed_EdgeCase         = 16,
     }
 
 

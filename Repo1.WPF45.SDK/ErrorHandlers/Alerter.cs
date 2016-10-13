@@ -12,4 +12,14 @@ namespace Repo1.WPF45.SDK.ErrorHandlers
             return returnObj;
         }
     }
+
+
+    public class Alert
+    {
+        public static void Fail(string message)
+        {
+            MessageBox.Show(message, "   Operation Failed",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
 }
