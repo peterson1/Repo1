@@ -42,11 +42,11 @@ namespace Repo1.WPF45.SDK.Clients
 
 
         protected override ISessionClient GetSessionClient(int checkIntervalMins)
-            => new SessionClient1(checkIntervalMins);
+            => new SessionClient1(_cfgKey, checkIntervalMins);
 
 
         protected override IIssuePosterClient GetPosterClient()
-            => new IssuePoster1(_cfg);
+            => new IssuePoster1(_cfgKey, _cfg);
 
 
         protected override R1Executable GetCurrentLocalExe()

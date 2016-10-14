@@ -11,7 +11,7 @@ namespace Repo1.Net452.Tests.WPF45.SDK.Tests.Clients.IssuePoster1Tests
         [Fact(DisplayName = "Can Post Issue")]
         public async void Case1()
         {
-            var sut = new IssuePoster1(new RestServerCredentials
+            var sut = new IssuePoster1("", new RestServerCredentials
             {
                 Username = "Justin D. Livingstone",
                 Password = "KcGPFvSylL30AipGj6sd",

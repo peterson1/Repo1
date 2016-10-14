@@ -11,11 +11,8 @@ namespace Repo1.WPF45.SDK.Clients
 {
     internal class LocalFileUpdater1 : MachineProfilingRestClient1, ILocalFileUpdater
     {
-        private string _cfgKey;
-
-        public LocalFileUpdater1(RestServerCredentials restServerCredentials, string configKey) : base(restServerCredentials)
+        public LocalFileUpdater1(RestServerCredentials restServerCredentials, string configKey) : base(configKey, restServerCredentials)
         {
-            _cfgKey = configKey;
         }
 
 
@@ -25,7 +22,7 @@ namespace Repo1.WPF45.SDK.Clients
         public async Task<R1Executable> GetLatestVersions()
         {
             //todo:  include last user activity in ping payload
-            await AddProfileTo(PingNode, _cfgKey);
+            await AddProfileTo(PingNode);
             var dict = await Update(PingNode);
             if (dict == null) return null;
             

@@ -12,11 +12,8 @@ namespace Repo1.WPF45.SDK.Clients
 {
     internal class ClientValidator1 : MachineProfilingRestClient1, IClientValidator
     {
-        private string _cfgKey;
-
-        public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
+        public ClientValidator1(string configKey) : base(configKey, Repo1Cfg.Parse(configKey))
         {
-            _cfgKey = configKey;
         }
 
 
@@ -51,7 +48,7 @@ namespace Repo1.WPF45.SDK.Clients
         private async Task<R1Ping> AssemblePingNode(GetPingByLicenseKeyDTO pingDTO, string macAddress)
         {
             //todo: pass readLegacyCfg method here
-            await AddProfileTo(pingDTO, _cfgKey);
+            await AddProfileTo(pingDTO);
 
             pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.RegisteredMacAddress = macAddress;

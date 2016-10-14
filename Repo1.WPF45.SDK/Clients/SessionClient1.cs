@@ -20,7 +20,7 @@ namespace Repo1.WPF45.SDK.Clients
         private bool _isTracking;
 
 
-        public SessionClient1(int sendIntervalMins) : base(null)
+        public SessionClient1(string configKey, int sendIntervalMins) : base(configKey, null)
         {
             SendIntervalMins = sendIntervalMins;
         }
@@ -99,7 +99,7 @@ namespace Repo1.WPF45.SDK.Clients
             ssn.uid = savedNode?.uid ?? 0;
             ssn.vid = savedNode?.vid ?? 0;
 
-            await AddProfileTo(ssn, ConfigKey);
+            await AddProfileTo(ssn);
 
             //ssn.PublicIP = await GetPublicIP();
             //ssn.MacAndPrivateIPs = GetMacAndPrivateIPs();

@@ -30,10 +30,10 @@ namespace Repo1.Core.ns11.R1Clients
             _cfg          = ParseDownloaderCfg(configKey);
             _intervalMins = checkIntervalMins;
             _validr       = GetClientValidator();
-            _updatr       = GetLocalFileUpdater(configKey);
-            _downloadr    = GetDownloadClient();
             _postr        = GetPosterClient();
+            _updatr       = GetLocalFileUpdater(configKey);
             _sessionr     = GetSessionClient(checkIntervalMins);
+            _downloadr    = GetDownloadClient();
             _sessionr.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(_sessionr.Status))

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.Extensions.StringExtensions;
@@ -14,7 +13,7 @@ namespace Repo1.WPF45.SDK.Clients
     {
         private string _lastHash;
 
-        public IssuePoster1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        public IssuePoster1(string configKey, RestServerCredentials restServerCredentials) : base(configKey, restServerCredentials)
         {
         }
 
@@ -22,7 +21,7 @@ namespace Repo1.WPF45.SDK.Clients
         public async Task PostError(string errorMessage, string configKey)
         {
             var issue = CastError(errorMessage);
-            await AddProfileTo(issue, configKey);
+            await AddProfileTo(issue);
             _lastHash = issue.RecordHash = Json.Serialize(issue).SHA1ForUTF8();
 
             var dupNode = await LastPostedIssue();

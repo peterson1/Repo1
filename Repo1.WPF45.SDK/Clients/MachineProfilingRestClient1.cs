@@ -17,18 +17,21 @@ namespace Repo1.WPF45.SDK.Clients
 {
     public class MachineProfilingRestClient1 : SvcStackRestClient
     {
-        internal MachineProfilingRestClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        protected string _cfgKey;
+
+        internal MachineProfilingRestClient1(string configKey, RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
+            _cfgKey = configKey;
         }
 
 
         public Func<string>  ReadLegacyCfg  { private get; set; }
 
 
-        internal async Task AddProfileTo(R1MachineSpecsBase targetObj, string configKey)
+        internal async Task AddProfileTo(R1MachineSpecsBase targetObj)
         {
             var publicIpJob = GetPublicIP();
-            var offlineJobs = RunOfflineJobs(targetObj, configKey);
+            var offlineJobs = RunOfflineJobs(targetObj);
             try
             {
                 await Task.WhenAll(publicIpJob, offlineJobs);
@@ -42,7 +45,7 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        private async Task<bool> RunOfflineJobs(R1MachineSpecsBase obj, string configKey)
+        private async Task<bool> RunOfflineJobs(R1MachineSpecsBase obj)
         {
             obj.ExePath          = SafeGet(() => GetExePath()            );
             obj.MacAndPrivateIPs = SafeGet(() => GetMacAndPrivateIPs()   );
@@ -51,7 +54,7 @@ namespace Repo1.WPF45.SDK.Clients
             obj.ComputerName     = SafeGet(() => Environment.MachineName );
             obj.Workgroup        = SafeGet(() => GetWorkgroup()          );
             obj.LegacyCfgJson    = SafeGet(() => ReadLegacyCfg?.Invoke() );
-            obj.Repo1CfgJson     = SafeGet(() => Repo1Cfg.Read(configKey));
+            obj.Repo1CfgJson     = SafeGet(() => Repo1Cfg.Read(_cfgKey));
             obj.IsAdminUser      = CurrentWindowsUser.IsAdmin();
 
             await Task.Delay(1);
