@@ -82,7 +82,7 @@
     <Compile Include="R1Clients\IClientValidator.cs" />
     <Compile Include="R1Clients\IDownloadClient.cs" />
     <Compile Include="R1Clients\IIssuePosterClient.cs" />
-    <Compile Include="R1Clients\IPingClient.cs" />
+    <Compile Include="R1Clients\ILocalFileUpdater.cs" />
     <Compile Include="R1Clients\IRepo1Client.cs" />
     <Compile Include="R1Clients\IRestClient.cs" />
     <Compile Include="R1Clients\ISessionClient.cs" />

@@ -114,7 +114,7 @@ namespace Repo1.WPF45.SDK.Clients
             //ssn.LegacyCfgJson = _readLegacyCfg?.Invoke();
             //ssn.Repo1CfgJson = Repo1Cfg.Read(ConfigKey);
 
-            ssn.ExpectedCfg = "< ignore me >";
+            ssn.ExpectedCfg = Repo1Cfg.EXPECTED_KEY_IGNORE_ME;
 
             ssn.SessionKey = GetSessionKey();
             ssn.FutureLicenseKey = GetFutureLicenseKey();

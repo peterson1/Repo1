@@ -92,7 +92,7 @@
     <Compile Include="Clients\DownloaderClient1.cs" />
     <Compile Include="Clients\IssuePoster1.cs" />
     <Compile Include="Clients\MachineProfiler1.cs" />
-    <Compile Include="Clients\PingClient1.cs" />
+    <Compile Include="Clients\LocalFileUpdater1.cs" />
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
     <Compile Include="Clients\SessionClient1.cs" />

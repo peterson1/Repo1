@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.EventArguments;
+using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.R1Models;
 
@@ -15,7 +16,7 @@ namespace Repo1.Core.ns11.R1Clients
 
         private   int                _intervalMins;
         private   bool               _isChecking;
-        protected IPingClient        _pingr;
+        protected ILocalFileUpdater        _updatr;
         protected IClientValidator   _validr;
         protected ISessionClient     _sessionr;
         protected IDownloadClient    _downloadr;
@@ -30,7 +31,7 @@ namespace Repo1.Core.ns11.R1Clients
             _cfg          = ParseDownloaderCfg(configKey);
             _intervalMins = checkIntervalMins;
             _validr       = GetClientValidator();
-            _pingr        = GetPingClient();
+            _updatr       = GetLocalFileUpdater(configKey);
             _downloadr    = GetDownloadClient();
             _postr        = GetPosterClient();
             _sessionr     = GetSessionClient(checkIntervalMins);
@@ -43,22 +44,22 @@ namespace Repo1.Core.ns11.R1Clients
 
 
         private string _status;
-        public string Status
+        public  string  Status
         {
             get { return _status; }
             set
             {
                 _status = value;
                 PropertyChanged.Raise(nameof(Status));
-                _statusChanged.Raise(_status);
+                _statusChanged .Raise(_status);
             }
         }
 
 
-        private EventHandler<EArg<string>> _statusChanged;
-        public event EventHandler<EArg<string>> StatusChanged
+        private      EventHandler<EArg<string>> _statusChanged;
+        public event EventHandler<EArg<string>>  StatusChanged
         {
-            add { _statusChanged -= value; _statusChanged += value; }
+            add    { _statusChanged -= value; _statusChanged += value; }
             remove { _statusChanged -= value; }
         }
 
@@ -72,15 +73,15 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
 
-        protected abstract IClientValidator GetClientValidator();
-        protected abstract IPingClient GetPingClient();
-        protected abstract IDownloadClient GetDownloadClient();
-        protected abstract ISessionClient GetSessionClient(int checkIntervalMins);
-        protected abstract IIssuePosterClient GetPosterClient();
-        protected abstract R1Executable GetCurrentR1Exe();
-        protected abstract bool ReplaceCurrentExeWith(string replacementExePath);
-        protected abstract void RunOnNewThread(Task task, string threadLabel);
-        protected abstract DownloaderCfg ParseDownloaderCfg(string configKey);
+        protected abstract IClientValidator   GetClientValidator    ();
+        protected abstract ILocalFileUpdater  GetLocalFileUpdater   (string configKey);
+        protected abstract IDownloadClient    GetDownloadClient     ();
+        protected abstract ISessionClient     GetSessionClient      (int checkIntervalMins);
+        protected abstract IIssuePosterClient GetPosterClient       ();
+        protected abstract R1Executable       GetCurrentLocalExe    ();
+        protected abstract bool               ReplaceCurrentExeWith (string replacementExePath);
+        protected abstract void               RunOnNewThread        (Task task, string threadLabel);
+        protected abstract DownloaderCfg      ParseDownloaderCfg    (string configKey);
 
 
         public async void StartUpdateChecker(string tempUserName, string tempPassword)
@@ -92,11 +93,12 @@ namespace Repo1.Core.ns11.R1Clients
             if (await _validr.ValidateThisMachine())
             {
                 Status = "Machine validation successful.";
+                _updatr.PingNode = _validr.PingNode;
                 StartAuthenticatedUpdaterLoop();
             }
             else
             {
-                Status = _cfg.WasRejected
+                Status = _cfg?.WasRejected ?? true
                     ? $"Server rejected the credentials for “{_cfg?.Username}”."
                     : $"{_cfg?.Username} is not licensed to use this app on this machine.";
 
@@ -114,30 +116,15 @@ namespace Repo1.Core.ns11.R1Clients
                 (tempUserName, tempPassword), "Session Loop Thread");
 
 
-        protected T Warn<T>(string message, T returnVal = default(T))
-        {
-            OnWarning?.Invoke(message);
-            return returnVal;
-        }
-
-
 
         private async Task ExecuteUpdateCheckLoop()
         {
+            var current = GetCurrentLocalExe();
             var latest = default(R1Executable);
-            var ping = _validr.PingNode;
-            var current = GetCurrentR1Exe();
-            Status = $"Currently running version [{current.FileVersion}].";
-
             while (true)
             {
-                Status = "Checking for newer version ...";
-                latest = await _pingr.SendAndGetLatestVersion(ping);
-
-                //todo: rewrite local Repo1Cfg if server's copy changed
-
-                //todo: rewrite local legacyCfg if server's copy changed
-
+                Status = $"Checking for version newer than [{current.FileVersion}] ...";
+                latest = await _updatr.GetLatestVersions();
 
                 if (current.FileHash == latest.FileHash)
                 {
@@ -147,7 +134,7 @@ namespace Repo1.Core.ns11.R1Clients
                 else
                 {
                     Status = $"Newer version found: [{latest.FileVersion}]. Downloading ...";
-                    if (await DownloadAndSwap(latest, ping))
+                    if (await DownloadAndSwap(latest))
                     {
                         UpdateInstalled?.Raise(this);
                         Status = "Updates downloaded and installed.  Ready to relaunch.";
@@ -157,10 +144,10 @@ namespace Repo1.Core.ns11.R1Clients
             }
         }
 
-        private async Task<bool> DownloadAndSwap(R1Executable latest, R1Ping ping)
+        private async Task<bool> DownloadAndSwap(R1Executable latest)
         {
-            var partsList = await _downloadr.GetPartsList
-                (latest.FileVersion, ping.RegisteredMacAddress);
+            var macAddr   = _validr.PingNode.RegisteredMacAddress;
+            var partsList = await _downloadr.GetPartsList(latest.FileVersion, macAddr);
             if (partsList.Count == 0) return false;
 
             var exePath = await _downloadr.DownloadAndExtract(partsList, latest.FileHash);
@@ -178,7 +165,7 @@ namespace Repo1.Core.ns11.R1Clients
             => PropertyChanged.Raise(propertyName);
 
 
-        public Task PostRuntimeError(string errorMessage)
-            => _postr.PostError(errorMessage, _cfgKey, _sessionr.ReadLegacyCfg);
+        public void PostRuntimeError(string errorMessage)
+            => RunOnNewThread(_postr.PostError(errorMessage, _cfgKey, _sessionr.ReadLegacyCfg), "PostRuntimeError thread");
     }
 }

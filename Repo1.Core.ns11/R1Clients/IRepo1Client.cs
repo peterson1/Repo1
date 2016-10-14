@@ -8,7 +8,7 @@ namespace Repo1.Core.ns11.R1Clients
     public interface IRepo1Client : INotifyPropertyChanged
     {
         void  StartUpdateChecker  (string tempUserName, string tempPassword);
-        Task  PostRuntimeError    (string errorMessage);
+        void  PostRuntimeError    (string errorMessage);
 
         void  RaisePropertyChanged(string propertyName);
 

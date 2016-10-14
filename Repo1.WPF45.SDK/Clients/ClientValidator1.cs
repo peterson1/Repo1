@@ -13,11 +13,12 @@ namespace Repo1.WPF45.SDK.Clients
     internal class ClientValidator1 : SvcStackRestClient, IClientValidator
     {
         private MachineProfiler1 _specs;
-
+        private string           _cfgKey;
 
         public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
         {
-            _specs = new MachineProfiler1(_creds);
+            _cfgKey = configKey;
+            _specs  = new MachineProfiler1(_creds);
         }
 
 
@@ -51,11 +52,14 @@ namespace Repo1.WPF45.SDK.Clients
 
         private async Task<R1Ping> AssemblePingNode(GetPingByLicenseKeyDTO pingDTO, string macAddress)
         {
+            //todo: pass readLegacyCfg method here
+            await _specs.AddProfileTo(pingDTO, null, _cfgKey);
+
             pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.RegisteredMacAddress = macAddress;
-            pingDTO.PublicIP             = await _specs.GetPublicIP();
-            pingDTO.PrivateIP            =       _specs.GetPrivateIP(macAddress);
-            pingDTO.InstalledVersion     =       _specs.GetExeVersion();
+            pingDTO.PrivateIP            = _specs.GetPrivateIP(macAddress);
+            pingDTO.InstalledVersion     = _specs.GetExeVersion();
+            pingDTO.ExpectedCfg          = Repo1Cfg.EXPECTED_KEY_IGNORE_ME;
 
             return pingDTO;
         }

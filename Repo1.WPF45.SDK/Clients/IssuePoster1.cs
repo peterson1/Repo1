@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
-using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.R1Clients;
 using Repo1.Core.ns11.R1Models;
@@ -28,6 +27,9 @@ namespace Repo1.WPF45.SDK.Clients
             var issue = CastError(errorMessage);
             await _specs.AddProfileTo(issue, readLegacyCfg, configKey);
             _lastHash = issue.RecordHash = Json.Serialize(issue).SHA1ForUTF8();
+
+            var dupNode = await LastPostedIssue();
+            if (dupNode != null) return;
 
             await Create(issue, LastPostedIssue);
         }

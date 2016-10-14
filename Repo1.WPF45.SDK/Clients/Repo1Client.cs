@@ -37,8 +37,8 @@ namespace Repo1.WPF45.SDK.Clients
             => new DownloaderClient1(_cfg);
 
 
-        protected override IPingClient GetPingClient()
-            => new PingClient1(_cfg);
+        protected override ILocalFileUpdater GetLocalFileUpdater(string configKey)
+            => new LocalFileUpdater1(_cfg, configKey);
 
 
         protected override ISessionClient GetSessionClient(int checkIntervalMins)
@@ -49,7 +49,7 @@ namespace Repo1.WPF45.SDK.Clients
             => new IssuePoster1(_cfg);
 
 
-        protected override R1Executable GetCurrentR1Exe()
+        protected override R1Executable GetCurrentLocalExe()
             => R1Exe.FromFile(Assembly.GetEntryAssembly().Location);
 
 
@@ -57,6 +57,7 @@ namespace Repo1.WPF45.SDK.Clients
             => Repo1Cfg.Parse(configKey);
 
 
+        //todo: use caller name as thread label instead of asking for it
         protected override void RunOnNewThread(Task task, string threadLabel)
             => new Thread(async () =>
             {
@@ -96,7 +97,9 @@ namespace Repo1.WPF45.SDK.Clients
             }
             catch (Exception ex)
             {
-                return Warn(ex.Info(), false);
+                //return Warn(ex.Info(), false);
+                OnWarning?.Invoke(ex.Info());
+                return false;
             }
             return File.Exists(origPath);
         }

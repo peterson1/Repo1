@@ -12,9 +12,9 @@ namespace Repo1.WPF45.SDK.Clients
 
 
         private static Action<string> PostIssueThen(IRepo1Client repo1Client, Action<string> errorLogger)
-            => new Action<string>(async msg =>
+            => new Action<string>(msg =>
             {
-                await repo1Client.PostRuntimeError(msg);
+                repo1Client.PostRuntimeError(msg);
                 errorLogger.Invoke(msg);
             });
     }

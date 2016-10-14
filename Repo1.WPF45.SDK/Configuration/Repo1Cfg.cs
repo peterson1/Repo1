@@ -19,6 +19,8 @@ namespace Repo1.WPF45.SDK.Configuration
         //    File.WriteAllText(GetPath(configKey), encr);
         //}
 
+        internal const string EXPECTED_KEY_IGNORE_ME = "< ignore me >";
+
 
         internal static void WriteBlank(string configKey)
             => Rewrite(Json.Serialize(new Repo1Cfg()), configKey);
@@ -72,10 +74,10 @@ namespace Repo1.WPF45.SDK.Configuration
         }
 
 
-        internal static void Rewrite(string json, string configKey)
+        internal static void Rewrite(string newCfgjson, string configKey)
         {
             var pwd  = GetPassword(configKey);
-            var encr = AESThenHMAC.SimpleEncryptWithPassword(json, pwd);
+            var encr = AESThenHMAC.SimpleEncryptWithPassword(newCfgjson, pwd);
             var path = GetPath(configKey);
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, encr);
