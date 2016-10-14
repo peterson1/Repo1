@@ -59,9 +59,6 @@ namespace Repo1.Core.ns11.R1Clients
             if (mappd == null) return null;
             mappd["status"] = isPublished ? 1 : 0;
 
-            //var dict = await Post(mappd, "entity_node");
-            //todo: check if posted before retrying
-            //var dict = await KeepTrying(() => Post(mappd, "entity_node"));
             var dict = await KeepTrying(async () =>
             {
                 Dictionary<string, object> resp = null;

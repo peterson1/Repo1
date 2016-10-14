@@ -9,7 +9,7 @@ using Repo1.WPF45.SDK.Configuration;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    internal class LocalFileUpdater1 : SvcStackRestClient, ILocalFileUpdater
+    internal class LocalFileUpdater1 : MachineProfilingRestClient1, ILocalFileUpdater
     {
         private string _cfgKey;
 
@@ -19,13 +19,13 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        //public string  ExpectedCfg  { get; private set; }
-        public R1Ping  PingNode     { get; set; }
+        public R1Ping   PingNode  { get; set; }
 
 
         public async Task<R1Executable> GetLatestVersions()
         {
             //todo:  include last user activity in ping payload
+            await AddProfileTo(PingNode, _cfgKey);
             var dict = await Update(PingNode);
             if (dict == null) return null;
             

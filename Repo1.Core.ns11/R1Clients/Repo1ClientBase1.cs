@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.EventArguments;
-using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.R1Models;
 
@@ -16,7 +15,7 @@ namespace Repo1.Core.ns11.R1Clients
 
         private   int                _intervalMins;
         private   bool               _isChecking;
-        protected ILocalFileUpdater        _updatr;
+        protected ILocalFileUpdater  _updatr;
         protected IClientValidator   _validr;
         protected ISessionClient     _sessionr;
         protected IDownloadClient    _downloadr;
@@ -69,7 +68,13 @@ namespace Repo1.Core.ns11.R1Clients
 
         public Func<string> ReadLegacyCfg
         {
-            set { _sessionr.ReadLegacyCfg = value; }
+            set
+            {
+                _validr  .ReadLegacyCfg = value;
+                _postr   .ReadLegacyCfg = value;
+                _updatr  .ReadLegacyCfg = value;
+                _sessionr.ReadLegacyCfg = value;
+            }
         }
 
 
@@ -166,6 +171,6 @@ namespace Repo1.Core.ns11.R1Clients
 
 
         public void PostRuntimeError(string errorMessage)
-            => RunOnNewThread(_postr.PostError(errorMessage, _cfgKey, _sessionr.ReadLegacyCfg), "PostRuntimeError thread");
+            => RunOnNewThread(_postr.PostError(errorMessage, _cfgKey), "PostRuntimeError thread");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
@@ -17,10 +18,13 @@ namespace Repo1.WPF45.SDK.Clients
     [ImplementPropertyChanged]
     public class SvcStackRestClient : RestClientBase
     {
+        //internal MachineProfilingRestClient1 _specs;
+
         public SvcStackRestClient(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
             ToggleAllowUnsafeHeaderParsing(true);
             JsConfig.ExcludeTypeInfo = true;
+            //_specs = new MachineProfilingRestClient1(x => GetTilOK<Dictionary<string, string>>(x));
         }
 
 

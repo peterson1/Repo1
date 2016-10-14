@@ -13,5 +13,6 @@ namespace Repo1.Core.ns11.R1Models
         [Value(Key = "field_workgroup"       )]  public string    Workgroup         { get; set; }
         [Value(Key = "field_legacycfgjson"   )]  public string    LegacyCfgJson     { get; set; }
         [Value(Key = "field_repo1cfgjson"    )]  public string    Repo1CfgJson      { get; set; }
+        [Value(Key = "field_isadminuser"     )]  public bool?     IsAdminUser       { get; set; }
     }
 }

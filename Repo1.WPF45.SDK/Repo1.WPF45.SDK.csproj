@@ -91,7 +91,7 @@
     <Compile Include="Clients\ClientValidator1.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
     <Compile Include="Clients\IssuePoster1.cs" />
-    <Compile Include="Clients\MachineProfiler1.cs" />
+    <Compile Include="Clients\MachineProfilingRestClient1.cs" />
     <Compile Include="Clients\LocalFileUpdater1.cs" />
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
@@ -138,6 +138,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Serialization\Json.cs" />
+    <Compile Include="UacTools\CurrentWindowsUser.cs" />
     <Compile Include="UserControls\TextPair.xaml.cs">
       <DependentUpon>TextPair.xaml</DependentUpon>
     </Compile>

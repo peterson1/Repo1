@@ -10,22 +10,19 @@ using Repo1.WPF45.SDK.Serialization;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    public class IssuePoster1 : SvcStackRestClient, IIssuePosterClient
+    public class IssuePoster1 : MachineProfilingRestClient1, IIssuePosterClient
     {
-        private MachineProfiler1 _specs;
-        private string           _lastHash;
+        private string _lastHash;
 
         public IssuePoster1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
-            _specs = new MachineProfiler1(_creds);
         }
 
 
-        public async Task PostError(string errorMessage,
-            string configKey, Func<string> readLegacyCfg = null)
+        public async Task PostError(string errorMessage, string configKey)
         {
             var issue = CastError(errorMessage);
-            await _specs.AddProfileTo(issue, readLegacyCfg, configKey);
+            await AddProfileTo(issue, configKey);
             _lastHash = issue.RecordHash = Json.Serialize(issue).SHA1ForUTF8();
 
             var dupNode = await LastPostedIssue();

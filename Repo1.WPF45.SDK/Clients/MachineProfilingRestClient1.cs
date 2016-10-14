@@ -11,20 +11,24 @@ using Repo1.Core.ns11.R1Models;
 using Repo1.WPF45.SDK.Configuration;
 using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 using Repo1.WPF45.SDK.NetworkTools;
+using Repo1.WPF45.SDK.UacTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    internal class MachineProfiler1 : SvcStackRestClient
+    public class MachineProfilingRestClient1 : SvcStackRestClient
     {
-        internal MachineProfiler1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        internal MachineProfilingRestClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
         }
 
 
-        internal async Task AddProfileTo(R1MachineSpecsBase targetObj, Func<string> readLegacyCfg, string configKey)
+        public Func<string>  ReadLegacyCfg  { private get; set; }
+
+
+        internal async Task AddProfileTo(R1MachineSpecsBase targetObj, string configKey)
         {
             var publicIpJob = GetPublicIP();
-            var offlineJobs = RunOfflineJobs(targetObj, readLegacyCfg, configKey);
+            var offlineJobs = RunOfflineJobs(targetObj, configKey);
             try
             {
                 await Task.WhenAll(publicIpJob, offlineJobs);
@@ -38,7 +42,7 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        private async Task<bool> RunOfflineJobs(R1MachineSpecsBase obj, Func<string> readLegacyCfg, string configKey)
+        private async Task<bool> RunOfflineJobs(R1MachineSpecsBase obj, string configKey)
         {
             obj.ExePath          = SafeGet(() => GetExePath()            );
             obj.MacAndPrivateIPs = SafeGet(() => GetMacAndPrivateIPs()   );
@@ -46,8 +50,9 @@ namespace Repo1.WPF45.SDK.Clients
             obj.WindowsAccount   = SafeGet(() => Environment.UserName    );
             obj.ComputerName     = SafeGet(() => Environment.MachineName );
             obj.Workgroup        = SafeGet(() => GetWorkgroup()          );
-            obj.LegacyCfgJson    = SafeGet(() => readLegacyCfg?.Invoke() );
+            obj.LegacyCfgJson    = SafeGet(() => ReadLegacyCfg?.Invoke() );
             obj.Repo1CfgJson     = SafeGet(() => Repo1Cfg.Read(configKey));
+            obj.IsAdminUser      = CurrentWindowsUser.IsAdmin();
 
             await Task.Delay(1);
             return true;

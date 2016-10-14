@@ -15,17 +15,14 @@ using Repo1.WPF45.SDK.NetworkTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    internal class SessionClient1 : SvcStackRestClient, ISessionClient
+    internal class SessionClient1 : MachineProfilingRestClient1, ISessionClient
     {
         private bool _isTracking;
-        private Func<string> _readLegacyCfg;
-        private MachineProfiler1 _specs;
 
 
         public SessionClient1(int sendIntervalMins) : base(null)
         {
             SendIntervalMins = sendIntervalMins;
-            _specs = new MachineProfiler1(_creds);
         }
 
 
@@ -96,13 +93,13 @@ namespace Repo1.WPF45.SDK.Clients
         private async Task<R1UserSession> GatherSessionInfo
             (R1UserSession savedNode = null)
         {
-            var exePath = _specs.GetExePath();
+            var exePath = GetExePath();
             var ssn = new R1UserSession();
             ssn.nid = savedNode?.nid ?? 0;
             ssn.uid = savedNode?.uid ?? 0;
             ssn.vid = savedNode?.vid ?? 0;
 
-            await _specs.AddProfileTo(ssn, _readLegacyCfg, ConfigKey);
+            await AddProfileTo(ssn, ConfigKey);
 
             //ssn.PublicIP = await GetPublicIP();
             //ssn.MacAndPrivateIPs = GetMacAndPrivateIPs();
@@ -154,7 +151,7 @@ namespace Repo1.WPF45.SDK.Clients
 
         private string GetSessionKey()
             => (string.Join(",", MacAddresses.List())
-                               + _specs.GetExePath()
+                               + GetExePath()
                                + ConfigKey).SHA1ForUTF8();
 
 
@@ -169,18 +166,6 @@ namespace Repo1.WPF45.SDK.Clients
                 Warn($"More than 1 session matched key: “{key}”.");
 
             return list.Select(x => x as R1UserSession).ToList();
-        }
-
-
-
-
-
-
-
-        public Func<string> ReadLegacyCfg
-        {
-            get { return _readLegacyCfg;  }
-            set { _readLegacyCfg = value; }
         }
     }
 }

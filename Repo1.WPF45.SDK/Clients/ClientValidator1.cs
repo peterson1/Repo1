@@ -10,15 +10,13 @@ using Repo1.WPF45.SDK.NetworkTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    internal class ClientValidator1 : SvcStackRestClient, IClientValidator
+    internal class ClientValidator1 : MachineProfilingRestClient1, IClientValidator
     {
-        private MachineProfiler1 _specs;
-        private string           _cfgKey;
+        private string _cfgKey;
 
         public ClientValidator1(string configKey) : base(Repo1Cfg.Parse(configKey))
         {
             _cfgKey = configKey;
-            _specs  = new MachineProfiler1(_creds);
         }
 
 
@@ -53,12 +51,12 @@ namespace Repo1.WPF45.SDK.Clients
         private async Task<R1Ping> AssemblePingNode(GetPingByLicenseKeyDTO pingDTO, string macAddress)
         {
             //todo: pass readLegacyCfg method here
-            await _specs.AddProfileTo(pingDTO, null, _cfgKey);
+            await AddProfileTo(pingDTO, _cfgKey);
 
             pingDTO.UserLicense          = new R1UserLicense { nid = pingDTO.UserLicenseNid };
             pingDTO.RegisteredMacAddress = macAddress;
-            pingDTO.PrivateIP            = _specs.GetPrivateIP(macAddress);
-            pingDTO.InstalledVersion     = _specs.GetExeVersion();
+            pingDTO.PrivateIP            = GetPrivateIP(macAddress);
+            pingDTO.InstalledVersion     = GetExeVersion();
             pingDTO.ExpectedCfg          = Repo1Cfg.EXPECTED_KEY_IGNORE_ME;
 
             return pingDTO;
