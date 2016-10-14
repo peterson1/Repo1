@@ -31,6 +31,7 @@ namespace Repo1.ExeUploader.WPF
             RefreshCmd = R1Command.Async(GetRemoteExe);
             UploadCmd  = R1Command.Async(PublishLocalExe,
                      x => HasChanges && !VersionChanges.IsBlank(), "Upload");
+            UploadCmd.DisableWhenDone = true;
 
             RefreshCmd.ExecuteIfItCan();
         }
@@ -72,7 +73,7 @@ namespace Repo1.ExeUploader.WPF
                 UploadCmd.CurrentLabel = "Updating Error";
                 return;
             }
-            UploadCmd.CurrentLabel = "Done.";
+            UploadCmd.CurrentLabel    = "Upload Successful";
         }
 
 

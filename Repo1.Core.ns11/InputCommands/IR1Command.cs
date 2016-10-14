@@ -10,6 +10,7 @@ namespace Repo1.Core.ns11.InputCommands
         bool      IsCheckable       { get; set; }
         bool      IsChecked         { get; set; }
         bool      OverrideEnabled   { get; set; }
+        bool      DisableWhenDone   { get; set; }
         bool      LastExecutedOK    { get; }
         DateTime  LastExecuteStart  { get; }
         DateTime  LastExecuteEnd    { get; }

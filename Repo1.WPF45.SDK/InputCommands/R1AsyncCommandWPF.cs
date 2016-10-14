@@ -42,6 +42,7 @@ namespace Repo1.WPF45.SDK.InputCommands
         public bool      IsCheckable       { get; set; }
         public bool      IsChecked         { get; set; }
         public bool      OverrideEnabled   { get; set; } = true;
+        public bool      DisableWhenDone   { get; set; }
         public bool      LastExecutedOK    { get; protected set; }
         public DateTime  LastExecuteStart  { get; protected set; }
         public DateTime  LastExecuteEnd    { get; protected set; }
@@ -74,7 +75,7 @@ namespace Repo1.WPF45.SDK.InputCommands
             {
                 LastExecuteEnd  = DateTime.Now;
                 IsBusy          = false;
-                OverrideEnabled = origOverride;
+                OverrideEnabled = DisableWhenDone ? false : origOverride;
                 CommandManager.InvalidateRequerySuggested();
             }
         }

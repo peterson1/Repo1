@@ -16,7 +16,7 @@ namespace Repo1.SdkClient.DemoWPF
 
             repo.OnWarning = x => AppendLog(x);
 
-            repo.StartUpdateCheckLoop();
+            repo.StartUpdateChecker("", "");
         }
 
         public string    Status            { get; set; }

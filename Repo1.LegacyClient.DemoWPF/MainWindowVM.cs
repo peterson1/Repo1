@@ -20,7 +20,7 @@ namespace Repo1.LegacyClient.DemoWPF
             _repo.ReadLegacyCfg = () => LegacyCfg.Read();
 
             StartTrackingCmd = new RelayCommand(x 
-                => _repo.StartSessionUpdateLoop(cfg.Username, cfg.Password));
+                => _repo.StartUpdateChecker(cfg.Username, cfg.Password));
 
             StartTrackingCmd.Execute(null);
         }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.EventArguments;
@@ -17,7 +14,6 @@ namespace Repo1.Core.ns11.R1Clients
         public event EventHandler UpdateInstalled = delegate { };
 
         private   int                _intervalMins;
-        private   bool               _keepChecking;
         private   bool               _isChecking;
         protected IPingClient        _pingr;
         protected IClientValidator   _validr;
@@ -44,24 +40,6 @@ namespace Repo1.Core.ns11.R1Clients
                     Status = _sessionr.Status;
             };
         }
-
-
-        //public Repo1ClientBase1(string userName, 
-        //                        string password, 
-        //                        string activationKey, 
-        //                        int checkIntervalMins, 
-        //                        string apiBaseURL)
-        //    : this(checkIntervalMins)
-        //{
-        //    _cfg = new DownloaderCfg
-        //    {
-        //        Username      = userName,
-        //        Password      = password,
-        //        ApiBaseURL    = apiBaseURL,
-        //        ActivationKey = activationKey
-        //    };
-        //}
-
 
 
         private string _status;
@@ -105,41 +83,43 @@ namespace Repo1.Core.ns11.R1Clients
         protected abstract DownloaderCfg ParseDownloaderCfg(string configKey);
 
 
+        public async void StartUpdateChecker(string tempUserName, string tempPassword)
+        {
+            if (_isChecking) return;
+            _isChecking = true;
+
+            Status = $"Validating application license for “{_cfg?.Username}” ...";
+            if (await _validr.ValidateThisMachine())
+            {
+                Status = "Machine validation successful.";
+                StartAuthenticatedUpdaterLoop();
+            }
+            else
+            {
+                Status = _cfg.WasRejected
+                    ? $"Server rejected the credentials for “{_cfg?.Username}”."
+                    : $"{_cfg?.Username} is not licensed to use this app on this machine.";
+
+                StartTemporarySessionUpdaterLoop(tempUserName, tempPassword);
+            }
+        }
+
+
+        private void StartAuthenticatedUpdaterLoop()
+            => RunOnNewThread(ExecuteUpdateCheckLoop(), "Update Checker Loop Thread");
+
+
+        private void StartTemporarySessionUpdaterLoop(string tempUserName, string tempPassword)
+            => RunOnNewThread(_sessionr.StartSessionUpdateLoop
+                (tempUserName, tempPassword), "Session Loop Thread");
+
+
         protected T Warn<T>(string message, T returnVal = default(T))
         {
             OnWarning?.Invoke(message);
             return returnVal;
         }
 
-
-        public async void StartUpdateCheckLoop()
-        {
-            if (_isChecking) return;
-            Status = $"Validating application license for “{_cfg.Username}” ...";
-            if (!(await _validr.ValidateThisMachine()))
-            {
-                Status = _cfg.WasRejected
-                    ? $"Server rejected the credentials for “{_cfg.Username}”."
-                    : $"{_cfg.Username} is not licensed to use this app on this machine.";
-                return;
-            }
-
-            _isChecking = true;
-            _keepChecking = true;
-            RunOnNewThread(ExecuteUpdateCheckLoop(), "Update Checker Loop Thread");
-        }
-
-
-
-        private Task StartPingOnlyLoop()
-            => _pingr.StartPingOnlyLoop(_validr.PingNode, _intervalMins);
-
-
-
-        public void StopUpdateCheckLoop()
-        {
-            _keepChecking = false;
-        }
 
 
         private async Task ExecuteUpdateCheckLoop()
@@ -149,7 +129,7 @@ namespace Repo1.Core.ns11.R1Clients
             var current = GetCurrentR1Exe();
             Status = $"Currently running version [{current.FileVersion}].";
 
-            while (_keepChecking)
+            while (true)
             {
                 Status = "Checking for newer version ...";
                 latest = await _pingr.SendAndGetLatestVersion(ping);
@@ -159,7 +139,6 @@ namespace Repo1.Core.ns11.R1Clients
                 //todo: rewrite local legacyCfg if server's copy changed
 
 
-                if (!_keepChecking) return;
                 if (current.FileHash == latest.FileHash)
                 {
                     Status = $"Nothing new.  Will check again in {_intervalMins} minutes ...";
@@ -193,26 +172,10 @@ namespace Repo1.Core.ns11.R1Clients
 
 
 
+
+
         public virtual void RaisePropertyChanged(string propertyName)
             => PropertyChanged.Raise(propertyName);
-
-
-
-        public async void StartSessionUpdateLoop(string userName, string password)
-        {
-            if (await _validr.ValidateThisMachine())
-            {
-                Status = "Machine validation successful.";
-                //RunOnNewThread(StartPingOnlyLoop(), "Ping-only Loop Thread");
-                StartUpdateCheckLoop();
-            }
-            else
-            {
-                Status = "Machine validation failed.";
-                RunOnNewThread(_sessionr.StartSessionUpdateLoop(userName, password),
-                                    "Session Loop Thread");
-            }
-        }
 
 
         public Task PostRuntimeError(string errorMessage)
