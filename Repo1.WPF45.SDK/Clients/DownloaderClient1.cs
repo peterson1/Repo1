@@ -17,7 +17,7 @@ using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 namespace Repo1.WPF45.SDK.Clients
 {
     [ImplementPropertyChanged]
-    public class DownloaderClient1 : SvcStackRestClient, IDownloadClient
+    public class DownloaderClient1 : D7SvcStackClient, IDownloadClient
     {
         private DownloaderCfg _dCfg;
 

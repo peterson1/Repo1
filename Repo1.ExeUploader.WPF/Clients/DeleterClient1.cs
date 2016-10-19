@@ -19,7 +19,7 @@ using Repo1.WPF45.SDK.InputCommands;
 namespace Repo1.ExeUploader.WPF.Clients
 {
     [ImplementPropertyChanged]
-    class DeleterClient1 : SvcStackRestClient
+    class DeleterClient1 : D7SvcStackClient
     {
         public DeleterClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {

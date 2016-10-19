@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Polly;
 using Repo1.Core.ns11.Configuration;
-using Repo1.Core.ns11.Drupal7Tools;
 using Repo1.Core.ns11.EventArguments;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.R1Models.ViewsLists;
@@ -43,121 +42,35 @@ namespace Repo1.Core.ns11.R1Clients
 
         public Action<string> OnWarning { get; set; }
 
-        protected abstract Task<T>  Get    <T>(string resourceUrl);
-        protected abstract Task<T>  Post   <T>(T objToPost, string resourceUrl);
-        protected abstract Task<T>  Put    <T>(T objToPost, string resourceUrl);
-        protected abstract Task<T>  Delete <T>(string resourceUrl);
+        protected abstract Task<T>  GetAsync    <T>(string resourceUrl);
+        protected abstract Task<T>  PostAsync   <T>(T objToPost, string resourceUrl);
+        protected abstract Task<T>  PutAsync    <T>(T objToPost, string resourceUrl);
+        protected abstract Task<T>  DeleteAsync <T>(string resourceUrl);
 
         protected abstract HttpStatusCode? GetStatusCode<T>(T exception);
         protected abstract void OnError(Exception ex);
         protected abstract void DecodeHtmlInStrings<T>(T obj);
 
+        protected abstract Task<Dictionary<string, object>>  Create  <T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished);
+        protected abstract Task<Dictionary<string, object>>  Update  <T>(T node, string revisionLog);
+        protected abstract Task<bool>                        Delete  (int nodeID);
 
-        protected async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished = true)
-        {
-            var mappd = D7Mapper.ToObjectDictionary(objectToPost);
-            if (mappd == null) return null;
-            mappd["status"] = isPublished ? 1 : 0;
+        protected abstract Task<List<T>> ViewsList<T>(params object[] args) where T : IR1ViewsListDTO, new();
 
-            var dict = await KeepTrying(async () =>
-            {
-                Dictionary<string, object> resp = null;
-                try
-                {
-                    resp = await Post(mappd, "entity_node");
-                }
-                catch (Exception ex)
-                {
-                    var savd = await postedNodeGetter.Invoke();
-                    if (savd == null) throw ex;
-                    if (resp == null)
-                        resp = D7Mapper.CopyNodeIDs(savd);
-                }
-                return resp;
-            });
-
-            if (dict == null)
-                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from POST to be NULL."));
-
-            dict.SetNodeIDs(objectToPost);
-
-            return dict;
-        }
-
-
-
-        protected async Task<Dictionary<string, object>> Update<T>(T node, string revisionLog = null)
-        {
-            var mappd = D7Mapper.ToObjectDictionary(node);
-            if (mappd == null) return null;
-
-            if (!mappd.ContainsKey("nid")) return null;
-            int nid;
-            if (!int.TryParse(mappd["nid"].ToString(), out nid)) return null;
-            if (nid < 1) return null;
-
-            if (!revisionLog.IsBlank())
-            {
-                mappd.Add("revision", 1);
-                mappd.Add("log", revisionLog);
-            }
-
-            var dict = await KeepTrying(() => Put(mappd, $"entity_node/{nid}"));
-
-            if (dict == null)
-                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from PUT to be NULL."));
-
-            dict.SetNodeIDs(node);
-
-            return dict;
-        }
-
-
-
-        protected async Task<bool>  Delete (int nodeID)
-        {
-            await KeepTrying(() => Delete<string>($"entity_node/{nodeID}"));
-            return true;
-        }
-
-
-        protected async Task<List<T>> ViewsList<T>(params object[] args)
-            where T : IR1ViewsListDTO, new()
-        {
-            var displayID = new T().ViewsDisplayURL;
-            var url = _creds.ApiBaseURL.Slash("views").Slash(displayID);
-
-            for (int i = 0; i < args.Length; i++)
-                url += $"&args[{i}]={args[i]}";
-
-            var list = await GetTilOK<List<T>>(url);
-
-            if (list == null)
-            {
-                Warn($"ViewsList ‹{typeof(T)?.Name}› returned NULL.");
-                return null;
-            }
-
-            foreach (var item in list)
-                DecodeHtmlInStrings(item);
-
-            return list;
-        }
 
 
         protected Task<T> GetTilOK<T>(string resourceURL)
-            //=> KeepTrying(() => Get<T>(resourceURL));
         {
             var busyMsg = Status;
             return KeepTrying(() => 
             {
                 Status = busyMsg;
-                return Get<T>(resourceURL);
+                return GetAsync<T>(resourceURL);
             });
         }
 
 
-        private async Task<T> KeepTrying<T>(Func<Task<T>> action)
+        protected async Task<T> KeepTrying<T>(Func<Task<T>> action)
         {
             var policy = Policy.Handle<Exception>(x => IsRetryable(x))
                 .WaitAndRetryForeverAsync(attempts

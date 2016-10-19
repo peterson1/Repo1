@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
@@ -16,11 +15,11 @@ using ServiceStack.Text;
 namespace Repo1.WPF45.SDK.Clients
 {
     [ImplementPropertyChanged]
-    public class SvcStackRestClient : RestClientBase
+    public class D7SvcStackClient : D7RestClientBase
     {
         //internal MachineProfilingRestClient1 _specs;
 
-        public SvcStackRestClient(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        public D7SvcStackClient(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
             ToggleAllowUnsafeHeaderParsing(true);
             JsConfig.ExcludeTypeInfo = true;
@@ -28,15 +27,15 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override Task<T>  Get  <T>(string resourceUrl)
+        protected override Task<T>  GetAsync  <T>(string resourceUrl)
             => CreateClient().GetAsync<T>(resourceUrl);
 
 
-        protected override Task<T>  Delete  <T>(string resourceUrl)
+        protected override Task<T>  DeleteAsync  <T>(string resourceUrl)
             => CreateClient().DeleteAsync<T>(resourceUrl);
 
 
-        protected override Task<T>  Post  <T>(T objToPost, string resourceUrl)
+        protected override Task<T>  PostAsync  <T>(T objToPost, string resourceUrl)
         {
             //var js = DynamicJson.Serialize(objToPost);
             //var js = ServiceStack.Text.JsonSerializer.SerializeToString(objToPost);
@@ -44,7 +43,7 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override Task<T>  Put  <T>(T objToPut, string resourceUrl)
+        protected override Task<T>  PutAsync  <T>(T objToPut, string resourceUrl)
         {
             //var js = DynamicJson.Serialize(objToPut);
             //var js = JsonSerializer.SerializeToString(objToPut);

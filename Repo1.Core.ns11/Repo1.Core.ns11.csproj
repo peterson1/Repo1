@@ -56,6 +56,7 @@
     <Compile Include="Drupal7Tools\UserAttribute.cs" />
     <Compile Include="Drupal7Tools\ValueAttribute.cs" />
     <Compile Include="Drupal7Tools\VocabularyAttribute.cs" />
+    <Compile Include="Drupal8Tools\D8NodeBase.cs" />
     <Compile Include="EnumHelpers\EnumTool.cs" />
     <Compile Include="EventArguments\EArg.cs" />
     <Compile Include="EventArguments\PropertyChangedExtensions.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Obfuscators\FakeFactory.cs" />
     <Compile Include="Obfuscators\RandomAmerican.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="R1Clients\D7RestClientBase.cs" />
     <Compile Include="R1Clients\IClientValidator.cs" />
     <Compile Include="R1Clients\IDownloadClient.cs" />
     <Compile Include="R1Clients\IIssuePosterClient.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="R1Clients\ISessionClient.cs" />
     <Compile Include="R1Clients\Repo1ClientBase1.cs" />
     <Compile Include="R1Clients\RestClientBase.cs" />
+    <Compile Include="R1Models\D8Models\D8Package.cs" />
     <Compile Include="R1Models\R1Executable.cs" />
     <Compile Include="R1Models\R1Issue.cs" />
     <Compile Include="R1Models\R1MachineSpecsBase.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="ReflectionTools\NestedPropertyFinder.cs" />
     <Compile Include="ReflectionTools\PropertyValueCopier.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

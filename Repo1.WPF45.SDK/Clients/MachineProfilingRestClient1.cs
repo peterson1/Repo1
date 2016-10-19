@@ -15,7 +15,7 @@ using Repo1.WPF45.SDK.UacTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    public class MachineProfilingRestClient1 : SvcStackRestClient
+    public class MachineProfilingRestClient1 : D7SvcStackClient
     {
         protected string _cfgKey;
 

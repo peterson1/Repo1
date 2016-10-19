@@ -17,7 +17,7 @@ using Repo1.WPF45.SDK.ErrorHandlers;
 namespace Repo1.ExeUploader.WPF.Clients
 {
     [ImplementPropertyChanged]
-    class UploaderClient1 : SvcStackRestClient
+    class UploaderClient1 : D7SvcStackClient
     {
         private UploaderCfg       _upCfg;
         private DownloaderClient1 _downloadr;
