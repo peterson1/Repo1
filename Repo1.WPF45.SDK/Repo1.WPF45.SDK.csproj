@@ -96,7 +96,7 @@
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
     <Compile Include="Clients\SessionClient1.cs" />
-    <Compile Include="Clients\D7SvcStackClient.cs" />
+    <Compile Include="Clients\D7SvcStackClientBase.cs" />
     <Compile Include="Configuration\Repo1Cfg.cs" />
     <Compile Include="ControlBehaviors\TextBoxBehaviors\ScrollOnChangeBehavior.cs" />
     <Compile Include="ControlBehaviors\WindowBehaviors\DraggableBehavior.cs" />

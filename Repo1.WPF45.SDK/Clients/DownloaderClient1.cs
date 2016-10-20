@@ -17,9 +17,10 @@ using Repo1.WPF45.SDK.Extensions.FileInfoExtensions;
 namespace Repo1.WPF45.SDK.Clients
 {
     [ImplementPropertyChanged]
-    public class DownloaderClient1 : D7SvcStackClient, IDownloadClient
+    public class DownloaderClient1 : D7SvcStackClientBase, IDownloadClient
     {
-        private DownloaderCfg _dCfg;
+        private DownloaderCfg  _dCfg;
+        private string         _lastTempDir;
 
         public DownloaderClient1(DownloaderCfg downloaderCfg) : base(downloaderCfg)
         {
@@ -30,19 +31,22 @@ namespace Repo1.WPF45.SDK.Clients
         public async Task<string> DownloadAndExtract(List<R1SplitPart> splitParts, string expectedHash)
         {
             var orderedParts = splitParts.OrderBy(x => x.PartNumber).ToList();
-            var tempDir = CreateTempFolder();
+            _lastTempDir     = CreateTempFolder();
             for (int i = 0; i < orderedParts.Count; i++)
             {
                 Status = $"Downloading part {i + 1} of {orderedParts.Count}";
                 var part = orderedParts[i];
-                var path = Path.Combine(tempDir, part.FileName);
+                var path = Path.Combine(_lastTempDir, part.FileName);
 
                 var byts = await GetPartContentByHash(part.PartHash);
                 if (byts == null) return null;
 
                 File.WriteAllBytes(path, byts);
                 if (path.SHA1ForFile() != part.PartHash)
-                    return Alerter.Warn("Expected PartHash did not match actual hash.");
+                {
+                    Warn("Expected PartHash did not match actual hash.");
+                    return null;
+                }
 
                 part.FullPathOrURL = path;
             }
@@ -52,7 +56,7 @@ namespace Repo1.WPF45.SDK.Clients
             List<string> list = null;
             try
             {
-                list = await SevenZipper1.DecompressMultiPart(paths, tempDir);
+                list = await SevenZipper1.DecompressMultiPart(paths, _lastTempDir);
             }
             catch (Exception ex)
             {
@@ -65,7 +69,7 @@ namespace Repo1.WPF45.SDK.Clients
                 return null;
             }
 
-            var exePath = Path.Combine(tempDir, list[0]);
+            var exePath = Path.Combine(_lastTempDir, list[0]);
             if (exePath.SHA1ForFile() == expectedHash)
                 return exePath;
             else
@@ -133,6 +137,19 @@ namespace Repo1.WPF45.SDK.Clients
                 throw new InvalidDataException($"Expected list to have {expctd} parts but had {actual}.");
 
             return true;
+        }
+
+
+        protected override void OnError(Exception ex)
+            => Warn(ex.Info(true, true));
+
+
+        public void DeleteLastTempDir()
+        {
+            foreach (var file in Directory.GetFiles(_lastTempDir))
+                File.Delete(file);
+
+            Directory.Delete(_lastTempDir, true);
         }
     }
 }

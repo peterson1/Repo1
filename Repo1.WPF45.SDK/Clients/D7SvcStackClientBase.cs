@@ -3,10 +3,8 @@ using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 using PropertyChanged;
 using Repo1.Core.ns11.Configuration;
-using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.R1Clients;
 using Repo1.WPF45.SDK.HtmlTools;
 using ServiceStack;
@@ -15,15 +13,12 @@ using ServiceStack.Text;
 namespace Repo1.WPF45.SDK.Clients
 {
     [ImplementPropertyChanged]
-    public class D7SvcStackClient : D7RestClientBase
+    public abstract class D7SvcStackClientBase : D7RestClientBase
     {
-        //internal MachineProfilingRestClient1 _specs;
-
-        public D7SvcStackClient(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        public D7SvcStackClientBase(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
             ToggleAllowUnsafeHeaderParsing(true);
             JsConfig.ExcludeTypeInfo = true;
-            //_specs = new MachineProfilingRestClient1(x => GetTilOK<Dictionary<string, string>>(x));
         }
 
 
@@ -36,19 +31,11 @@ namespace Repo1.WPF45.SDK.Clients
 
 
         protected override Task<T>  PostAsync  <T>(T objToPost, string resourceUrl)
-        {
-            //var js = DynamicJson.Serialize(objToPost);
-            //var js = ServiceStack.Text.JsonSerializer.SerializeToString(objToPost);
-            return CreateClient().PostAsync<T>(resourceUrl, objToPost);
-        }
+            => CreateClient().PostAsync<T>(resourceUrl, objToPost);
 
 
         protected override Task<T>  PutAsync  <T>(T objToPut, string resourceUrl)
-        {
-            //var js = DynamicJson.Serialize(objToPut);
-            //var js = JsonSerializer.SerializeToString(objToPut);
-            return CreateClient().PutAsync<T>(resourceUrl, objToPut);
-        }
+            => CreateClient().PutAsync<T>(resourceUrl, objToPut);
 
 
         protected override HttpStatusCode? GetStatusCode<T>(T ex)
@@ -84,10 +71,6 @@ namespace Repo1.WPF45.SDK.Clients
             }
             return (wx.Response as HttpWebResponse)?.StatusCode;
         }
-
-
-        protected override void OnError(Exception ex)
-            => MessageBox.Show(ex.Info());
 
 
 
@@ -127,7 +110,6 @@ namespace Repo1.WPF45.SDK.Clients
                             aUseUnsafeHeaderParsing.SetValue(anInstance, enable);
                             return true;
                         }
-
                     }
                 }
             }

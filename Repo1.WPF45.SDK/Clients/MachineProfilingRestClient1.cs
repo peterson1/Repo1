@@ -15,7 +15,7 @@ using Repo1.WPF45.SDK.UacTools;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    public class MachineProfilingRestClient1 : D7SvcStackClient
+    public class MachineProfilingRestClient1 : D7SvcStackClientBase
     {
         protected string _cfgKey;
 
@@ -107,5 +107,9 @@ namespace Repo1.WPF45.SDK.Clients
             var resp = await GetTilOK<Dictionary<string, string>>(url);
             return resp["ip"].ToString();
         }
+
+
+        protected override void OnError(Exception ex)
+            => Warn(ex.Info(true, true));
     }
 }

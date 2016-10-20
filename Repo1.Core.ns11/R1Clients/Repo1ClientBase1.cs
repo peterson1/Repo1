@@ -158,7 +158,9 @@ namespace Repo1.Core.ns11.R1Clients
             var exePath = await _downloadr.DownloadAndExtract(partsList, latest.FileHash);
             if (exePath.IsBlank()) return false;
 
-            return ReplaceCurrentExeWith(exePath);
+            var ok = ReplaceCurrentExeWith(exePath);
+            if (ok) _downloadr.DeleteLastTempDir();
+            return ok;
         }
 
 

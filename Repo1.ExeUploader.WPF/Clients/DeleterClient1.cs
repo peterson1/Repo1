@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using PropertyChanged;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.Extensions.CollectionExtensions;
+using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.InputCommands;
 using Repo1.Core.ns11.R1Models;
 using Repo1.Core.ns11.R1Models.ViewsLists;
@@ -19,7 +21,7 @@ using Repo1.WPF45.SDK.InputCommands;
 namespace Repo1.ExeUploader.WPF.Clients
 {
     [ImplementPropertyChanged]
-    class DeleterClient1 : D7SvcStackClient
+    class DeleterClient1 : D7SvcStackClientBase
     {
         public DeleterClient1(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
@@ -85,5 +87,9 @@ namespace Repo1.ExeUploader.WPF.Clients
             }
             row.Status = $"All {tmpList.Count} parts deleted.";
         }
+
+
+        protected override void OnError(Exception ex)
+            => MessageBox.Show(ex.Info());
     }
 }

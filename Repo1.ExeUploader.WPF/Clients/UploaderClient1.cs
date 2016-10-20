@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using PropertyChanged;
+using Repo1.Core.ns11.Extensions.ExceptionExtensions;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 using Repo1.Core.ns11.R1Models;
 using Repo1.Core.ns11.R1Models.ViewsLists;
@@ -17,7 +19,7 @@ using Repo1.WPF45.SDK.ErrorHandlers;
 namespace Repo1.ExeUploader.WPF.Clients
 {
     [ImplementPropertyChanged]
-    class UploaderClient1 : D7SvcStackClient
+    class UploaderClient1 : D7SvcStackClientBase
     {
         private UploaderCfg       _upCfg;
         private DownloaderClient1 _downloadr;
@@ -121,5 +123,9 @@ namespace Repo1.ExeUploader.WPF.Clients
             File.Copy(filePath, path, true);
             return path;
         }
+
+
+        protected override void OnError(Exception ex)
+            => MessageBox.Show(ex.Info());
     }
 }

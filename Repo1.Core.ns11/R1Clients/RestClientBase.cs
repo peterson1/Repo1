@@ -40,7 +40,9 @@ namespace Repo1.Core.ns11.R1Clients
             set { _status = value; PropertyChanged.Raise(nameof(Status), this); }
         }
 
-        public Action<string> OnWarning { get; set; }
+        protected abstract void OnError(Exception ex);
+        //public Action<Exception>  OnError    { get; set; }
+        public Action<string>     OnWarning  { get; set; }
 
         protected abstract Task<T>  GetAsync    <T>(string resourceUrl);
         protected abstract Task<T>  PostAsync   <T>(T objToPost, string resourceUrl);
@@ -48,7 +50,6 @@ namespace Repo1.Core.ns11.R1Clients
         protected abstract Task<T>  DeleteAsync <T>(string resourceUrl);
 
         protected abstract HttpStatusCode? GetStatusCode<T>(T exception);
-        protected abstract void OnError(Exception ex);
         protected abstract void DecodeHtmlInStrings<T>(T obj);
 
         protected abstract Task<Dictionary<string, object>>  Create  <T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished);

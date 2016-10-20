@@ -8,5 +8,6 @@ namespace Repo1.Core.ns11.R1Clients
     {
         Task<List<R1SplitPart>>  GetPartsList        (string exeVersion, string macAddress);
         Task<string>             DownloadAndExtract  (List<R1SplitPart> splitParts, string expectedHash);
+        void                     DeleteLastTempDir   ();
     }
 }
