@@ -25,6 +25,16 @@ namespace Repo1.D8Uploader.Lib45.RestClients
             return exe;
         }
 
+        public Task<bool> UploadNew(D8Package localPkg, double maxPartSizeMB)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Edit(D8Package remotePkg, string versionChanges)
+        {
+            throw new NotImplementedException();
+        }
+
 
         //protected override void OnError(Exception ex)
         //    => ThreadedAlerter.Show(ex, "Uploader Client 2");

@@ -5,8 +5,10 @@ namespace Repo1.Core.ns11.R1Models.D8Models
     public class D8Package : D8NodeBase
     {
         public string   FileName       { get; set; }
-        public int      FileSize       { get; set; }
+        public long     FileSize       { get; set; }
         public string   LatestVersion  { get; set; }
         public string   LatestHash     { get; set; }
+
+        public string   FullPathOrURL  { get; set; }
     }
 }

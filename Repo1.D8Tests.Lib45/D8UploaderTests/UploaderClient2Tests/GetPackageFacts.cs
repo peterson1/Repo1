@@ -1,5 +1,4 @@
-﻿using System.Net;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Repo1.D8Tests.Lib45.TestTools;
 using Repo1.D8Uploader.Lib45.Configuration;
 using Repo1.D8Uploader.Lib45.RestClients;
@@ -33,6 +32,7 @@ namespace Repo1.D8Tests.Lib45.D8UploaderTests.UploaderClient2Tests
 
             pkg.Should().NotBeNull();
             pkg.nid.Should().BeGreaterThan(0);
+            pkg.uid.Should().BeGreaterThan(0);
             pkg.FileName.Should().Be(DEMO_FILENAME);
         }
     }

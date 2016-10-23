@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Configuration\CfgReader.cs" />
     <Compile Include="Configuration\UploaderCfg.cs" />
+    <Compile Include="DiskAccess\LocalPackageFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestClients\DeleterClient2.cs" />
     <Compile Include="RestClients\UploaderClient2.cs" />

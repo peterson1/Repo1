@@ -113,6 +113,7 @@
     <Compile Include="ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Extensions\ApplicationExtensions\AppProcessExtensions.cs" />
     <Compile Include="Extensions\FileInfoExtensions\CommonFileInfoExtensions.cs" />
+    <Compile Include="Extensions\R1ModelExtensions\D8PackageExtensions.cs" />
     <Compile Include="Extensions\R1ModelExtensions\R1ExecutableExtensions.cs" />
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="HtmlTools\HtmlDecoder.cs" />
