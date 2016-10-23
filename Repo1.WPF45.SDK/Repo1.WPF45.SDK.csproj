@@ -90,13 +90,15 @@
     <Compile Include="Archivers\SevenZipper1.cs" />
     <Compile Include="Clients\ClientValidator1.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
+    <Compile Include="Clients\DownloaderClient2.cs" />
     <Compile Include="Clients\IssuePoster1.cs" />
     <Compile Include="Clients\MachineProfilingRestClient1.cs" />
     <Compile Include="Clients\LocalFileUpdater1.cs" />
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
     <Compile Include="Clients\SessionClient1.cs" />
-    <Compile Include="Clients\D7SvcStackClientBase.cs" />
+    <Compile Include="Clients\DrupalSvcStackClientBases.cs" />
+    <Compile Include="Clients\SvcStackClientShim.cs" />
     <Compile Include="Configuration\Repo1Cfg.cs" />
     <Compile Include="ControlBehaviors\TextBoxBehaviors\ScrollOnChangeBehavior.cs" />
     <Compile Include="ControlBehaviors\WindowBehaviors\DraggableBehavior.cs" />

@@ -28,6 +28,7 @@ namespace Repo1.ExeUploader.WPF.Clients
         {
             _upCfg     = uploaderCfg;
             _downloadr = downloaderClient;
+            OnError = ex => MessageBox.Show(ex.Info());
 
             EmbeddedResrc.ExtractToFile<UploaderClient1>
                 ("7za.dll", "Archivers", SevenZipper1.GetLocalBinariesDir());
@@ -125,7 +126,7 @@ namespace Repo1.ExeUploader.WPF.Clients
         }
 
 
-        protected override void OnError(Exception ex)
-            => MessageBox.Show(ex.Info());
+        //protected override void OnError(Exception ex)
+        //    => MessageBox.Show(ex.Info());
     }
 }

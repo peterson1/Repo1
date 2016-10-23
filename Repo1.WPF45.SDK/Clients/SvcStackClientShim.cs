@@ -2,49 +2,60 @@
 using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using PropertyChanged;
 using Repo1.Core.ns11.Configuration;
-using Repo1.Core.ns11.R1Clients;
-using Repo1.WPF45.SDK.HtmlTools;
 using ServiceStack;
 using ServiceStack.Text;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    [ImplementPropertyChanged]
-    public abstract class D7SvcStackClientBase : D7RestClientBase
+    public class SvcStackClientShim
     {
-        public D7SvcStackClientBase(RestServerCredentials restServerCredentials) : base(restServerCredentials)
+        private RestServerCredentials _creds;
+
+        public SvcStackClientShim(RestServerCredentials restServerCredentials)
         {
-            ToggleAllowUnsafeHeaderParsing(true);
+            _creds = restServerCredentials;
             JsConfig.ExcludeTypeInfo = true;
+
+            ServicePointManager.ServerCertificateValidationCallback
+                += (a, b, c, d) => Validate(b);
         }
 
 
-        protected override Task<T>  GetAsync  <T>(string resourceUrl)
+        private bool Validate(X509Certificate x509cert)
+        {
+            const string repo1Cert = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
+
+            var cert = x509cert as X509Certificate2;
+            if (cert == null) return false;
+
+            return cert.Thumbprint == _creds.ServerThumbprint
+                || cert.Thumbprint == repo1Cert;
+        }
+
+
+        public Task<T> GetAsync<T>(string resourceUrl)
             => CreateClient().GetAsync<T>(resourceUrl);
 
 
-        protected override Task<T>  DeleteAsync  <T>(string resourceUrl)
+        public Task<T> DeleteAsync<T>(string resourceUrl)
             => CreateClient().DeleteAsync<T>(resourceUrl);
 
 
-        protected override Task<T>  PostAsync  <T>(T objToPost, string resourceUrl)
+        public Task<T> PostAsync<T>(T objToPost, string resourceUrl)
             => CreateClient().PostAsync<T>(resourceUrl, objToPost);
 
 
-        protected override Task<T>  PutAsync  <T>(T objToPut, string resourceUrl)
+        public Task<T> PutAsync<T>(T objToPut, string resourceUrl)
             => CreateClient().PutAsync<T>(resourceUrl, objToPut);
 
 
-        protected override HttpStatusCode? GetStatusCode<T>(T ex)
+        public HttpStatusCode? GetStatusCode<T>(T ex)
             => GetStatus(ex as WebException)
             ?? (ex as WebServiceException)?.GetStatus();
 
-
-        protected override void DecodeHtmlInStrings<T>(T obj)
-            => HtmlDecoder.ReplaceStrings(obj);
 
 
         private HttpStatusCode? GetStatus(WebException wx)
@@ -87,7 +98,7 @@ namespace Repo1.WPF45.SDK.Clients
         // from  http://stackoverflow.com/a/8523437
         // Enable/disable useUnsafeHeaderParsing.
         // See http://o2platform.wordpress.com/2010/10/20/dealing-with-the-server-committed-a-protocol-violation-sectionresponsestatusline/
-        public static bool ToggleAllowUnsafeHeaderParsing(bool enable)
+        public bool ToggleAllowUnsafeHeaderParsing(bool enable)
         {
             //Get the assembly that contains the internal class
             Assembly assembly = Assembly.GetAssembly(typeof(SettingsSection));
@@ -115,5 +126,6 @@ namespace Repo1.WPF45.SDK.Clients
             }
             return false;
         }
+
     }
 }

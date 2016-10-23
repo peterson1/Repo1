@@ -27,6 +27,7 @@ namespace Repo1.ExeUploader.WPF.Clients
         {
             RefreshCmd    = R1Command.Async(GetUploadedParts);
             ShowOldiesCmd = R1Command.Relay(ShowUploadedsWindow);
+            OnError       = ex => MessageBox.Show(ex.Info());
         }
 
         public R1Executable  Executable     { get; private set; }
@@ -87,9 +88,5 @@ namespace Repo1.ExeUploader.WPF.Clients
             }
             row.Status = $"All {tmpList.Count} parts deleted.";
         }
-
-
-        protected override void OnError(Exception ex)
-            => MessageBox.Show(ex.Info());
     }
 }

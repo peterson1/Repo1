@@ -22,6 +22,7 @@ namespace Repo1.WPF45.SDK.Clients
         internal MachineProfilingRestClient1(string configKey, RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {
             _cfgKey = configKey;
+            OnError = ex => Warn(ex.Info(true, true));
         }
 
 
@@ -109,7 +110,7 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override void OnError(Exception ex)
-            => Warn(ex.Info(true, true));
+        //protected override void OnError(Exception ex)
+        //    => Warn(ex.Info(true, true));
     }
 }

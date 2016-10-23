@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.Drupal7Tools;
 using Repo1.Core.ns11.Extensions.StringExtensions;
+using Repo1.Core.ns11.R1Models.ViewsLists;
 
 namespace Repo1.Core.ns11.R1Clients
 {
@@ -80,7 +81,8 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
 
-        protected override async Task<List<T>> ViewsList<T>(params object[] args)
+        protected async Task<List<T>> ViewsList<T>(params object[] args)
+            where T : IR1ViewsListDTO, new()
         {
             var displayID = new T().ViewsDisplayURL;
             var url = _creds.ApiBaseURL.Slash("views").Slash(displayID);
@@ -101,6 +103,5 @@ namespace Repo1.Core.ns11.R1Clients
 
             return list;
         }
-
     }
 }

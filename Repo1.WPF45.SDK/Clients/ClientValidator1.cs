@@ -76,7 +76,7 @@ namespace Repo1.WPF45.SDK.Clients
 
 
         // ignore errors
-        protected override void OnError(Exception ex) { }
+        //protected override void OnError(Exception ex) { }
 
 
         //private string GetInstalledVersion() => new FileInfo(

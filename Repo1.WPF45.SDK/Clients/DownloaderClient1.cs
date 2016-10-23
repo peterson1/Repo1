@@ -25,6 +25,7 @@ namespace Repo1.WPF45.SDK.Clients
         public DownloaderClient1(DownloaderCfg downloaderCfg) : base(downloaderCfg)
         {
             _dCfg = downloaderCfg;
+            OnError = ex => Warn(ex.Info(true, true));
         }
 
 
@@ -140,8 +141,8 @@ namespace Repo1.WPF45.SDK.Clients
         }
 
 
-        protected override void OnError(Exception ex)
-            => Warn(ex.Info(true, true));
+        //protected override void OnError(Exception ex)
+        //    => Warn(ex.Info(true, true));
 
 
         public void DeleteLastTempDir()

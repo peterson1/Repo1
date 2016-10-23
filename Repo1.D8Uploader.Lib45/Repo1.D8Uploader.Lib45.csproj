@@ -30,6 +30,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Polly, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.4.3.0\lib\net45\Polly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ServiceStack.Client, Version=4.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Client.4.5.2\lib\net45\ServiceStack.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Interfaces.4.5.0\lib\portable-wp80+sl5+net45+win8+wpa81+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Text.4.5.0\lib\net45\ServiceStack.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CfgReader.cs" />
+    <Compile Include="Configuration\UploaderCfg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestClients\DeleterClient2.cs" />
     <Compile Include="RestClients\UploaderClient2.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +68,13 @@
       <Project>{7A17361C-1261-46D8-802C-FED02D009543}</Project>
       <Name>Repo1.Core.ns11</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Repo1.WPF45.SDK\Repo1.WPF45.SDK.csproj">
+      <Project>{472EF9B4-03A4-4867-8377-5B217D476763}</Project>
+      <Name>Repo1.WPF45.SDK</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Threading.Tasks;
 using Polly;
+using Polly.Retry;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.EventArguments;
 using Repo1.Core.ns11.Extensions.StringExtensions;
@@ -40,9 +41,10 @@ namespace Repo1.Core.ns11.R1Clients
             set { _status = value; PropertyChanged.Raise(nameof(Status), this); }
         }
 
-        protected abstract void OnError(Exception ex);
-        //public Action<Exception>  OnError    { get; set; }
+        //protected abstract void OnError(Exception ex);
+        public Action<Exception>  OnError    { get; set; }
         public Action<string>     OnWarning  { get; set; }
+        public int MaxRetries { get; set; } = -1;
 
         protected abstract Task<T>  GetAsync    <T>(string resourceUrl);
         protected abstract Task<T>  PostAsync   <T>(T objToPost, string resourceUrl);
@@ -56,7 +58,7 @@ namespace Repo1.Core.ns11.R1Clients
         protected abstract Task<Dictionary<string, object>>  Update  <T>(T node, string revisionLog);
         protected abstract Task<bool>                        Delete  (int nodeID);
 
-        protected abstract Task<List<T>> ViewsList<T>(params object[] args) where T : IR1ViewsListDTO, new();
+        //protected abstract Task<List<T>> ViewsList<T>(params object[] args) where T : IR1ViewsListDTO, new();
 
 
 
@@ -73,9 +75,21 @@ namespace Repo1.Core.ns11.R1Clients
 
         protected async Task<T> KeepTrying<T>(Func<Task<T>> action)
         {
-            var policy = Policy.Handle<Exception>(x => IsRetryable(x))
-                .WaitAndRetryForeverAsync(attempts
-                => Delay(attempts), (ex, span) => OnRetry(ex, span));
+            RetryPolicy policy;
+            if (MaxRetries == 0)
+            {
+                try   { return await action.Invoke(); }
+                catch (Exception ex) { OnError?.Invoke(ex); }
+            }
+
+            if (MaxRetries == -1)
+                policy = Policy.Handle<Exception>(x => IsRetryable(x))
+                    .WaitAndRetryForeverAsync(attempts
+                    => Delay(attempts), (ex, span) => OnRetry(ex, span));
+            else
+                policy = Policy.Handle<Exception>(x => IsRetryable(x))
+                    .WaitAndRetryAsync(MaxRetries, attempts
+                    => Delay(attempts), (ex, span) => OnRetry(ex, span));
 
             IsBusy = true;
             T result = default(T);
@@ -88,7 +102,7 @@ namespace Repo1.Core.ns11.R1Clients
                 if (ex.Message.Contains("got string starting with: Invalid credentials"))
                     _creds.WasRejected = true;
 
-                OnError(ex);
+                OnError?.Invoke(ex);
             }
             finally
             {
