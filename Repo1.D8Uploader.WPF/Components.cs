@@ -8,6 +8,7 @@ using Autofac.Builder;
 using Repo1.Core.ns11.Configuration;
 using Repo1.D8Uploader.Lib45.Configuration;
 using Repo1.D8Uploader.Lib45.RestClients;
+using Repo1.D8Uploader.WPF.RestClients;
 using Repo1.WPF45.SDK.Clients;
 
 namespace Repo1.D8Uploader.WPF
@@ -21,7 +22,7 @@ namespace Repo1.D8Uploader.WPF
             b.RegisterInstance(cfg).As<UploaderCfg, DownloaderCfg, RestServerCredentials>();
             b.Solo<MainWindowVM>();
             b.Solo<UploaderClient2>();
-            b.Solo<DeleterClient2>();
+            b.Solo<DeleterClientBase, DeleterClient2>();
             b.Multi<DownloaderClient2>();
 
             return b.Build();

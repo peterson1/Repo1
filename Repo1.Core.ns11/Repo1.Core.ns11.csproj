@@ -93,6 +93,8 @@
     <Compile Include="R1Clients\Repo1ClientBase1.cs" />
     <Compile Include="R1Clients\RestClientBase.cs" />
     <Compile Include="R1Models\D8Models\D8Package.cs" />
+    <Compile Include="R1Models\D8Models\D8PackagePart.cs" />
+    <Compile Include="R1Models\D8Models\D8ViewsLists\PartsUploadedByUserView.cs" />
     <Compile Include="R1Models\D8Models\D8ViewsLists\UploadablesForUserView.cs" />
     <Compile Include="R1Models\R1Executable.cs" />
     <Compile Include="R1Models\R1Issue.cs" />

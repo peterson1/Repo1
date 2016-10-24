@@ -19,21 +19,21 @@ namespace Repo1.WPF45.SDK.Clients
             _creds = restServerCredentials;
             JsConfig.ExcludeTypeInfo = true;
 
-            ServicePointManager.ServerCertificateValidationCallback
-                += (a, b, c, d) => Validate(b);
+            //ServicePointManager.ServerCertificateValidationCallback
+            //    += (a, b, c, d) => Validate(b);
         }
 
 
-        private bool Validate(X509Certificate x509cert)
-        {
-            const string repo1Cert = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
+        //private bool Validate(X509Certificate x509cert)
+        //{
+        //    const string repo1Cert = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
 
-            var cert = x509cert as X509Certificate2;
-            if (cert == null) return false;
+        //    var cert = x509cert as X509Certificate2;
+        //    if (cert == null) return false;
 
-            return cert.Thumbprint == _creds.ServerThumbprint
-                || cert.Thumbprint == repo1Cert;
-        }
+        //    return cert.Thumbprint == _creds.ServerThumbprint
+        //        || cert.Thumbprint == repo1Cert;
+        //}
 
 
         public Task<T> GetAsync<T>(string resourceUrl)

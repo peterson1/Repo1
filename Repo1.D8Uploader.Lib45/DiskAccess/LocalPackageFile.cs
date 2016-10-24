@@ -10,8 +10,8 @@ namespace Repo1.D8Uploader.Lib45.DiskAccess
 {
     public class LocalPackageFile
     {
-        public static string Filter       { get; set; } = "*.exe";
-        public static string AppNameSpace { get; set; }
+        public static string  Filter        { get; set; } = "*.exe";
+        public static string  AppNameSpace  { get; set; }
 
         public static D8Package Find(string appNameSpace)
         {
@@ -40,20 +40,20 @@ namespace Repo1.D8Uploader.Lib45.DiskAccess
 
         private static List<string> FindAll()
         {
-            var list = new List<string>();
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-            var exes = Directory.GetFiles(dir, Filter);
+            var list  = new List<string>();
+            var dir   = AppDomain.CurrentDomain.BaseDirectory;
+            var files = Directory.GetFiles(dir, Filter);
 
-            foreach (var exe in exes)
-                if (IsUploadableExe(exe)) list.Add(exe);
+            foreach (var file in files)
+                if (IsUploadableFile(file)) list.Add(file);
 
             return list;
         }
 
 
-        private static bool IsUploadableExe(string exePath)
+        private static bool IsUploadableFile(string filePath)
         {
-            var fName = Path.GetFileName(exePath);
+            var fName = Path.GetFileName(filePath);
 
             if (fName.Contains(LocalPackageFile.AppNameSpace)) return false;
             if (fName.Contains("vshost")) return false;

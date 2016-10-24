@@ -16,6 +16,7 @@ namespace Repo1.D8Uploader.Lib45.RestClients
             OnError = ex => ThreadedAlerter.Show(ex, "Uploader Client 2");
         }
 
+
         public async Task<D8Package> GetPackage(string packageFilename)
         {
             Status = "Querying uploadables for this user ...";
@@ -25,10 +26,12 @@ namespace Repo1.D8Uploader.Lib45.RestClients
             return exe;
         }
 
+
         public Task<bool> UploadNew(D8Package localPkg, double maxPartSizeMB)
         {
             throw new NotImplementedException();
         }
+
 
         public Task<bool> Edit(D8Package remotePkg, string versionChanges)
         {

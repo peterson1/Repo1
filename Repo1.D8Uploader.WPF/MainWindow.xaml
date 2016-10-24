@@ -4,9 +4,170 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Repo1.D8Uploader.WPF"
+        xmlns:ruc="clr-namespace:Repo1.WPF45.SDK.UserControls;assembly=Repo1.WPF45.SDK"
+        xmlns:cnv="clr-namespace:Repo1.WPF45.SDK.Converters;assembly=Repo1.WPF45.SDK"
+        xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:bhv="clr-namespace:Repo1.WPF45.SDK.ControlBehaviors.WindowBehaviors;assembly=Repo1.WPF45.SDK"
+        xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="{Binding Title}"
+        SizeToContent="WidthAndHeight"
+        MinHeight="300" MinWidth="600"
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=txtVerChanges}"
+        SnapsToDevicePixels="True"
+        >
+    <int:Interaction.Behaviors>
+        <bhv:DraggableBehavior />
+    </int:Interaction.Behaviors>
+    <Window.Resources>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="Foreground" Value="Blue" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontStyle" Value="Italic" />
+        </Style>
+
+        <DataTemplate x:Key="xtkWatermark">
+            <TextBlock Text="{Binding}" Foreground="Gray" 
+                       FontStyle="Italic" Padding="3,0,0,0"
+                       FontSize="11"
+                       TextWrapping="Wrap" />
+        </DataTemplate>
+
+        <Style TargetType="xtk:WatermarkTextBox">
+            <Setter Property="WatermarkTemplate" Value="{StaticResource xtkWatermark}" />
+            <Setter Property="Height" Value="21" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3,0,2,0" />
+            <Setter Property="Margin" Value="5,0,0,0" />
+        </Style>
+
+        <!--<Style TargetType="ruc:TextPair">
+            <Setter Property="Text2Width" Value="300" />
+        </Style>-->
+
+    </Window.Resources>
+    <StackPanel Margin="20,0,20,20">
+        <!--<StackPanel HorizontalAlignment="Right">
+            <ruc:TextPair Text1="API"      Text2="{Binding Config.ApiBaseURL}" />
+            <ruc:TextPair Text1="user"     Text2="{Binding Config.Username  }" />
+            <ruc:TextPair Text1="password" Text2="{Binding Config.Password  }" />
+        </StackPanel>-->
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    >
+            <xtk:WatermarkTextBox Watermark="API base URL"
+                                  MinWidth="120"
+                                  />
+            <xtk:WatermarkTextBox Watermark="user name"
+                                  MinWidth="120"
+                                  />
+            <PasswordBox MinWidth="120"
+                         Margin="5,0,0,0"
+                         Height="21"
+                         />
+            <Button Style="{StaticResource saveBtn}"
+                    FontSize="17"
+                    />
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+            <Grid MinWidth="350">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Currently Deployed" />
+                        <Button Command="{Binding RefreshCmd}"
+                                Style="{StaticResource refreshBtn}"
+                                />
+                    </StackPanel>
+                    <ruc:TextPair Text1="file"    Text2="{Binding RemoteExe.FileName}" Text2Weight="Bold" />
+                    <ruc:TextPair Text1="size"    Text2="{Binding RemoteExe.FileSize, Converter={StaticResource shortBytes}}" />
+                    <ruc:TextPair Text1="hash"    Text2="{Binding RemoteExe.FileHash}" />
+                    <ruc:TextPair Text1="version" Text2="{Binding RemoteExe.FileVersion}" />
+                    <ruc:TextPair Text1="node ID" Text2="{Binding RemoteExe.nid}" />
+                </StackPanel>
+                <xtk:BusyIndicator IsBusy="{Binding Uploader.IsBusy}"
+                                   BusyContent="{Binding Uploader.Status}"
+                                   Visibility="{Binding HasChanges, Converter={StaticResource visIfFalse}}"
+                                   FocusAfterBusy="{Binding ElementName=txtVerChanges}"
+                                   />
+            </Grid>
+
+            <StackPanel>
+                <Label Content="Version to Upload" />
+                <ruc:TextPair Text1="file"    Text2="{Binding LocalExe.FileName}" Text2Weight="Bold" />
+                <ruc:TextPair Text1="size"    Text2="{Binding LocalExe.FileSize, Converter={StaticResource shortBytes}}" />
+                <ruc:TextPair Text1="hash"    Text2="{Binding LocalExe.FileHash}" />
+                <ruc:TextPair Text1="version" Text2="{Binding LocalExe.FileVersion}" />
+                <ruc:TextPair Text1="path"    Text2="{Binding LocalExe.FullPathOrURL}" Text2Width="300" />
+            </StackPanel>
+        </StackPanel>
+
+        <Grid>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Version Changes" />
+                    <TextBlock Text="(required)"
+                               VerticalAlignment="Bottom"
+                               Margin="7,0,0,5"
+                               Foreground="Gray"
+                               />
+                </StackPanel>
+                <TextBox x:Name="txtVerChanges"
+                         Text="{Binding VersionChanges, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True" MinHeight="150"
+                         Margin="10,0,0,0"
+                         IsEnabled="{Binding UploadCmd.OverrideEnabled}"
+                         />
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,10,0,0"
+                            >
+
+                    <TextBlock Text="max part size :" 
+                               Margin="0,0,5,0"
+                               VerticalAlignment="Bottom"
+                               />
+                    <xtk:DoubleUpDown Value="{Binding MaxPartSizeMB}"
+                                      VerticalAlignment="Bottom"
+                                      MinWidth="100"
+                                      Minimum="0" Increment="0.1"
+                                      IsEnabled="{Binding UploadCmd.OverrideEnabled}"
+                                      />
+                    <TextBlock Text="MB" 
+                               Margin="5,0,20,0"
+                               VerticalAlignment="Bottom"
+                               />
+                    <Button Content="{Binding UploadCmd.CurrentLabel}"
+                            Height="40" Width="150"
+                            Command="{Binding UploadCmd}"
+                            />
+                </StackPanel>
+            </StackPanel>
+            <xtk:BusyIndicator IsBusy="{Binding Uploader.IsBusy}"
+                               BusyContent="{Binding Uploader.Status}"
+                               Visibility="{Binding HasChanges, Converter={StaticResource visIfTrue}}"
+                               />
+
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        >
+                <TextBlock Text="{Binding Deleter.Status}"
+                           VerticalAlignment="Center"
+                           />
+                <Button Style="{StaticResource searchBtn}"
+                        Command="{Binding Deleter.ShowOldiesCmd}"
+                        />
+            </StackPanel>
+        </Grid>
+
+    </StackPanel>
 </Window>

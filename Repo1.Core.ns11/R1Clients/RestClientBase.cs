@@ -42,7 +42,7 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
         //protected abstract void OnError(Exception ex);
-        public Action<Exception>  OnError    { get; set; }
+        public Action<Exception>  OnError    { get; set; } = x => { throw x; };
         public Action<string>     OnWarning  { get; set; }
         public int MaxRetries { get; set; } = -1;
 
@@ -79,7 +79,13 @@ namespace Repo1.Core.ns11.R1Clients
             if (MaxRetries == 0)
             {
                 try   { return await action.Invoke(); }
-                catch (Exception ex) { OnError?.Invoke(ex); }
+                catch (Exception ex)
+                {
+                    if (OnError == null)
+                        throw ex;
+                    else
+                        OnError.Invoke(ex);
+                }
             }
 
             if (MaxRetries == -1)
