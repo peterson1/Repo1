@@ -35,7 +35,7 @@ namespace Repo1.WPF45.SDK.Clients
 
         public async Task StartSessionUpdateLoop(string userName, string password)
         {
-            _creds = new RestServerCredentials
+            Credentials = new RestServerCredentials
             {
                 Username = userName,
                 Password = password,

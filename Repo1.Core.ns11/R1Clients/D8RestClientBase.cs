@@ -40,7 +40,7 @@ namespace Repo1.Core.ns11.R1Clients
         protected async Task<List<T>> ViewsList<T>(params object[] args)
             where T: ID8ViewsList, new()
         {
-            var url = _creds.ApiBaseURL.Slash(new T().ResourceURL);
+            var url = Credentials.ApiBaseURL.Slash(new T().ResourceURL);
 
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";

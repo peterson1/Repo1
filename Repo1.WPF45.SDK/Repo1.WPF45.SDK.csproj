@@ -108,6 +108,7 @@
     <Compile Include="Converters\VisibleIfNotZeroConverter.cs" />
     <Compile Include="Converters\VisibleIfTrueConverter.cs" />
     <Compile Include="Cryptographers\AESThenHMAC.cs" />
+    <Compile Include="Cryptographers\Certificator.cs" />
     <Compile Include="EmbeddedResources\EmbeddedResrc.cs" />
     <Compile Include="ErrorHandlers\Alerter.cs" />
     <Compile Include="ErrorHandlers\ThreadedAlerter.cs" />

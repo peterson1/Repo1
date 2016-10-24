@@ -85,7 +85,7 @@ namespace Repo1.Core.ns11.R1Clients
             where T : IR1ViewsListDTO, new()
         {
             var displayID = new T().ViewsDisplayURL;
-            var url = _creds.ApiBaseURL.Slash("views").Slash(displayID);
+            var url = Credentials.ApiBaseURL.Slash("views").Slash(displayID);
 
             for (int i = 0; i < args.Length; i++)
                 url += $"&args[{i}]={args[i]}";

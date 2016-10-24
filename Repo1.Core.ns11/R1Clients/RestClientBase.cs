@@ -8,7 +8,6 @@ using Polly.Retry;
 using Repo1.Core.ns11.Configuration;
 using Repo1.Core.ns11.EventArguments;
 using Repo1.Core.ns11.Extensions.StringExtensions;
-using Repo1.Core.ns11.R1Models.ViewsLists;
 
 namespace Repo1.Core.ns11.R1Clients
 {
@@ -16,14 +15,9 @@ namespace Repo1.Core.ns11.R1Clients
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-
-        protected RestServerCredentials _creds;
-
-
-
         public RestClientBase(RestServerCredentials restServerCredentials)
         {
-            _creds = restServerCredentials;
+            Credentials = restServerCredentials;
         }
 
 
@@ -42,8 +36,9 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
         //protected abstract void OnError(Exception ex);
-        public Action<Exception>  OnError    { get; set; } = x => { throw x; };
-        public Action<string>     OnWarning  { get; set; }
+        public Action<Exception>      OnError      { get; set; } = x => { throw x; };
+        public Action<string>         OnWarning    { get; set; }
+        public RestServerCredentials  Credentials  { get; set; }
         public int MaxRetries { get; set; } = -1;
 
         protected abstract Task<T>  GetAsync    <T>(string resourceUrl);
@@ -106,7 +101,7 @@ namespace Repo1.Core.ns11.R1Clients
             catch (Exception ex)
             {
                 if (ex.Message.Contains("got string starting with: Invalid credentials"))
-                    _creds.WasRejected = true;
+                    Credentials.WasRejected = true;
 
                 OnError?.Invoke(ex);
             }

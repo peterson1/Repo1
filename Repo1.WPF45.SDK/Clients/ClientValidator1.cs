@@ -22,14 +22,14 @@ namespace Repo1.WPF45.SDK.Clients
 
         public async Task<bool> ValidateThisMachine()
         {
-            if (_creds == null)
+            if (Credentials == null)
                 return Warn("Credentials object is NULL.");
 
             foreach (var macAdress in MacAddresses.List())
             {
                 var dto = await GetPingByMacAddress(macAdress);
 
-                if (_creds.WasRejected)
+                if (Credentials.WasRejected)
                     return Warn("Server rejected the credentials.");
 
                 if (dto == null)
@@ -62,7 +62,7 @@ namespace Repo1.WPF45.SDK.Clients
 
         private async Task<GetPingByLicenseKeyDTO> GetPingByMacAddress(string macAddress)
         {
-            var cfg = _creds as DownloaderCfg;
+            var cfg = Credentials as DownloaderCfg;
             if (cfg == null)
             {
                 Warn($"Config is not a ‹{typeof(DownloaderCfg).Name}›");
