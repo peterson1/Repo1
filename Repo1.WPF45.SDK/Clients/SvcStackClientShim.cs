@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Repo1.Core.ns11.Configuration;
+using Repo1.WPF45.SDK.Cryptographers;
 using ServiceStack;
 using ServiceStack.Text;
 
@@ -12,6 +12,8 @@ namespace Repo1.WPF45.SDK.Clients
 {
     public class SvcStackClientShim
     {
+        //const string REPO1_NFS_CERT = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
+
         private RestServerCredentials _creds;
 
         public SvcStackClientShim(RestServerCredentials restServerCredentials)
@@ -19,21 +21,8 @@ namespace Repo1.WPF45.SDK.Clients
             _creds = restServerCredentials;
             JsConfig.ExcludeTypeInfo = true;
 
-            //ServicePointManager.ServerCertificateValidationCallback
-            //    += (a, b, c, d) => Validate(b);
+            //Certificator.AllowFrom(REPO1_NFS_CERT);
         }
-
-
-        //private bool Validate(X509Certificate x509cert)
-        //{
-        //    const string repo1Cert = "68BD712DFC7529ED73D2E5E3F1A4EB5DFBA50164";
-
-        //    var cert = x509cert as X509Certificate2;
-        //    if (cert == null) return false;
-
-        //    return cert.Thumbprint == _creds.ServerThumbprint
-        //        || cert.Thumbprint == repo1Cert;
-        //}
 
 
         public Task<T> GetAsync<T>(string resourceUrl)
