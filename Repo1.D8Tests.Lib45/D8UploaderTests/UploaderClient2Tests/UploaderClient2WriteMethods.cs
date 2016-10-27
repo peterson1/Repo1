@@ -16,19 +16,6 @@ namespace Repo1.D8Tests.Lib45.D8UploaderTests.UploaderClient2Tests
         }
 
 
-        [Fact(DisplayName = "Post New Part")]
-        public async void PostNewPart()
-        {
-            var sut  = _ioc.Create<PackagePartUploader>();
-            var part = _fke.D8PackagePart();
-            await sut.RequestWriteAccess();
-
-            var ok   = await sut.UploadAndAttachToNewNode(part);
-
-            ok.Should().BeTrue();
-        }
-
-
         [Fact(DisplayName = "Request Write Access: Success")]
         public async void RequestWriteAccess_Success()
         {

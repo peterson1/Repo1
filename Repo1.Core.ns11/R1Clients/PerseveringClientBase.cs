@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 using Polly;
 using Polly.Retry;
 using Repo1.Core.ns11.Configuration;
-using Repo1.Core.ns11.Drupal8Tools;
 using Repo1.Core.ns11.EventArguments;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Core.ns11.R1Clients
 {
-    public abstract class RestClientBase : IRestClient
+    public abstract class PerseveringClientBase : IRestClient
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        public RestClientBase(RestServerCredentials restServerCredentials)
+        public PerseveringClientBase(RestServerCredentials restServerCredentials)
         {
             Credentials = restServerCredentials;
         }
@@ -62,6 +61,33 @@ namespace Repo1.Core.ns11.R1Clients
         //        return true;
         //    });
         //}
+
+
+        protected async Task<Dictionary<string, object>> PostTilOK <T>(Dictionary<string, object> mappedDict, 
+            string resourceURL, Func<Task<T>> postedItemGetter, Func<T, Dictionary<string, object>> savedIDsCopier)
+        {
+            var ret = await KeepTrying(async () =>
+            {
+                Dictionary<string, object> resp = null;
+                try
+                {
+                    resp = await PostAsync(mappedDict, resourceURL);
+                }
+                catch (Exception ex)
+                {
+                    var savd = await postedItemGetter?.Invoke();
+                    if (savd == null) throw ex;
+                    if (resp == null && savedIDsCopier != null)
+                        resp = savedIDsCopier.Invoke(savd);
+                }
+                return resp;
+            });
+
+            if (ret == null)
+                OnError(new ArgumentNullException($"Wasn't expecting [PostTilOK] to return NULL."));
+
+            return ret;
+        }
 
 
         protected Task<T> GetTilOK<T>(string resourceURL)

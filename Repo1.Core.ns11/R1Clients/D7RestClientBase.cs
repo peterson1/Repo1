@@ -8,7 +8,7 @@ using Repo1.Core.ns11.R1Models.ViewsLists;
 
 namespace Repo1.Core.ns11.R1Clients
 {
-    public abstract class D7RestClientBase : RestClientBase
+    public abstract class D7RestClientBase : PerseveringClientBase
     {
         public D7RestClientBase(RestServerCredentials restServerCredentials) : base(restServerCredentials)
         {

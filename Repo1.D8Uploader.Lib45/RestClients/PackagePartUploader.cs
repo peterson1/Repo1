@@ -20,14 +20,21 @@ namespace Repo1.D8Uploader.Lib45.RestClients
 
         public async Task<bool> UploadAndAttachToNewNode(R1PackagePart part)
         {
-            var inf = new FileInfo(part.FullPathOrURL);
-            var fid = await UploadFile(inf.Name, inf.Base64Content());
+            var fid = await UploadFile(part.FullPathOrURL);
 
-            var dict = await Create(part,
+            var dict = await PostNode(part,
                   () => GetPackagePartByHash(part.PartHash));
 
             if (dict == null) return false;
             return true;
+        }
+
+
+        public async Task<int> UploadFile(string filePath)
+        {
+            var file = new FileInfo(filePath);
+            if (!file.Exists) return -1;
+            return await PostFile(file.Name, file.Base64Content());
         }
 
 

@@ -7,7 +7,7 @@ using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Core.ns11.R1Clients
 {
-    public abstract class D8RestClientBase : RestClientBase
+    public abstract class D8RestClientBase : PerseveringClientBase
     {
         private string _csrfToken;
 
@@ -16,14 +16,6 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
         protected abstract Task<bool> EnableWriteMethods(string resourceUrl);
-
-
-        protected async Task<int> UploadFile(string fileName, string base64Content)
-        {
-            var fileEntty = D8FileMapper.Cast(fileName, base64Content, Credentials.ApiBaseURL);
-            await Task.Delay(1);
-            return 0;
-        }
 
 
 
@@ -36,38 +28,24 @@ namespace Repo1.Core.ns11.R1Clients
             });
 
 
-        protected async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter)
+        protected Task<Dictionary<string, object>> PostNode<T>(T objectToPost, Func<Task<T>> postedNodeGetter)
             where T : D8NodeBase
         {
             var node = D8NodeMapper.Cast(objectToPost, Credentials.ApiBaseURL);
-            node.Remove("field_package");
+            //node.Remove("field_package");
 
-            var dict = await KeepTrying(async () =>
-            {
-                Dictionary<string, object> resp = null;
-                try
-                {
-                    resp = await PostAsync(node, "entity/node?_format=hal_json");
-                }
-                catch (Exception ex)
-                {
-                    var savd = await postedNodeGetter.Invoke();
-                    if (savd == null) throw ex;
-                    if (resp == null)
-                    {
-                        //resp = D7Mapper.CopyNodeIDs(savd);
-                        throw new NotImplementedException();
-                    }
-                }
-                return resp;
-            });
+            //todo: pass D8 SavedIDsCopier to PostTilOK
+            return PostTilOK<T>(node, "entity/node?_format=hal_json", postedNodeGetter, null);
+        }
 
-            if (dict == null)
-                OnError(new ArgumentNullException("Wasn't expecting Dictionary<string, object> from POST to be NULL."));
 
-            //dict.SetNodeIDs(objectToPost);
+        protected async Task<int> PostFile(string fileName, string base64Content)
+        {
+            var mapd = D8FileMapper.Cast(fileName, base64Content, Credentials.ApiBaseURL);
 
-            return dict;
+            var dict = await PostTilOK<object>(mapd, "entity/file", null, null);
+
+            return 0;
         }
 
 

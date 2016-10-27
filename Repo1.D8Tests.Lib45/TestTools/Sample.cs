@@ -14,6 +14,11 @@
             internal const string FilePath = @"..\..\..\Repo1.SdkClient.DemoWPF\bin\Release\Repo1.SdkClient.DemoWPF.vshost.exe.manifest";
         }
 
+        internal class _1KbFile
+        {
+            internal const string Path = @"..\..\..\Repo1.SdkClient.DemoWPF\bin\Release\Repo1.SdkClient.DemoWPF.vshost.exe.manifest";
+        }
+
         internal class PackagePart1
         {
             internal const string Hash = "this-is-not-a-hash";

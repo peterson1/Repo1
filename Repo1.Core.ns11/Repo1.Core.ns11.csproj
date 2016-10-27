@@ -97,7 +97,7 @@
     <Compile Include="R1Clients\IRestClient.cs" />
     <Compile Include="R1Clients\ISessionClient.cs" />
     <Compile Include="R1Clients\Repo1ClientBase1.cs" />
-    <Compile Include="R1Clients\RestClientBase.cs" />
+    <Compile Include="R1Clients\PerseveringClientBase.cs" />
     <Compile Include="R1Models\D8Models\R1Package.cs" />
     <Compile Include="R1Models\D8Models\R1PackagePart.cs" />
     <Compile Include="R1Models\D8Models\D8ViewsLists\PartsUploadedByUserView.cs" />
