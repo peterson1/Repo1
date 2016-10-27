@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns11.Tests.ReflectionTools.PropertyValueCopierTests
 {
+    [Trait("Core", "Unit")]
     public class CopyByNameFacts
     {
         private static FakeFactory _fke = new FakeFactory();

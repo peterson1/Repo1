@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns11.Tests.ReflectionTools.NestedPropertyFinderTests
 {
+    [Trait("Core", "Unit")]
     public class InterfacePropertiesFacts
     {
         [Fact(DisplayName = "Non-nested property")]

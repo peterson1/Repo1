@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Polly;
 using Polly.Retry;
 using Repo1.Core.ns11.Configuration;
+using Repo1.Core.ns11.Drupal8Tools;
 using Repo1.Core.ns11.EventArguments;
 using Repo1.Core.ns11.Extensions.StringExtensions;
 
@@ -19,7 +20,6 @@ namespace Repo1.Core.ns11.R1Clients
         {
             Credentials = restServerCredentials;
         }
-
 
         private bool _isBusy;
         public bool IsBusy
@@ -35,9 +35,9 @@ namespace Repo1.Core.ns11.R1Clients
             set { _status = value; PropertyChanged.Raise(nameof(Status), this); }
         }
 
-        //protected abstract void OnError(Exception ex);
         public Action<Exception>      OnError      { get; set; } = x => { throw x; };
         public Action<string>         OnWarning    { get; set; }
+        public Action<string>         WriteToDebug { get; set; } = x => { };
         public RestServerCredentials  Credentials  { get; set; }
         public int MaxRetries { get; set; } = -1;
 
@@ -46,15 +46,22 @@ namespace Repo1.Core.ns11.R1Clients
         protected abstract Task<T>  PutAsync    <T>(T objToPost, string resourceUrl);
         protected abstract Task<T>  DeleteAsync <T>(string resourceUrl);
 
-        protected abstract HttpStatusCode? GetStatusCode<T>(T exception);
-        protected abstract void DecodeHtmlInStrings<T>(T obj);
+        protected abstract HttpStatusCode?  GetStatusCode       <T>(T exception);
+        protected abstract void             DecodeHtmlInStrings <T>(T obj);
 
-        protected abstract Task<Dictionary<string, object>>  Create  <T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished);
         protected abstract Task<Dictionary<string, object>>  Update  <T>(T node, string revisionLog);
         protected abstract Task<bool>                        Delete  (int nodeID);
 
-        //protected abstract Task<List<T>> ViewsList<T>(params object[] args) where T : IR1ViewsListDTO, new();
 
+
+        //private Task<bool> RequestCookie(string resourceURL)
+        //{
+        //    return KeepTrying(async () =>
+        //    {
+        //        await PostCookieRequest(resourceURL);
+        //        return true;
+        //    });
+        //}
 
 
         protected Task<T> GetTilOK<T>(string resourceURL)

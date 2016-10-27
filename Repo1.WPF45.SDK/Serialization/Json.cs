@@ -1,4 +1,5 @@
-﻿using ServiceStack.Text;
+﻿using System;
+using ServiceStack.Text;
 
 namespace Repo1.WPF45.SDK.Serialization
 {
@@ -10,5 +11,20 @@ namespace Repo1.WPF45.SDK.Serialization
 
         public static string Serialize<T>(T obj)
             => JsonSerializer.SerializeToString(obj);
+
+
+        public static bool TryDeserialize<T>(string json, out T obj)
+        {
+            try
+            {
+                obj = Deserialize<T>(json);
+                return true;
+            }
+            catch 
+            {
+                obj = default(T);
+                return false;
+            }
+        }
     }
 }

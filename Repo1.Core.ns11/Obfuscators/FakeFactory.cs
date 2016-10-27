@@ -45,8 +45,13 @@ namespace Repo1.Core.ns11.Obfuscators
 
         public string Company => this.ProperNoun + " " + this.CompanySuffix;
         public string CompanySuffix => _companySuffixes[_random.Next(_companySuffixes.Length - 1)];
-        public string Filename => $"{ProperNoun}.{Letter}{Letter}{Letter}";
+        public string FileName => $"{ProperNoun}.{Letter}{Letter}{Letter}";
         public string Letter => _vowels.Concat(_consonants).RandomItem();
+
+
+        public string FileVersion => Int(1, 9)
+                               + $".{Int(0, 999):00#}"
+                               + $".{Int(0, 9999):000#}";
 
 
         public string MarketSection

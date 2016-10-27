@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7MapperTests
 {
+    [Trait("Core", "Unit")]
     public class D7BaseFieldsFacts
     {
         [Fact(DisplayName = "Maps base fields to Dictionary")]

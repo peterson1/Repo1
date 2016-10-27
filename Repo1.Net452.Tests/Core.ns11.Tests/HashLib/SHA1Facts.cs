@@ -4,6 +4,7 @@ using Repo1.Core.ns11.Extensions.StringExtensions;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.HashLib
 {
+    [Trait("Core", "Unit")]
     public class SHA1Facts
     {
         [Theory(DisplayName = "SHA-1")]

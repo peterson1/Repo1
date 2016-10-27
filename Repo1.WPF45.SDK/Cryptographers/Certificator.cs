@@ -56,7 +56,7 @@ namespace Repo1.WPF45.SDK.Cryptographers
                     + "SimpleN :  " + x509Cert.GetNameInfo(X509NameType.SimpleName, true) + L.f
                     + "UpnName :  " + x509Cert.GetNameInfo(X509NameType.UpnName, true) + L.f
                     + "UrlName :  " + x509Cert.GetNameInfo(X509NameType.UrlName, true) + L.f
-                    + "Issuer :  " + x509Cert.Issuer + L.f
+                    + "Issuer  :  " + x509Cert.Issuer + L.f
                     + "Subject :  " + x509Cert.Subject);
 
             return listed;

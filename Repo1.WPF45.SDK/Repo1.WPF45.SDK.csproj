@@ -89,6 +89,7 @@
     <Compile Include="ApplicationTools\Invoke.cs" />
     <Compile Include="Archivers\SevenZipper1.cs" />
     <Compile Include="Clients\ClientValidator1.cs" />
+    <Compile Include="Clients\D8SvcStackClientBase.cs" />
     <Compile Include="Clients\DownloaderClient1.cs" />
     <Compile Include="Clients\DownloaderClient2.cs" />
     <Compile Include="Clients\IssuePoster1.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="Clients\Repo1Client.cs" />
     <Compile Include="Clients\Repo1ClientExtensions.cs" />
     <Compile Include="Clients\SessionClient1.cs" />
-    <Compile Include="Clients\DrupalSvcStackClientBases.cs" />
+    <Compile Include="Clients\D7SvcStackClientBase.cs" />
     <Compile Include="Clients\SvcStackClientShim.cs" />
     <Compile Include="Configuration\Repo1Cfg.cs" />
     <Compile Include="ControlBehaviors\TextBoxBehaviors\ScrollOnChangeBehavior.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="ErrorHandlers\ThreadedAlerter.cs" />
     <Compile Include="Extensions\ApplicationExtensions\AppProcessExtensions.cs" />
     <Compile Include="Extensions\FileInfoExtensions\CommonFileInfoExtensions.cs" />
-    <Compile Include="Extensions\R1ModelExtensions\D8PackageExtensions.cs" />
     <Compile Include="Extensions\R1ModelExtensions\R1ExecutableExtensions.cs" />
     <Compile Include="FileChunkers\FileChunker1.cs" />
     <Compile Include="HtmlTools\HtmlDecoder.cs" />

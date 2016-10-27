@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.WPF452.SDK.Tests.Helpers.HtmlTools.HtmlDecoderTests
 {
+    [Trait("SDK", "Unit")]
     public class HtmlDecoderFacts
     {
         [Fact(DisplayName = "Decodes all string properties")]

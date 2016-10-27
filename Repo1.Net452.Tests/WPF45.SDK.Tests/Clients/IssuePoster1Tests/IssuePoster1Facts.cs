@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.WPF45.SDK.Tests.Clients.IssuePoster1Tests
 {
+    [Trait("Issue Poster", "Nfshost D7")]
     public class IssuePoster1Facts
     {
         [Fact(DisplayName = "Can Post Issue")]

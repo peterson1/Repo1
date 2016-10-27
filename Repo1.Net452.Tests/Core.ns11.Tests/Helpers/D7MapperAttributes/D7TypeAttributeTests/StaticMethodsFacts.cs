@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns12.Tests.Helpers.D7MapperAttributes.D7TypeAttributeTests
 {
+    [Trait("Core", "Unit")]
     public class StaticMethodsFacts
     {
         [Fact(DisplayName = "D7Type.GetKey<T>()")]

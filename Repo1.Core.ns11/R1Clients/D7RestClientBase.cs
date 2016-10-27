@@ -15,7 +15,7 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
 
-        protected override async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished = true)
+        protected async Task<Dictionary<string, object>> Create<T>(T objectToPost, Func<Task<T>> postedNodeGetter, bool isPublished = true)
         {
             var mappd = D7Mapper.ToObjectDictionary(objectToPost);
             if (mappd == null) return null;

@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.ExeUploader.WPF.Tests.Archivers
 {
+    [Trait("SDK: 7zipper", "File I/O")]
     public class SevenZipperFacts
     {
         [Fact(DisplayName = "Single Volume: 4.6MB")]

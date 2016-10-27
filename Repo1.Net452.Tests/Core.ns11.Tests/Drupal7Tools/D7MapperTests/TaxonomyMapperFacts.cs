@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns11.Tests.Drupal7Tools.D7MapperTests
 {
+    [Trait("Core", "Unit")]
     public class TaxonomyMapperFacts
     {
         [Fact(DisplayName = "Maps term ids for a taxonomy vocab")]

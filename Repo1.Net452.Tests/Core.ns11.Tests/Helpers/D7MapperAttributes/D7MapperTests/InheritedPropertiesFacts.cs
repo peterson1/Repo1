@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Repo1.Net452.Tests.Core.ns11.Tests.Helpers.D7MapperAttributes.D7MapperTests
 {
+    [Trait("Core", "Unit")]
     public class InheritedPropertiesFacts
     {
         private FakeFactory _fke = new FakeFactory();

@@ -23,7 +23,7 @@ namespace Repo1.D8Uploader.Lib45.RestClients
         }
 
 
-        public D8Package    Package        { get; private set; }
+        public R1Package    Package        { get; private set; }
         public IR1Command   RefreshCmd     { get; private set; }
         public IR1Command   ShowOldiesCmd  { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Repo1.D8Uploader.Lib45.RestClients
         protected abstract void ShowUploadedsWindow();
 
 
-        public void Initialize(D8Package remotePkg)
+        public void Initialize(R1Package remotePkg)
         {
             Package = remotePkg;
             RefreshCmd.ExecuteIfItCan(null);

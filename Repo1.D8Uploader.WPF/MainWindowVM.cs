@@ -7,16 +7,7 @@ using Repo1.D8Uploader.Lib45.ViewModels;
 namespace Repo1.D8Uploader.WPF
 {
     [ImplementPropertyChanged]
-    class MainWindowVM : MainWindowVmBase
+    class MainWindowVM
     {
-        public MainWindowVM(UploaderCfg uploaderCfg, UploaderClient2 uploaderClient, DeleterClientBase deleterClient) : base(uploaderCfg, uploaderClient, deleterClient)
-        {
-        }
-
-        protected override string AppNameSpace 
-            => typeof(App).Namespace;
-
-        protected override void SetClipboardText(string text)
-            => Clipboard.SetText(text);
     }
 }
