@@ -14,15 +14,16 @@ namespace Repo1.D8Tests.Lib45.D8UploaderTests.UploaderClient2Tests
         }
 
 
-        [Fact(DisplayName = "Upload File")]
-        public async void UploadFile()
+        [Fact(DisplayName = "Save Part Node")]
+        public async void SavePartNode()
         {
             var sut = _ioc.Create<PackagePartUploader>();
+            var prt = _fke.D8PackagePart();
             await sut.RequestWriteAccess();
 
-            var fid = await sut.UploadFile(Sample._1KbFile.Path);
+            var ok = await sut.SavePartNode(prt);
 
-            fid.Should().BeGreaterThan(0);
+            ok.Should().BeTrue();
         }
     }
 }

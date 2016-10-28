@@ -39,11 +39,13 @@ namespace Repo1.Core.ns11.R1Clients
         }
 
 
-        protected async Task<int> PostFile(string fileName, string base64Content)
+        protected async Task<int> PostFile(string fileName, long fileSize, string base64Content)
         {
-            var mapd = D8FileMapper.Cast(fileName, base64Content, Credentials.ApiBaseURL);
+            var mapd = D8FileMapper.Cast(fileName, fileSize, base64Content, Credentials.ApiBaseURL);
 
-            var dict = await PostTilOK<object>(mapd, "entity/file", null, null);
+            var dict = await PostTilOK<object>(mapd, "file?_format=hal_json", null, null);
+            //var dict = await PostTilOK<object>(mapd, "entity/file?_format=hal_json", null, null);
+            //var dict = await PostTilOK<object>(mapd, "api1/file", null, null);
 
             return 0;
         }

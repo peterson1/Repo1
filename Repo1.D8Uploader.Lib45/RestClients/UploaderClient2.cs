@@ -66,7 +66,8 @@ namespace Repo1.D8Uploader.Lib45.RestClients
             part.PackageVersion = _package.LatestVersion;
             part.FullPathOrURL  = path;
 
-            return await _partUploadr.UploadAndAttachToNewNode(part);
+            //return await _partUploadr.UploadAndAttachToNewNode(part);
+            return await _partUploadr.SavePartNode(part);
         }
 
 

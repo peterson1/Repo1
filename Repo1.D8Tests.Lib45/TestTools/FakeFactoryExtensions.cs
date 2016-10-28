@@ -16,7 +16,7 @@ namespace Repo1.D8Tests.Lib45.TestTools
         public static R1Package D8Package(this FakeFactory fke)
             => new R1Package
             {
-                FileName      = fke.FileName,
+                FileName      = "[tmp] " + fke.FileName,
                 FileSize      = fke.Int(1000, 10000),
                 LatestHash    = fke.Text.SHA1ForUTF8(),
                 LatestVersion = fke.FileVersion,

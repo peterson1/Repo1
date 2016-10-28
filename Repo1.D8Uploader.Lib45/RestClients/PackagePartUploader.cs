@@ -18,24 +18,33 @@ namespace Repo1.D8Uploader.Lib45.RestClients
         }
 
 
-        public async Task<bool> UploadAndAttachToNewNode(R1PackagePart part)
-        {
-            var fid = await UploadFile(part.FullPathOrURL);
+        //public async Task<bool> UploadAndAttachToNewNode(R1PackagePart part)
+        //{
+        //    var fid = await UploadFile(part.FullPathOrURL);
 
+        //    var dict = await PostNode(part,
+        //          () => GetPackagePartByHash(part.PartHash));
+
+        //    if (dict == null) return false;
+        //    return true;
+        //}
+
+
+        public async Task<bool> SavePartNode(R1PackagePart part)
+        {
             var dict = await PostNode(part,
                   () => GetPackagePartByHash(part.PartHash));
 
-            if (dict == null) return false;
-            return true;
+            return dict != null;
         }
 
 
-        public async Task<int> UploadFile(string filePath)
-        {
-            var file = new FileInfo(filePath);
-            if (!file.Exists) return -1;
-            return await PostFile(file.Name, file.Base64Content());
-        }
+        //public async Task<int> UploadFile(string filePath)
+        //{
+        //    var file = new FileInfo(filePath);
+        //    if (!file.Exists) return -1;
+        //    return await PostFile(file.Name, file.Length, file.Base64Content());
+        //}
 
 
         public async Task<R1PackagePart> GetPackagePartByHash(string partHash)
