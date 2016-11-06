@@ -113,5 +113,8 @@ namespace Repo1.WPF45.SDK.InputCommands
         {
             if (CanExecute(param)) Execute(param);
         }
+
+
+        public override string ToString() => CurrentLabel;
     }
 }
