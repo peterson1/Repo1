@@ -9,7 +9,7 @@ using Repo1.WPF45.SDK.Configuration;
 
 namespace Repo1.WPF45.SDK.Clients
 {
-    internal class LocalFileUpdater1 : MachineProfilingRestClient1, ILocalFileUpdater
+    public class LocalFileUpdater1 : MachineProfilingRestClient1, ILocalFileUpdater
     {
         public LocalFileUpdater1(RestServerCredentials restServerCredentials, string configKey) : base(configKey, restServerCredentials)
         {
